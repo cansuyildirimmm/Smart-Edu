@@ -1,8 +1,16 @@
+# Dart dosyalarını zorunlu olarak algıla
 *.dart linguist-detectable=true
+
+# Gereksiz dillerin analiz edilmesini engelle
 *.cpp linguist-vendored
+*.h linguist-vendored
 CMakeLists.txt linguist-vendored
 *.cmake linguist-vendored
-git add .gitattributes
-git commit -m "GitHub dil algılaması düzeltildi"
-git push origin main
-
+*.cc linguist-vendored
+*.cxx linguist-vendored
+*.hpp linguist-vendored
+*.hh linguist-vendored
+*.c linguist-vendored
+*.h linguist-vendored
+*.m linguist-vendored
+*.mm linguist-vendored
