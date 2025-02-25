@@ -1,2 +1,8 @@
 *.dart linguist-detectable=true
 *.cpp linguist-vendored
+CMakeLists.txt linguist-vendored
+*.cmake linguist-vendored
+git add .gitattributes
+git commit -m "GitHub dil algılaması düzeltildi"
+git push origin main
+
