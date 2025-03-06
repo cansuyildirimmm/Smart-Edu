@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smartedu/TCreatAccountScreen.dart';
+import 'package:smartedu/TLoginScreen.dart';
 
 class TWelcomeScreen extends StatelessWidget {
   @override
@@ -24,7 +26,12 @@ class TWelcomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TLoginScreen()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   minimumSize: Size(double.infinity, 50),
@@ -36,7 +43,12 @@ class TWelcomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TCreateAccountScreen()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   minimumSize: Size(double.infinity, 50),

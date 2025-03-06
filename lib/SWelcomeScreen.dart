@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smartedu/SCreatAccountScreen.dart';
+import 'package:smartedu/SLoginScreen.dart';
 
 class SWelcomeScreen extends StatelessWidget {
   @override
@@ -24,7 +26,12 @@ class SWelcomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SLoginScreen()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   minimumSize: Size(double.infinity, 50),
@@ -36,7 +43,12 @@ class SWelcomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SCreatAccountScreen()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   minimumSize: Size(double.infinity, 50),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartedu/OnboardingScreen.dart';
 import 'package:smartedu/SWelcomeScreen.dart';
 import 'package:smartedu/TWelcomeScreen.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SWelcomeScreen()
+      home: OnboardingScreen()
     );
   }
 }
