@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/SWelcomeScreen.dart';
 import 'package:smartedu/TWelcomeScreen.dart';
-import 'SLoginScreen.dart';
-import 'TLoginScreen.dart';
+
 
 class OnboardingScreen extends StatelessWidget {
   @override
