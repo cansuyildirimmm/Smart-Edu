@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:smartedu/OnboardingScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_data_connect/firebase_data_connect.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseAuth.instance.setLanguageCode("tr"); // Firebase dilini Türkçe yap
+
   runApp(const MyApp());
 }
 
@@ -40,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     // Ana ekran yüklendikten sonra 3 saniye bekleyip Onboarding ekranına geçiş yapacak
-    Future.delayed(const Duration(seconds: 6), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => OnboardingScreen()),

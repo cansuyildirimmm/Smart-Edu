@@ -1,37 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/TLoginScreen.dart';
+import 'package:smartedu/services/auth.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     home: TCreateAccountScreen(),
   ));
 }
 
-class TCreateAccountScreen extends StatelessWidget {
-  const TCreateAccountScreen({super.key});
+class TCreateAccountScreen extends StatefulWidget {
+  TCreateAccountScreen({super.key});
+
+  @override
+  _TCreateAccountScreenState createState() => _TCreateAccountScreenState();
+}
+
+class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _schoolController = TextEditingController();
+  final _branchController = TextEditingController();
+  final _telNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFD93D), // Arka plan rengi (sarı)
+      backgroundColor: Color(0xFFFFD93D),
       body: SafeArea(
-        child: SingleChildScrollView( // ✨ Kaydırılabilir hale getirildi
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Geri butonu
                 IconButton(
                   icon: Icon(Icons.arrow_back, size: 28),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
-
                 SizedBox(height: 10),
-
-                // Başlık
                 Center(
                   child: Text(
                     "HESAP OLUŞTURUN",
@@ -42,21 +51,14 @@ class TCreateAccountScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 20),
-
-                // Form Alanları
-                _buildTextField(Icons.person, "AD-SOYAD"),
-                _buildTextField(Icons.work, "BRANŞ UZMANLIK ALANI"),
-                _buildTextField(Icons.school, "ÇALIŞTIĞINIZ OKUL"),
-                _buildTextField(Icons.badge, "TC KİMLİK"),
-                _buildTextField(Icons.email, "E-POSTA ADRESİ"),
-                _buildTextField(Icons.phone, "TELEFON NUMARASI"),
-                _buildTextField(Icons.lock, "ŞİFRE", isPassword: true),
-
+                _buildTextField(Icons.person, "AD-SOYAD", _nameController),
+                _buildTextField(Icons.work, "BRANŞ UZMANLIK ALANI", _branchController),
+                _buildTextField(Icons.school, "ÇALIŞTIĞINIZ OKUL", _schoolController),
+                _buildTextField(Icons.email, "E-POSTA ADRESİ", _emailController),
+                _buildTextField(Icons.phone, "TELEFON NUMARASI", _telNumberController),
+                _buildTextField(Icons.lock, "ŞİFRE", _passwordController, isPassword: true),
                 SizedBox(height: 20),
-
-                // Kayıt Ol Butonu
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -67,8 +69,17 @@ class TCreateAccountScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {
-                      // Kayıt işlemi yapılacak
+                    onPressed: () async {
+                      await createAccount(
+                        _emailController.text,
+                        _passwordController.text,
+                        _nameController.text,
+                        _schoolController.text,
+                        _branchController.text,
+                        "",
+                        _telNumberController.text,
+                        "teachers",
+                      );
                     },
                     child: Text(
                       "KAYIT OL",
@@ -76,10 +87,7 @@ class TCreateAccountScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 15),
-
-                // Giriş yapma bağlantısı
                 Center(
                   child: TextButton(
                     onPressed: () {
@@ -94,20 +102,14 @@ class TCreateAccountScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 15),
-
-                // Google ile devam etme başlığı
                 Center(
                   child: Text(
                     "Hesabınızla Devam Edin",
                     style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
                 ),
-
                 SizedBox(height: 10),
-
-                // Google Butonu
                 Center(
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
@@ -139,11 +141,11 @@ class TCreateAccountScreen extends StatelessWidget {
     );
   }
 
-  // Tek bir metot ile tüm textfield'ları oluşturuyoruz
-  Widget _buildTextField(IconData icon, String hint, {bool isPassword = false}) {
+  Widget _buildTextField(IconData icon, String hint, TextEditingController controller, {bool isPassword = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: TextField(
+        controller: controller,
         obscureText: isPassword,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.black),
@@ -161,5 +163,3 @@ class TCreateAccountScreen extends StatelessWidget {
     );
   }
 }
-
-// kayıt ekranı
