@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import '/TCreatAccountScreen.dart';
 import '/TForgotPasswordScreen.dart';
-
+import '/services/auth.dart';
 class TLoginScreen extends StatelessWidget {
+  final _eMailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  TLoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +38,7 @@ class TLoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 40),
               TextField(
+                controller: _eMailController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email_outlined),
                   hintText: 'E-postanızı girin',
@@ -46,6 +52,7 @@ class TLoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock_outline),
@@ -88,8 +95,8 @@ class TLoginScreen extends StatelessWidget {
                   ),
                   minimumSize: Size(double.infinity, 60),
                 ),
-                onPressed: () {
-                  // Giriş yap butonuna tıklandığında yapılacak işlemler
+                onPressed: () async {
+                  await signIn(context, _eMailController.text, _passwordController.text, "teachers");
                 },
                 child: Text(
                   'Giriş Yap',

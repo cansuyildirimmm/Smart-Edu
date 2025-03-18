@@ -3,7 +3,6 @@ import 'package:smartedu/OnboardingScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_data_connect/firebase_data_connect.dart';
 
 
 void main() async {
@@ -11,7 +10,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseAuth.instance.setLanguageCode("tr"); // Firebase dilini Türkçe yap
+  FirebaseAuth.instance.setLanguageCode("tr");
 
   runApp(const MyApp());
 }
@@ -44,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    // Ana ekran yüklendikten sonra 3 saniye bekleyip Onboarding ekranına geçiş yapacak
+
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
