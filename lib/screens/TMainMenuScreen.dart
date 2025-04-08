@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:smartedu/screens/TMyStudents.dart';
 
-
-// TMyStudents Ekranı
-class TMyStudents extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Öğrencilerim'),
-      ),
-      body: Center(
-        child: Text('Öğrencilerim Ekranı'),
-      ),
-    );
-  }
-}
-
+// TMainMenuScreen Ekranı
 class TeacherMenuScreen extends StatefulWidget {
   @override
   _TeacherMenuScreenState createState() => _TeacherMenuScreenState();
@@ -158,12 +142,6 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
   Widget _buildMenuCard(String title, Color color, String asset) {
     return GestureDetector(
       onTap: () {
-        if (title == "Öğrencilerim") {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TMyStudents()),
-          );
-        }
         // Diğer butonlar için de benzer şekilde işlemler ekleyebilirsin
       },
       child: Container(
