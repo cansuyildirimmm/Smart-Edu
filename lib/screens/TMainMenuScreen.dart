@@ -1,5 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:smartedu/screens/TMyStudents.dart';
+
+
+// TMyStudents Ekranı
+class TMyStudents extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Öğrencilerim'),
+      ),
+      body: Center(
+        child: Text('Öğrencilerim Ekranı'),
+      ),
+    );
+  }
+}
 
 class TeacherMenuScreen extends StatefulWidget {
   @override
@@ -139,24 +156,35 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
   }
 
   Widget _buildMenuCard(String title, Color color, String asset) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.4,
-      height: MediaQuery.of(context).size.height * 0.2,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(asset, width: 100, height: 100),
-          SizedBox(height: 8),
-          Text(
-            title,
-            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        if (title == "Öğrencilerim") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TMyStudents()),
+          );
+        }
+        // Diğer butonlar için de benzer şekilde işlemler ekleyebilirsin
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.4,
+        height: MediaQuery.of(context).size.height * 0.2,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(asset, width: 100, height: 100),
+            SizedBox(height: 8),
+            Text(
+              title,
+              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
