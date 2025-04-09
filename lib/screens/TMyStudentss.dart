@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'TAddStudent.dart'; // TAddStudent sayfasını import et
+import 'TAddStudent.dart'; 
 
 class TMyStudentss extends StatelessWidget {
   const TMyStudentss({super.key});
@@ -10,7 +10,7 @@ class TMyStudentss extends StatelessWidget {
       backgroundColor: const Color(0xFFCFEFF2),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),  
           child: Column(
             children: [
               // Geri Butonu
@@ -18,12 +18,12 @@ class TMyStudentss extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: Color(0xFFF8F2FF), // Yuvarlak çerçeve rengi
+                    color: Color(0xFFF8F2FF), 
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back_ios_new),
-                    color: Color(0xFF4C00BF), // Geri tuşunun rengi
+                    color: Color(0xFF4C00BF), 
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -31,7 +31,7 @@ class TMyStudentss extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 30), 
 
               // Başlık
               const Center(
@@ -161,12 +161,12 @@ class TMyStudentss extends StatelessWidget {
                                 const SizedBox(height: 4),
                                 const Text("Öğrencinin Okulu"),
                                 const SizedBox(height: 8),
-                                // Sınıf ve Öğrenci Numarası kutusu
+                                
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 6),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFF3F4F6), // Sınıf kutusu arka plan rengi
+                                    color: const Color(0xFFF3F4F6), 
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Row(
@@ -198,20 +198,20 @@ class TMyStudentss extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // Profil ikonu yuvarlak içinde
+                          
                           Column(
                             children: [
                               Container(
                                 margin: const EdgeInsets.only(top: 5),
                                 decoration: const BoxDecoration(
-                                  color: Color(0xFFF8F2FF), // Yuvarlak çerçeve rengi
+                                  color: Color(0xFFF8F2FF), 
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Padding(
                                   padding: EdgeInsets.all(6),
                                   child: Icon(
                                     Icons.person,
-                                    color: Color(0xFF4C00BF), // Profil ikonunun rengi
+                                    color: Color(0xFF4C00BF), 
                                     size: 30,
                                   ),
                                 ),

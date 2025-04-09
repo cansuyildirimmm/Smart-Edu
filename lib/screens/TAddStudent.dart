@@ -9,23 +9,25 @@ class TAddStudent extends StatelessWidget {
       backgroundColor: const Color(0xFFCFEFF2),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10), 
           child: Column(
-            children: [
-              // Geri Butonu
+            children: [              
               Align(
                 alignment: Alignment.topLeft,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF8F2FF), // Yuvarlak çerçeve rengi
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new),
-                    color: const Color(0xFF4A08B5), // Geri tuşunun rengi
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),  
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFF8F2FF), 
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_new),
+                      color: const Color(0xFF4A08B5), 
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -46,32 +48,32 @@ class TAddStudent extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              // Öğrenci Adı
+              
               _buildTextField("Öğrenci Adı", Icons.person),
 
               const SizedBox(height: 20),
 
-              // Okulu
+              
               _buildTextField("Okulu", Icons.school),
 
               const SizedBox(height: 20),
 
-              // Sınıfı
+              
               _buildTextField("Sınıfı", Icons.notifications),
 
               const SizedBox(height: 20),
 
-              // Okul Numarası
+              
               _buildTextField("Okul Numarası", Icons.account_circle),
 
               const SizedBox(height: 20),
 
-              // Sağlık/Engel Durumu
+              
               _buildTextField("Sağlık/Engel Durumu", Icons.accessibility),
 
               const SizedBox(height: 40),
 
-              // Ekle Butonu
+              
               Container(
                 height: 70,
                 width: double.infinity,
@@ -81,7 +83,7 @@ class TAddStudent extends StatelessWidget {
                 ),
                 child: const Center(
                   child: Text(
-                    "Ekle",
+                    "EKLE",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -97,7 +99,7 @@ class TAddStudent extends StatelessWidget {
     );
   }
 
-  // Yardımcı fonksiyon: TextField'ları oluşturmak için
+  
   Widget _buildTextField(String label, IconData icon) {
     return Container(
       height: 70,
@@ -105,7 +107,7 @@ class TAddStudent extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF4A08B5), width: 2), // Mor çerçeve
+        border: Border.all(color: const Color(0xFF4A08B5), width: 2), 
       ),
       child: Row(
         children: [

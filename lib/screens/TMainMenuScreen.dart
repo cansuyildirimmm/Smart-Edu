@@ -148,10 +148,10 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
         if (title == "Öğrencilerim") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TMyStudentss()), // TMyStudentss sayfasını aç
+            MaterialPageRoute(builder: (context) => TMyStudentss()), 
           );
         }
-        // Diğer butonlar için de benzer işlemleri ekleyebilirsin.
+        
       },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.4,
