@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'TAddStudent.dart'; // TAddStudent sayfasını import et
 
 class TMyStudentss extends StatelessWidget {
   const TMyStudentss({super.key});
@@ -75,48 +76,57 @@ class TMyStudentss extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Öğrenci Ekle Butonu
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF272788),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Yazı sola
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Text(
-                        'Öğrenci Ekle',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+              GestureDetector(
+                onTap: () {
+                  // TAddStudent sayfasına geçiş
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TAddStudent()),
+                  );
+                },
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF272788),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Yazı sola
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          'Öğrenci Ekle',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                    ),
 
-                    // Sağda artı ikonu
-                    Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 4,
-                            offset: Offset(2, 2),
-                          ),
-                        ],
+                      // Sağda artı ikonu
+                      Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Icon(Icons.add, color: Color(0xFF272788)),
+                        ),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(6),
-                        child: Icon(Icons.add, color: Color(0xFF272788)),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
