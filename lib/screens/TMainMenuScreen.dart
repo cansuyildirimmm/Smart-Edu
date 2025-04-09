@@ -163,7 +163,7 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(asset, width: 100, height: 100),
+            Image.asset(asset, width: 120, height: 120),
             SizedBox(height: 8),
             Text(
               title,
