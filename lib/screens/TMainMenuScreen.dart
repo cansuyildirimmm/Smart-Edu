@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:smartedu/screens/TMyStudentss.dart';
-
+import 'package:smartedu/screens/TStudentResults.dart';
 
 // TMainMenuScreen Ekranı
 class TeacherMenuScreen extends StatefulWidget {
@@ -144,14 +144,19 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
   Widget _buildMenuCard(String title, Color color, String asset) {
     return GestureDetector(
       onTap: () {
-        // "Öğrencilerim" butonuna tıklayınca TMyStudentss sayfasına yönlendir.
+        // Sayfa yönlendirmeleri
         if (title == "Öğrencilerim") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TMyStudentss()), 
+            MaterialPageRoute(builder: (context) => TMyStudentss()),
+          );
+        } else if (title == "Öğrenci Sonuçları") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TStudentResults()),
           );
         }
-        
+        // Diğer butonlar için yönlendirmeler buraya eklenebilir.
       },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.4,
