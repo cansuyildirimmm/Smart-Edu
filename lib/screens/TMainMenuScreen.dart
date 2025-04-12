@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:smartedu/screens/TMyStudentss.dart';
 import 'package:smartedu/screens/TStudentResults.dart';
+import 'package:smartedu/screens/TMyNotes.dart'; // Notlarım sayfası eklendi
 
 // TMainMenuScreen Ekranı
 class TeacherMenuScreen extends StatefulWidget {
@@ -155,8 +156,12 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
             context,
             MaterialPageRoute(builder: (context) => TStudentResults()),
           );
+        } else if (title == "Notlarım") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TMyNotes()),
+          );
         }
-        // Diğer butonlar için yönlendirmeler buraya eklenebilir.
       },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.4,

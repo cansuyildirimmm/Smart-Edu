@@ -228,7 +228,7 @@ class TDetailedResults extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 10, // Buradaki değeri değiştirdim
+            bottom: 10, 
             right: 0,
             child: Container(
               width: 40,
