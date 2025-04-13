@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'TAddNote.dart';
 
 class TMyNotes extends StatefulWidget {
   @override
@@ -9,40 +10,17 @@ class _TMyNotesState extends State<TMyNotes> {
   List<String> _notes = [];
 
   void _addNote() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        String newNote = "";
-        return AlertDialog(
-          title: Text("Yeni Not Ekle"),
-          content: TextField(
-            onChanged: (value) {
-              newNote = value;
-            },
-            decoration: InputDecoration(hintText: "Notunuzu yazın"),
-            maxLines: 3,
-          ),
-          actions: [
-            TextButton(
-              child: Text("İptal"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text("Ekle"),
-              onPressed: () {
-                if (newNote.trim().isNotEmpty) {
-                  setState(() {
-                    _notes.add(newNote.trim());
-                  });
-                }
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TAddNote(
+          onNoteAdded: (newNote) {
+            setState(() {
+              _notes.add(newNote);
+            });
+          },
+        ),
+      ),
     );
   }
 
@@ -85,7 +63,7 @@ class _TMyNotesState extends State<TMyNotes> {
               left: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8), // yarı saydam beyaz
+                  color: Colors.white.withOpacity(0.8), 
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
@@ -123,7 +101,7 @@ class _TMyNotesState extends State<TMyNotes> {
         ),
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 12), // biraz yukarı aldık
+        padding: const EdgeInsets.only(bottom: 12), 
         child: FloatingActionButton(
           backgroundColor: Color(0xFF2C3E50),
           child: Icon(Icons.add, color: Colors.white),
