@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TAddNote extends StatefulWidget {
-  final Function(String, String) onNoteAdded; // Başlık ve içerik alacak şekilde fonksiyonu tanımlıyoruz
+  final Function(String, String) onNoteAdded; 
 
   TAddNote({required this.onNoteAdded});
 
@@ -17,9 +17,9 @@ class _TAddNoteState extends State<TAddNote> {
     String title = _titleController.text.trim();
     String content = _contentController.text.trim();
 
-    // Sadece başlık varsa ya da içerik varsa notu kaydet
+    
     if (title.isNotEmpty || content.isNotEmpty) {
-      widget.onNoteAdded(title, content); // Başlık ve içerik iletiliyor
+      widget.onNoteAdded(title, content); 
       Navigator.pop(context);
     }
   }
@@ -34,7 +34,6 @@ class _TAddNoteState extends State<TAddNote> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Üstteki ikonlar
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -57,7 +56,7 @@ class _TAddNoteState extends State<TAddNote> {
               ),
               SizedBox(height: 32),
 
-              // Başlık (editable)
+              
               TextField(
                 controller: _titleController,
                 style: TextStyle(
@@ -71,7 +70,7 @@ class _TAddNoteState extends State<TAddNote> {
                 ),
               ),
 
-              // İçerik
+              
               TextField(
                 controller: _contentController,
                 decoration: InputDecoration(
@@ -84,7 +83,7 @@ class _TAddNoteState extends State<TAddNote> {
 
               Spacer(),
 
-              // Kaydet butonu
+              
               Align(
                 alignment: Alignment.bottomRight,
                 child: FloatingActionButton(
