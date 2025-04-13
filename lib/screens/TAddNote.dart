@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TAddNote extends StatefulWidget {
-  final Function(String) onNoteAdded;
+  final Function(String, String) onNoteAdded; // Başlık ve içerik alacak şekilde fonksiyonu tanımlıyoruz
 
   TAddNote({required this.onNoteAdded});
 
@@ -16,9 +16,10 @@ class _TAddNoteState extends State<TAddNote> {
   void _saveNote() {
     String title = _titleController.text.trim();
     String content = _contentController.text.trim();
+
+    // Sadece başlık varsa ya da içerik varsa notu kaydet
     if (title.isNotEmpty || content.isNotEmpty) {
-      String fullNote = title.isNotEmpty ? "$title: $content" : content;
-      widget.onNoteAdded(fullNote);
+      widget.onNoteAdded(title, content); // Başlık ve içerik iletiliyor
       Navigator.pop(context);
     }
   }

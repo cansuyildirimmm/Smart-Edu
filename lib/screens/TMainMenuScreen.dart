@@ -14,8 +14,8 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomePageWidget(), // Aşağıda açıklanacak
-    Container(), // + butonu tıklanınca dialog gelecek
+    HomePageWidget(), 
+    Container(), 
     TMyProfile(),
   ];
 
