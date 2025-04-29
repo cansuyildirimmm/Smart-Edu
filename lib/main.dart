@@ -1,125 +1,417 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Öğrenme Stili ve Engel Durumu',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: SurveyPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class SurveyPage extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _SurveyPageState createState() => _SurveyPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _SurveyPageState extends State<SurveyPage> {
+  int visualScore = 0;
+  int auditoryScore = 0;
+  int kinestheticScore = 0;
+  int verbalScore = 0;
+  int logicalScore = 0;
+  int mixedScore = 0;
+  int exploratoryScore = 0;
+  int repetitiveScore = 0;
+  int disabilityScore = 0;
 
-  void _incrementCounter() {
+  String selectedDisability = '';
+
+  void answerQuestion(int points, String category) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      switch (category) {
+        case 'Visual':
+          visualScore += points;
+          break;
+        case 'Auditory':
+          auditoryScore += points;
+          break;
+        case 'Kinesthetic':
+          kinestheticScore += points;
+          break;
+        case 'Verbal':
+          verbalScore += points;
+          break;
+        case 'Logical':
+          logicalScore += points;
+          break;
+        case 'Mixed':
+          mixedScore += points;
+          break;
+        case 'Exploratory':
+          exploratoryScore += points;
+          break;
+        case 'Repetitive':
+          repetitiveScore += points;
+          break;
+      }
     });
+  }
+
+  void handleDisabilitySelection(String disability) {
+    setState(() {
+      selectedDisability = disability;
+      disabilityScore = 5;
+    });
+  }
+
+  void showResults() {
+    Map<String, int> scores = {
+      'Görsel': visualScore,
+      'İşitsel': auditoryScore,
+      'Kinestetik': kinestheticScore,
+      'Sözel': verbalScore,
+      'Mantıksal': logicalScore,
+      'Karma': mixedScore,
+      'Keşfetme': exploratoryScore,
+      'Tekrar': repetitiveScore,
+    };
+
+    String dominantStyle = scores.entries
+        .reduce((a, b) => a.value >= b.value ? a : b)
+        .key;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Sonuçlar"),
+        content: Text(
+          "Baskın Öğrenme Stiliniz: $dominantStyle\n"
+          "Engel Durumunuz: ${selectedDisability.isEmpty ? 'Belirtilmedi' : selectedDisability}\n"
+          "Engel Puanı: $disabilityScore",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text("Tamam"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildQuestion(String question, String category) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(question),
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () => answerQuestion(3, category),
+              child: Text("Evet"),
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () => answerQuestion(0, category),
+              child: Text("Hayır"),
+            ),
+          ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text("Öğrenme Stili ve Engel Durumu Anketi"),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            buildQuestion(
+              "1. Görsellerle daha iyi öğrenirim.",
+              "Visual",
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            buildQuestion(
+              "2. Sesli anlatımlar bana yardımcı olur.",
+              "Auditory",
+            ),
+            buildQuestion(
+              "3. Uygulamalı çalışarak öğrenirim.",
+              "Kinesthetic",
+            ),
+            buildQuestion(
+              "4. Yazılı materyallerle daha iyi öğrenirim.",
+              "Verbal",
+            ),
+            buildQuestion(
+              "5. Problem çözerek öğrenirim.",
+              "Logical",
+            ),
+            buildQuestion(
+              "6. Görsel ve sesli anlatım birleşimi faydalı.",
+              "Mixed",
+            ),
+            buildQuestion(
+              "7. Konuyu keşfederek öğrenmeyi severim.",
+              "Exploratory",
+            ),
+            buildQuestion(
+              "8. Sık tekrarlar öğrenmeyi kolaylaştırır.",
+              "Repetitive",
+            ),
+            SizedBox(height: 20),
+            Text("9. Engel Durumunuzu Seçin:"),
+            DropdownButton<String>(
+              value: selectedDisability.isEmpty ? null : selectedDisability,
+              hint: Text("Engel Durumu"),
+              onChanged: (value) {
+                handleDisabilitySelection(value!);
+              },
+              items: [
+                'Görme Engelli',
+                'İşitme Engelli',
+                'Fiziksel Engelli',
+                'Dikkat Eksikliği/Hiperaktivite',
+                'Öğrenme Güçlüğü'
+              ]
+                  .map((disability) => DropdownMenuItem(
+                        value: disability,
+                        child: Text(disability),
+                      ))
+                  .toList(),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: showResults,
+              child: Text("Sonuçları Göster"),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+// lib/main.dart
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Öğrenme Stili ve Engel Durumu',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: SurveyPage(),
+    );
+  }
+}
+
+class SurveyPage extends StatefulWidget {
+  @override
+  _SurveyPageState createState() => _SurveyPageState();
+}
+
+class _SurveyPageState extends State<SurveyPage> {
+  int visualScore = 0;
+  int auditoryScore = 0;
+  int kinestheticScore = 0;
+  int verbalScore = 0;
+  int logicalScore = 0;
+  int mixedScore = 0;
+  int exploratoryScore = 0;
+  int repetitiveScore = 0;
+  int disabilityScore = 0;
+
+  String selectedDisability = '';
+
+  void answerQuestion(int points, String category) {
+    setState(() {
+      switch (category) {
+        case 'Visual':
+          visualScore += points;
+          break;
+        case 'Auditory':
+          auditoryScore += points;
+          break;
+        case 'Kinesthetic':
+          kinestheticScore += points;
+          break;
+        case 'Verbal':
+          verbalScore += points;
+          break;
+        case 'Logical':
+          logicalScore += points;
+          break;
+        case 'Mixed':
+          mixedScore += points;
+          break;
+        case 'Exploratory':
+          exploratoryScore += points;
+          break;
+        case 'Repetitive':
+          repetitiveScore += points;
+          break;
+      }
+    });
+  }
+
+  void handleDisabilitySelection(String disability) {
+    setState(() {
+      selectedDisability = disability;
+      disabilityScore = 5;
+    });
+  }
+
+  void showResults() {
+    Map<String, int> scores = {
+      'Görsel': visualScore,
+      'İşitsel': auditoryScore,
+      'Kinestetik': kinestheticScore,
+      'Sözel': verbalScore,
+      'Mantıksal': logicalScore,
+      'Karma': mixedScore,
+      'Keşfetme': exploratoryScore,
+      'Tekrar': repetitiveScore,
+    };
+
+    String dominantStyle = scores.entries
+        .reduce((a, b) => a.value >= b.value ? a : b)
+        .key;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Sonuçlar"),
+        content: Text(
+          "Baskın Öğrenme Stiliniz: $dominantStyle\n"
+          "Engel Durumunuz: ${selectedDisability.isEmpty ? 'Belirtilmedi' : selectedDisability}\n"
+          "Engel Puanı: $disabilityScore",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text("Tamam"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildQuestion(String question, String category) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(question),
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () => answerQuestion(3, category),
+              child: Text("Evet"),
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () => answerQuestion(0, category),
+              child: Text("Hayır"),
+            ),
+          ],
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Öğrenme Stili ve Engel Durumu Anketi"),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            buildQuestion(
+              "1. Görsellerle daha iyi öğrenirim.",
+              "Visual",
+            ),
+            buildQuestion(
+              "2. Sesli anlatımlar bana yardımcı olur.",
+              "Auditory",
+            ),
+            buildQuestion(
+              "3. Uygulamalı çalışarak öğrenirim.",
+              "Kinesthetic",
+            ),
+            buildQuestion(
+              "4. Yazılı materyallerle daha iyi öğrenirim.",
+              "Verbal",
+            ),
+            buildQuestion(
+              "5. Problem çözerek öğrenirim.",
+              "Logical",
+            ),
+            buildQuestion(
+              "6. Görsel ve sesli anlatım birleşimi faydalı.",
+              "Mixed",
+            ),
+            buildQuestion(
+              "7. Konuyu keşfederek öğrenmeyi severim.",
+              "Exploratory",
+            ),
+            buildQuestion(
+              "8. Sık tekrarlar öğrenmeyi kolaylaştırır.",
+              "Repetitive",
+            ),
+            SizedBox(height: 20),
+            Text("9. Engel Durumunuzu Seçin:"),
+            DropdownButton<String>(
+              value: selectedDisability.isEmpty ? null : selectedDisability,
+              hint: Text("Engel Durumu"),
+              onChanged: (value) {
+                handleDisabilitySelection(value!);
+              },
+              items: [
+                'Görme Engelli',
+                'İşitme Engelli',
+                'Fiziksel Engelli',
+                'Dikkat Eksikliği/Hiperaktivite',
+                'Öğrenme Güçlüğü'
+              ]
+                  .map((disability) => DropdownMenuItem(
+                        value: disability,
+                        child: Text(disability),
+                      ))
+                  .toList(),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: showResults,
+              child: Text("Sonuçları Göster"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
