@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/screens/SMyLessons.dart';
 import 'package:smartedu/screens/SMyNotes.dart';
-import 'package:smartedu/screens/SMyProfile.dart'; // Ensure SMyProfile is imported correctly
+import 'package:smartedu/screens/SMyProfile.dart'; 
 
 class SMainMenuScreen extends StatelessWidget {
   const SMainMenuScreen({Key? key}) : super(key: key);
@@ -80,7 +80,6 @@ class SMainMenuScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
 
-                // Yana kaydırılabilir iki kutu
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -346,7 +345,7 @@ class SMainMenuScreen extends StatelessWidget {
             if (index == 3) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SMyProfile()), // Open the SMyProfile page
+                MaterialPageRoute(builder: (context) => SMyProfile()), 
               );
             }
           },
@@ -364,13 +363,13 @@ class SMainMenuScreen extends StatelessWidget {
   Widget dersKarti(String dersAdi, String imgUrl) {
     return Container(
       width: 150,
-      height: 100, // Yüksekliği orantılı olarak değiştirdim
+      height: 100, 
       decoration: BoxDecoration(
         color: Color(0xFF3A3A3C),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // İçeriği ortaladım
+        mainAxisAlignment: MainAxisAlignment.center, 
         children: [
           Image.asset(imgUrl, height: 50),
           const SizedBox(height: 6),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'SMainMenuScreen.dart'; // SMainMenuScreen.dart dosyasını içeri aktar
+import 'SMainMenuScreen.dart'; 
 
 class SMyProfile extends StatelessWidget {
   @override
@@ -90,14 +90,14 @@ class SMyProfile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
       child: Card(
-        color: cardColor,  // Kartın rengini buradan değiştirebilirsiniz
+        color: cardColor,  
         elevation: 5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
         child: ListTile(
-          title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: textColor)), // Başlık rengini buradan değiştirebilirsiniz
-          subtitle: Text(isPassword ? "********" : value, style: TextStyle(color: textColor)), // Alt yazı rengini buradan değiştirebilirsiniz
+          title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: textColor)), 
+          subtitle: Text(isPassword ? "********" : value, style: TextStyle(color: textColor)), 
         ),
       ),
     );
