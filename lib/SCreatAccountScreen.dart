@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartedu/StudentTestApp.dart';
 
 class SCreatAccountScreen extends StatefulWidget {
   @override
@@ -137,6 +138,10 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
       ),
       onPressed: () {
         // Kayıt işlemleri
+          Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => StudentTestApp()),
+                    );
       },
       child: Text(
         'KAYIT OL',

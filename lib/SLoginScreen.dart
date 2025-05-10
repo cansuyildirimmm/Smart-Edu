@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '/SCreatAccountScreen.dart';
 import '/SForgotPasswordScreen.dart';
+import 'package:smartedu/StudentTestApp.dart';
 
 class SLoginScreen extends StatelessWidget {
   @override
@@ -90,6 +91,10 @@ class SLoginScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   // Giriş yap butonuna tıklandığında yapılacak işlemler
+                   Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => StudentTestApp()),
+                    );
                 },
                 child: Text(
                   'Giriş Yap',
