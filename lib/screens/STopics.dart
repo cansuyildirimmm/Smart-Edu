@@ -45,22 +45,22 @@ class STopics extends StatelessWidget {
         child: Column(
           children: topics.map((topic) {
             return Container(
-              margin: const EdgeInsets.symmetric(vertical: 6),  // Butonlar arasındaki boşluk
+              margin: const EdgeInsets.symmetric(vertical: 6),  
               padding: const EdgeInsets.all(16),
-              width: double.infinity,  // Butonların aynı genişlikte olmasını sağlar
-              height: 80,  // Yüksekliği artırdık
+              width: double.infinity,  
+              height: 80,  
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.redAccent),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Center(  // Başlıkların ortalanması için Center widget'ı ekledik
+              child: Center(  
                 child: Text(
                   topic,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,  // Yazı boyutunu artırdık
-                    color: Colors.black,  // Yazı rengini siyah yaptık
+                    fontSize: 20,  
+                    color: Colors.black,  
                   ),
                 ),
               ),
