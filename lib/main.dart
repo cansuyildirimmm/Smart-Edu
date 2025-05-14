@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:smartedu/screens/SHome.dart';
 //import 'screens/TMainMenuScreen.dart';
 import 'screens/SMainMenuScreen.dart'; 
 //import 'screens/SMyLessons.dart'; 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       //home: TeacherMenuScreen(), 
       home: SMainMenuScreen(),
+      //home: SHome(),
     );
   }
 }
