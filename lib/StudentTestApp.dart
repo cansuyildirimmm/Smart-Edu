@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'start_screen.dart';
 
 void main() {
   runApp(const StudentTestApp());
@@ -10,50 +11,14 @@ class StudentTestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const WelcomeScreen(),
+      home: StartScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF9C27B0), // Mor zemin
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Öğrenci Platformuna Hoş Geldiniz',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const BlindTestScreen()));
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFCDDC39), // Açık yeşil buton
-                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 30),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              ),
-              child: const Text('Teste Başla', style: TextStyle(color: Colors.black)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+
 
 class BlindTestScreen extends StatefulWidget {
   const BlindTestScreen({super.key});
