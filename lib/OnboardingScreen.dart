@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'SLoginScreen.dart';
-import 'TLoginScreen.dart';
+import 'package:smartedu/SWelcomeScreen.dart';
+import 'package:smartedu/TWelcomeScreen.dart';
+
+
 
 class OnboardingScreen extends StatelessWidget {
   @override
@@ -17,7 +19,9 @@ class OnboardingScreen extends StatelessWidget {
               height: 200,
               decoration: BoxDecoration(
                 image: DecorationImage(
+
                   image: AssetImage("assets/images/onboard.jpg"),
+
                   fit: BoxFit.cover,
                 ),
               ),
@@ -46,7 +50,9 @@ class OnboardingScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SLoginScreen()),
+
+                      MaterialPageRoute(builder: (context) => SWelcomeScreen()),
+
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -68,7 +74,9 @@ class OnboardingScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TLoginScreen()),
+
+                      MaterialPageRoute(builder: (context) => TWelcomeScreen()),
+
                     );
                   },
                   style: ElevatedButton.styleFrom(

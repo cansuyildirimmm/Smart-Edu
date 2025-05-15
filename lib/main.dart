@@ -1,9 +1,20 @@
 
 import 'package:flutter/material.dart';
-import 'OnboardingScreen.dart';  // Onboarding ekranını içeri aktardık
+import 'package:smartedu/OnboardingScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
-  runApp(const FigmaToCodeApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseAuth.instance.setLanguageCode("tr");
+
+  runApp(const MyApp());
+
 }
 
 class FigmaToCodeApp extends StatelessWidget {
@@ -12,8 +23,13 @@ class FigmaToCodeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
+
+      debugShowCheckedModeBanner: false,
+      title: 'SmartEdu',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+
       ),
       home: const MainScreen(),
     );
@@ -31,7 +47,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    // Ana ekran yüklendikten sonra 3 saniye bekleyip Onboarding ekranına geçicek
+
+
+
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
@@ -84,7 +102,9 @@ class Ekran extends StatelessWidget {
                 height: 381.39,
                 decoration: BoxDecoration(
                   image: DecorationImage(
+
                     image: AssetImage("assets/images/logo.jpg"),
+
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -95,7 +115,9 @@ class Ekran extends StatelessWidget {
                 height: 90.91,
                 decoration: BoxDecoration(
                   image: DecorationImage(
+
                     image: AssetImage("assets/images/loading.jpg"),
+
                     fit: BoxFit.cover,
                   ),
                 ),

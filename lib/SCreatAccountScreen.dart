@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:smartedu/StudentTestApp.dart';
+
+
+import 'package:smartedu/SLoginScreen.dart';
+import 'package:smartedu/services/auth.dart';
 
 class SCreatAccountScreen extends StatefulWidget {
   @override
@@ -8,6 +13,15 @@ class SCreatAccountScreen extends StatefulWidget {
 
 class  SCreateAccountScreen extends State< SCreatAccountScreen> {
   bool isPasswordVisible = false;
+
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _schoolController = TextEditingController();
+  final _studentNumberController = TextEditingController();
+  final _telNumberController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,19 +52,27 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              _buildTextField(Icons.person_outline, 'AD-SOYAD'),
-              _buildTextField(Icons.school_outlined, 'OKUL'),
-              _buildTextField(Icons.email_outlined, 'SINIF SEVİYESİ'),
-              _buildTextField(Icons.phone_outlined, 'TELEFON NUMARASI'),
-              _buildTextField(Icons.badge_outlined, 'ÖĞRENCİ NUMARASI'),
-              _buildTextField(Icons.credit_card_outlined, 'TC KİMLİK NO'),
+
+
+              _buildTextField(Icons.person_outline, 'AD-SOYAD',_nameController),
+              _buildTextField(Icons.school_outlined, 'OKUL',_schoolController),
+              _buildTextField(Icons.email_outlined, 'E-POSTA ADRESİ',_emailController),
+              _buildTextField(Icons.phone_outlined, 'TELEFON NUMARASI',_telNumberController),
+              _buildTextField(Icons.badge_outlined, 'ÖĞRENCİ NUMARASI',_studentNumberController),
+              //_buildTextField(Icons.credit_card_outlined, 'TC KİMLİK NO'),
+
               _buildPasswordField(),
               SizedBox(height: 20),
               _buildRegisterButton(),
               SizedBox(height: 10),
               TextButton(
                 onPressed: () {
-                  // Giriş sayfasına yönlendirme
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SLoginScreen()),
+                  );
+
                 },
                 child: Text(
                   'Zaten bir hesabınız var mı? Giriş Yapın',
@@ -79,10 +101,13 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
     );
   }
 
-  Widget _buildTextField(IconData icon, String hintText) {
+
+  Widget _buildTextField(IconData icon, String hintText, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
+        controller: controller,
+
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.grey),
           hintText: hintText,
@@ -101,6 +126,9 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
+
+        controller: _passwordController,
+
         obscureText: !isPasswordVisible,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.lock_outline, color: Colors.grey),
@@ -136,13 +164,36 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
         ),
         minimumSize: Size(double.infinity, 55),
       ),
-      onPressed: () {
-        // Kayıt işlemleri
-          Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => StudentTestApp()),
-                    );
-      },
+
+  onPressed: () async {
+  bool success = await createAccount(
+    _emailController.text,
+    _passwordController.text,
+    _nameController.text,
+    _schoolController.text,
+    "",
+    _studentNumberController.text,
+    _telNumberController.text,
+    "students",
+  );
+
+  // Eğer kayıt başarılıysa StudentTestApp ekranına yönlendir
+  if (success) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => StudentTestApp()),
+    );
+  } else {
+    // Hata durumunda kullanıcıyı bilgilendir (opsiyonel)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Kayıt başarısız. Lütfen tekrar deneyin.'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+},
+
       child: Text(
         'KAYIT OL',
         style: TextStyle(
@@ -166,7 +217,7 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
       onPressed: () {
         // Google ile giriş işlemleri
       },
-    
+// icon: Icon(Icons.login, color: Color(0xFFD44638)),
       label: Text(
         'GOOGLE',
         style: TextStyle(

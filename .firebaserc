@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "smart-edu-firebase",
+    "production": "smart-edu-firebase"
+  },
+  "targets": {},
+  "etags": {}
+}
