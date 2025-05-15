@@ -3,6 +3,7 @@ import 'package:smartedu/SWelcomeScreen.dart';
 import 'package:smartedu/TWelcomeScreen.dart';
 
 
+
 class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,9 @@ class OnboardingScreen extends StatelessWidget {
               height: 200,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/onboard.jpg"),
+
+                  image: AssetImage("assets/images/onboard.jpg"),
+
                   fit: BoxFit.cover,
                 ),
               ),
@@ -47,7 +50,9 @@ class OnboardingScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
+
                       MaterialPageRoute(builder: (context) => SWelcomeScreen()),
+
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -69,7 +74,9 @@ class OnboardingScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
+
                       MaterialPageRoute(builder: (context) => TWelcomeScreen()),
+
                     );
                   },
                   style: ElevatedButton.styleFrom(

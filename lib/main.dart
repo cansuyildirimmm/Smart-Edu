@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:smartedu/OnboardingScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,19 +14,22 @@ void main() async {
   FirebaseAuth.instance.setLanguageCode("tr");
 
   runApp(const MyApp());
+
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FigmaToCodeApp extends StatelessWidget {
+  const FigmaToCodeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'SmartEdu',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+
       ),
       home: const MainScreen(),
     );
@@ -43,6 +47,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+
+
 
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
@@ -96,7 +102,9 @@ class Ekran extends StatelessWidget {
                 height: 381.39,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/logo.jpg"),
+
+                    image: AssetImage("assets/images/logo.jpg"),
+
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -107,7 +115,9 @@ class Ekran extends StatelessWidget {
                 height: 90.91,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/loading.jpg"),
+
+                    image: AssetImage("assets/images/loading.jpg"),
+
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -31,6 +31,9 @@ dependencies:
 
   flutter:
     sdk: flutter
+  curved_navigation_bar: 1.0.6
+  flutter_staggered_grid_view: ^0.7.0  
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -57,13 +60,19 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  assets:
-    - assets/
+
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  assets:
+    - assets/images/logo.jpg
+    - assets/images/onboard.jpg
+    - assets/images/loading.jpg
+    - assets/images/bookss.jpg
+    
+   
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
