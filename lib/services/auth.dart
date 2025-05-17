@@ -89,3 +89,63 @@ Future<bool> signIn(BuildContext context, String email, String password, String 
     return false;
   }
 }
+Future<bool> saveTestResult({
+  required String kullaniciTuru,
+  required String learningStyle,
+  required String disabilityStatus,
+}) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return false;
+
+    await FirebaseFirestore.instance
+        .collection(kullaniciTuru)
+        .doc(user.uid)
+        .collection('testResults')
+        .add({
+      'learningStyle': learningStyle,
+      'disabilityStatus': disabilityStatus,
+      'date': DateTime.now(),
+    });
+
+    print('Test sonucu başarıyla kaydedildi.');
+    return true;
+
+  } catch (e) {
+    print('Test sonucu kaydedilirken hata: $e');
+    return false;
+  }
+}
+void kaydetTestSonucu(String secilenOgrenmeBicimi, String secilenEngelDurumu) async {
+  bool sonuc = await saveTestResult(
+    kullaniciTuru: 'students',  // ya da 'teachers'
+    learningStyle: secilenOgrenmeBicimi,
+    disabilityStatus: secilenEngelDurumu,
+  );
+
+  if (sonuc) {
+    print('Test sonucu kaydedildi, devam edebilirsiniz.');
+  } else {
+    print('Test sonucu kaydedilirken hata oluştu.');
+  }
+}
+
+Future<Map<String, dynamic>?> getLatestTestResult(String kullaniciTuru) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return null;
+
+  final snapshot = await FirebaseFirestore.instance
+      .collection(kullaniciTuru)
+      .doc(user.uid)
+      .collection('testResults')
+      .orderBy('date', descending: true)
+      .limit(1)
+      .get();
+
+  if (snapshot.docs.isNotEmpty) {
+    return snapshot.docs.first.data();
+  } else {
+    return null;
+  }
+}
+
