@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/SCreatAccountScreen.dart';
 import '/SForgotPasswordScreen.dart';
-
+import 'package:smartedu/StudentTestApp.dart';
 import '/services/auth.dart';
 class SLoginScreen extends StatelessWidget {
   final _eMailController = TextEditingController();
@@ -103,15 +103,14 @@ class SLoginScreen extends StatelessWidget {
                   ),
                   minimumSize: Size(double.infinity, 60),
                 ),
-  onPressed: () async {
+                onPressed: () async {
                   bool success = await signIn(context, _eMailController.text, _passwordController.text, "students");
                   if (success) {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => StudentTestApp()),
+                      MaterialPageRoute(builder: (context) => StudentTestApp()), // Bu kısmı kendi sayfanla değiştir
                     );
                   }
-                },
                 },
                 child: Text(
                   'Giriş Yap',
@@ -122,6 +121,7 @@ class SLoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

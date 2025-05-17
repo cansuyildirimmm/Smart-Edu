@@ -181,7 +181,7 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
   if (success) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => StudentTestApp()),
+      MaterialPageRoute(builder: (context) => SLoginScreen()),
     );
   } else {
     // Hata durumunda kullanıcıyı bilgilendir (opsiyonel)
