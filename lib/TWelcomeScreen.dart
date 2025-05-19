@@ -3,6 +3,8 @@ import 'package:smartedu/TCreatAccountScreen.dart';
 import 'package:smartedu/TLoginScreen.dart';
 
 class TWelcomeScreen extends StatelessWidget {
+  const TWelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,8 @@ class TWelcomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/smartedu_logo.png', height: 80), // Replace with actual logo
+              Image.asset('assets/smartedu_logo.png',
+                  height: 80), // Replace with actual logo
               SizedBox(height: 20),
               Text(
                 "Öğretmen Platformuna Hoş Geldiniz",
@@ -46,7 +49,8 @@ class TWelcomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TCreateAccountScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => TCreateAccountScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -57,7 +61,8 @@ class TWelcomeScreen extends StatelessWidget {
                   ),
                   side: BorderSide(color: Colors.black45),
                 ),
-                child: Text("Kayıt Ol", style: TextStyle(color: Colors.black87)),
+                child:
+                    Text("Kayıt Ol", style: TextStyle(color: Colors.black87)),
               ),
               SizedBox(height: 20),
               Text(
@@ -69,12 +74,14 @@ class TWelcomeScreen extends StatelessWidget {
                 onPressed: () {},
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.red[300],
-                  minimumSize: Size(double.infinity, 35), // Google butonu küçültüldü
+                  minimumSize:
+                      Size(double.infinity, 35), // Google butonu küçültüldü
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text("GOOGLE", style: TextStyle(color: Colors.white, fontSize: 14)),
+                child: Text("GOOGLE",
+                    style: TextStyle(color: Colors.white, fontSize: 14)),
               ),
             ],
           ),
@@ -83,4 +90,3 @@ class TWelcomeScreen extends StatelessWidget {
     );
   }
 }
-

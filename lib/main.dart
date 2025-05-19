@@ -3,10 +3,12 @@ import 'package:smartedu/OnboardingScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'gemini_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -27,95 +29,99 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      home: const TestPromptScreen(), // Değiştirilen ekran
     );
   }
 }
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class TestPromptScreen extends StatefulWidget {
+  const TestPromptScreen({super.key});
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  State<TestPromptScreen> createState() => _TestPromptScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
-  @override
-  void initState() {
-    super.initState();
+class _TestPromptScreenState extends State<TestPromptScreen> {
+  final TextEditingController _controller = TextEditingController();
+  final GeminiService _geminiService = GeminiService();
 
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => OnboardingScreen()),
-      );
+  String _response = '';
+  bool _isLoading = false;
+
+  void _submitPrompt() async {
+    setState(() {
+      _isLoading = true;
+      _response = '';
     });
+
+    try {
+      final result = await _geminiService.generateContent(_controller.text);
+      setState(() {
+        _response = result;
+      });
+    } catch (e) {
+      setState(() {
+        _response = 'Hata oluştu: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _continueToApp() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => OnboardingScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Ekran(),
+      appBar: AppBar(
+        title: const Text('Gemini Prompt Test'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: _continueToApp,
+            tooltip: 'Uygulamaya Devam Et',
+          ),
         ],
       ),
-    );
-  }
-}
-
-// İlk ekran widget'ı
-class Ekran extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          height: 913,
-          padding: const EdgeInsets.only(
-            top: 217,
-            left: 38.80,
-            right: 38.80,
-            bottom: 204.09,
-          ),
-          clipBehavior: Clip.none,
-          decoration: ShapeDecoration(
-            color: const Color(0xFFD9FBFF),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                labelText: 'Prompt girin',
+                border: OutlineInputBorder(),
+              ),
+              minLines: 1,
+              maxLines: 5,
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 381.39,
-                height: 381.39,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/logo.jpg"),
-                    fit: BoxFit.cover,
-                  ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _isLoading ? null : _submitPrompt,
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('Gönder'),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Text(
+                  _response,
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
-              const SizedBox(height: 19.61),
-              Container(
-                width: 225.07,
-                height: 90.91,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/loading.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

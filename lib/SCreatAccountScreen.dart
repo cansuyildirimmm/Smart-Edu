@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/SLoginScreen.dart';
 import 'package:smartedu/services/auth.dart';
+
 class SCreatAccountScreen extends StatefulWidget {
+  const SCreatAccountScreen({super.key});
+
   @override
-   SCreateAccountScreen createState() =>  SCreateAccountScreen();
+  SCreateAccountScreen createState() => SCreateAccountScreen();
 }
 
-class  SCreateAccountScreen extends State< SCreatAccountScreen> {
+class SCreateAccountScreen extends State<SCreatAccountScreen> {
   bool isPasswordVisible = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -44,11 +47,15 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              _buildTextField(Icons.person_outline, 'AD-SOYAD',_nameController),
-              _buildTextField(Icons.school_outlined, 'OKUL',_schoolController),
-              _buildTextField(Icons.email_outlined, 'E-POSTA ADRESİ',_emailController),
-              _buildTextField(Icons.phone_outlined, 'TELEFON NUMARASI',_telNumberController),
-              _buildTextField(Icons.badge_outlined, 'ÖĞRENCİ NUMARASI',_studentNumberController),
+              _buildTextField(
+                  Icons.person_outline, 'AD-SOYAD', _nameController),
+              _buildTextField(Icons.school_outlined, 'OKUL', _schoolController),
+              _buildTextField(
+                  Icons.email_outlined, 'E-POSTA ADRESİ', _emailController),
+              _buildTextField(Icons.phone_outlined, 'TELEFON NUMARASI',
+                  _telNumberController),
+              _buildTextField(Icons.badge_outlined, 'ÖĞRENCİ NUMARASI',
+                  _studentNumberController),
               //_buildTextField(Icons.credit_card_outlined, 'TC KİMLİK NO'),
               _buildPasswordField(),
               SizedBox(height: 20),
@@ -88,7 +95,8 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
     );
   }
 
-  Widget _buildTextField(IconData icon, String hintText, TextEditingController controller) {
+  Widget _buildTextField(
+      IconData icon, String hintText, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
@@ -148,18 +156,16 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
         minimumSize: Size(double.infinity, 55),
       ),
       onPressed: () async {
-
-          await createAccount(
-            _emailController.text,
-            _passwordController.text,
-            _nameController.text,
-            _schoolController.text,
-            "",
-            _studentNumberController.text,
-            _telNumberController.text,//string olarak gönderiyoruz
-            "students",
-          );
-
+        await createAccount(
+          _emailController.text,
+          _passwordController.text,
+          _nameController.text,
+          _schoolController.text,
+          "",
+          _studentNumberController.text,
+          _telNumberController.text, //string olarak gönderiyoruz
+          "students",
+        );
       },
       child: Text(
         'KAYIT OL',
@@ -184,7 +190,6 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
       onPressed: () {
         // Google ile giriş işlemleri
       },
-
       label: Text(
         'GOOGLE',
         style: TextStyle(

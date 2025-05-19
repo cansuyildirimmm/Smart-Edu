@@ -9,7 +9,7 @@ void main() {
 }
 
 class TCreateAccountScreen extends StatefulWidget {
-  TCreateAccountScreen({super.key});
+  const TCreateAccountScreen({super.key});
 
   @override
   _TCreateAccountScreenState createState() => _TCreateAccountScreenState();
@@ -53,11 +53,16 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
                 ),
                 SizedBox(height: 20),
                 _buildTextField(Icons.person, "AD-SOYAD", _nameController),
-                _buildTextField(Icons.work, "BRANŞ UZMANLIK ALANI", _branchController),
-                _buildTextField(Icons.school, "ÇALIŞTIĞINIZ OKUL", _schoolController),
-                _buildTextField(Icons.email, "E-POSTA ADRESİ", _emailController),
-                _buildTextField(Icons.phone, "TELEFON NUMARASI", _telNumberController),
-                _buildTextField(Icons.lock, "ŞİFRE", _passwordController, isPassword: true),
+                _buildTextField(
+                    Icons.work, "BRANŞ UZMANLIK ALANI", _branchController),
+                _buildTextField(
+                    Icons.school, "ÇALIŞTIĞINIZ OKUL", _schoolController),
+                _buildTextField(
+                    Icons.email, "E-POSTA ADRESİ", _emailController),
+                _buildTextField(
+                    Icons.phone, "TELEFON NUMARASI", _telNumberController),
+                _buildTextField(Icons.lock, "ŞİFRE", _passwordController,
+                    isPassword: true),
                 SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
@@ -141,7 +146,9 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
     );
   }
 
-  Widget _buildTextField(IconData icon, String hint, TextEditingController controller, {bool isPassword = false}) {
+  Widget _buildTextField(
+      IconData icon, String hint, TextEditingController controller,
+      {bool isPassword = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: TextField(
@@ -157,7 +164,9 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,
           ),
-          suffixIcon: isPassword ? Icon(Icons.visibility_off, color: Colors.black54) : null,
+          suffixIcon: isPassword
+              ? Icon(Icons.visibility_off, color: Colors.black54)
+              : null,
         ),
       ),
     );

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:smartedu/SWelcomeScreen.dart';
 import 'package:smartedu/TWelcomeScreen.dart';
 
-
 class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +53,8 @@ class OnboardingScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF3D5CFF),
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -74,10 +76,12 @@ class OnboardingScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF2A195C),
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Colors.white), // Çerçeve ekledim
+                      side: const BorderSide(
+                          color: Colors.white), // Çerçeve ekledim
                     ),
                   ),
                   child: const Text(
