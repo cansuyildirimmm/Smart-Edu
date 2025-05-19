@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/TCreatAccountScreen.dart';
 import '/TForgotPasswordScreen.dart';
 import '/services/auth.dart';
+import 'screens/TMainMenuScreen.dart';
 
 class TLoginScreen extends StatelessWidget {
   final _eMailController = TextEditingController();
@@ -97,7 +98,13 @@ class TLoginScreen extends StatelessWidget {
                   minimumSize: Size(double.infinity, 60),
                 ),
                 onPressed: () async {
-                  await signIn(context, _eMailController.text, _passwordController.text, "teachers");
+                  bool success = await signIn(context, _eMailController.text, _passwordController.text, "teachers");
+                  if (success) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => TeacherMenuScreen()),
+                    );
+                  }
                 },
                 child: Text(
                   'Giriş Yap',
