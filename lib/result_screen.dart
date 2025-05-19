@@ -1,6 +1,6 @@
 // screens/result_screen.dart
 
-import 'start_screen.dart';
+//import 'start_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -139,8 +139,8 @@ class ResultScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Container(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             color: Color(0xFF249FD7),
                             borderRadius: BorderRadius.circular(20),
@@ -164,8 +164,8 @@ class ResultScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Container(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             color: Color(0xFF00B84A),
                             borderRadius: BorderRadius.circular(20),

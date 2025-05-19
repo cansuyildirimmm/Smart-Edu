@@ -1,121 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:smartedu/OnboardingScreen.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'gemini_service.dart';
 
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FirebaseAuth.instance.setLanguageCode("tr");
-
-  runApp(const MyApp());
+void main() {
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MainScreen(),
+      title: 'Gemini Test',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: GeminiTestScreen(),
     );
   }
 }
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
+class GeminiTestScreen extends StatefulWidget {
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _GeminiTestScreenState createState() => _GeminiTestScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
-  @override
-  void initState() {
-    super.initState();
+class _GeminiTestScreenState extends State<GeminiTestScreen> {
+  final TextEditingController _controller = TextEditingController();
+  String _response = '';
+  bool _isLoading = false;
 
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => OnboardingScreen()),
-      );
+  final gemini = GeminiService();
+
+  void _sendPrompt() async {
+    setState(() {
+      _isLoading = true;
+      _response = '';
+    });
+
+    try {
+      final result = await gemini.getGeminiResponse(_controller.text);
+      setState(() {
+        _response = result;
+      });
+    } catch (e) {
+      setState(() {
+        _response = 'Hata: $e';
+      });
+    }
+
+    setState(() {
+      _isLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Ekran(),
-        ],
-      ),
-    );
-  }
-}
-
-// İlk ekran widget'ı
-class Ekran extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          height: 913,
-          padding: const EdgeInsets.only(
-            top: 217,
-            left: 38.80,
-            right: 38.80,
-            bottom: 204.09,
-          ),
-          clipBehavior: Clip.none,
-          decoration: ShapeDecoration(
-            color: const Color(0xFFD9FBFF),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+      appBar: AppBar(title: Text("Gemini API Test")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _controller,
+              decoration: InputDecoration(labelText: 'Bir şeyler yaz...'),
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 381.39,
-                height: 381.39,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/logo.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 19.61),
-              Container(
-                width: 225.07,
-                height: 90.91,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/loading.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _isLoading ? null : _sendPrompt,
+              child: Text('Gönder'),
+            ),
+            SizedBox(height: 24),
+            _isLoading
+                ? CircularProgressIndicator()
+                : Expanded(
+                    child: SingleChildScrollView(child: Text(_response))),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
