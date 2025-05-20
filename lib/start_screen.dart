@@ -31,7 +31,7 @@ color: Colors.black87,
             width: double.infinity,
             height: 150,
             child: Image.asset(
-              'assets/images/bookss.jpg',
+              'assets/bookss.jpg',
               fit: BoxFit.contain,
             ),
           ),

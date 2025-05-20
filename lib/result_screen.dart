@@ -1,7 +1,5 @@
-// screens/result_screen.dart
-
 import 'start_screen.dart';
-
+import 'package:smartedu/screens/SMainMenuScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(home: ResultScreen()));
@@ -30,7 +28,9 @@ class ResultScreen extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: Icon(Icons.arrow_back_ios_new, size: 18),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     Spacer(),
                   ],
@@ -130,55 +130,71 @@ class ResultScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 24,
-                          backgroundColor: Color(0xFF249FD7),
-                          child: Icon(Icons.refresh, color: Colors.white),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF249FD7),
-                            borderRadius: BorderRadius.circular(20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => StartScreen()),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundColor: Color(0xFF249FD7),
+                            child: Icon(Icons.refresh, color: Colors.white),
                           ),
-                          child: Text(
-                            "Tekrar Dene",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF249FD7),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          ),
-                        )
-                      ],
+                            child: Text(
+                              "Tekrar Dene",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 24,
-                          backgroundColor: Color(0xFFB9F16C),
-                          child: Icon(Icons.check, color: Colors.black),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF00B84A),
-                            borderRadius: BorderRadius.circular(20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => SMainMenuScreen()),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundColor: Color(0xFFB9F16C),
+                            child: Icon(Icons.check, color: Colors.black),
                           ),
-                          child: Text(
-                            "Testi Tamamla",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF00B84A),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          ),
-                        )
-                      ],
+                            child: Text(
+                              "Testi Tamamla",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/screens/SMyLessons.dart';
 import 'package:smartedu/screens/SMyNotes.dart';
-import 'package:smartedu/screens/SMyProfile.dart'; 
+import 'package:smartedu/screens/SMyProfile.dart';
 
 class SMainMenuScreen extends StatelessWidget {
   const SMainMenuScreen({Key? key}) : super(key: key);
@@ -29,7 +29,7 @@ class SMainMenuScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "MERHABA ‘ÖĞRENCİ ADI’",
+                        "MERHABA 'ÖĞRENCİ ADI'",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -37,7 +37,6 @@ class SMainMenuScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigate to SMyProfile without hiding the bottom navigation bar
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -67,7 +66,7 @@ class SMainMenuScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Color(0x80CACFF5),
+                    color: const Color(0x80CACFF5),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
@@ -115,7 +114,7 @@ class SMainMenuScreen extends StatelessWidget {
                                         value: 0.7,
                                         strokeWidth: 6,
                                         backgroundColor: Colors.white.withOpacity(0.2),
-                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
                                       ),
                                     ),
                                     Container(
@@ -170,7 +169,7 @@ class SMainMenuScreen extends StatelessWidget {
                                         value: 1.0,
                                         strokeWidth: 4,
                                         backgroundColor: Colors.white.withOpacity(0.2),
-                                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF2C2C2E)),
+                                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF2C2C2E)),
                                       ),
                                     ),
                                     const Icon(Icons.check_circle, size: 32, color: Colors.green),
@@ -198,7 +197,7 @@ class SMainMenuScreen extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Color(0x80CACFF5),
+                      color: const Color(0x80CACFF5),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
@@ -244,7 +243,7 @@ class SMainMenuScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Color(0x80CACFF5),
+                          color: const Color(0x80CACFF5),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text(
@@ -294,7 +293,7 @@ class SMainMenuScreen extends StatelessWidget {
                 // Asistan kutusu
                 Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFF48484A),
+                    color: const Color(0xFF48484A),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   margin: const EdgeInsets.only(top: 30),
@@ -305,9 +304,9 @@ class SMainMenuScreen extends StatelessWidget {
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
                             hintText: "Asistan'a Sor..",
-                            hintStyle: TextStyle(color: Colors.white70),
+                            hintStyle: const TextStyle(color: Colors.white70),
                             border: InputBorder.none,
-                            prefixIcon: Icon(Icons.search, color: Colors.white70),
+                            prefixIcon: const Icon(Icons.search, color: Colors.white70),
                             contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                           ),
                         ),
@@ -341,12 +340,31 @@ class SMainMenuScreen extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           iconSize: 30,
           onTap: (index) {
-            // Navigate to the SMyProfile screen when the profile icon is tapped
-            if (index == 3) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SMyProfile()), 
-              );
+            switch (index) {
+              case 0:
+              // Ana menüde kal
+                break;
+              case 1:
+              // Derslerim ekranına git
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SMyLessons()),
+                );
+                break;
+              case 2:
+              // Notlarım ekranına git
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SMyNotes()),
+                );
+                break;
+              case 3:
+              // Profil ekranına git
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SMyProfile()),
+                );
+                break;
             }
           },
           items: const [
@@ -363,20 +381,20 @@ class SMainMenuScreen extends StatelessWidget {
   Widget dersKarti(String dersAdi, String imgUrl) {
     return Container(
       width: 150,
-      height: 100, 
+      height: 100,
       decoration: BoxDecoration(
-        color: Color(0xFF3A3A3C),
+        color: const Color(0xFF3A3A3C),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, 
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(imgUrl, height: 50),
           const SizedBox(height: 6),
           Text(
             dersAdi,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
