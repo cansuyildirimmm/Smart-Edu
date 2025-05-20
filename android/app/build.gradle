@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.nextstep.smartedu"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility  JavaVersion.VERSION_11
+        targetCompatibility  JavaVersion.VERSION_11
     }
 
     kotlinOptions {

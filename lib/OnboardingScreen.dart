@@ -20,7 +20,7 @@ class OnboardingScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
 
-                  image: AssetImage("assets/images/onboard.jpg"),
+                  image: AssetImage("assets/onboard.jpg"),
 
                   fit: BoxFit.cover,
                 ),

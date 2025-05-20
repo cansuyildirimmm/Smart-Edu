@@ -4,6 +4,7 @@ import 'package:smartedu/screens/TMyStudentss.dart';
 import 'package:smartedu/screens/TStudentResults.dart';
 import 'package:smartedu/screens/TMyNotes.dart';
 import 'package:smartedu/screens/TMyProfile.dart';
+import  'package:smartedu/screens/TAddNote.dart' ;
 
 class TeacherMenuScreen extends StatefulWidget {
   @override
@@ -14,26 +15,12 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomePageWidget(), 
-    Container(), 
+    HomePageWidget(),
+    Container(),
     TMyProfile(),
   ];
 
-  void _showAddDialog() {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text("Yeni Ekleme"),
-        content: Text("Bu, + butonuna tıkladığında açılan diyalog."),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("Kapat"),
-          ),
-        ],
-      ),
-    );
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +53,22 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
           ],
           onTap: (index) {
             if (index == 1) {
-              _showAddDialog();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TAddNote(
+                  onNoteAdded: (title, content) {
+
+                    print("Yeni not: $title - $content");
+                  },
+                ),),
+              );
             } else {
               setState(() {
                 _selectedIndex = index;
               });
             }
           },
+
         ),
       ),
     );
@@ -97,12 +93,14 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
 class HomePageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildHeader(),
-        SizedBox(height: 40),
-        _buildMenuGrid(context),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildHeader(),
+          SizedBox(height: 40),
+          _buildMenuGrid(context),
+        ],
+      ),
     );
   }
 
@@ -126,7 +124,6 @@ class HomePageWidget extends StatelessWidget {
               Text("ÖĞRETMEN İSMİ", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
             ],
           ),
-          // Profil ikonu kaldırıldı
         ],
       ),
     );
@@ -166,20 +163,23 @@ class HomePageWidget extends StatelessWidget {
         }
       },
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.4,
-        height: MediaQuery.of(context).size.height * 0.2,
+        width: MediaQuery.of(context).size.width * 0.42,
+        height: MediaQuery.of(context).size.height * 0.18,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(10),
         ),
+        padding: EdgeInsets.all(8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(asset, width: 120, height: 120),
+            Expanded(
+              child: Image.asset(asset, fit: BoxFit.contain),
+            ),
             SizedBox(height: 8),
             Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ],

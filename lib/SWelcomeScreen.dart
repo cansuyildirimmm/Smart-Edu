@@ -7,13 +7,23 @@ class SWelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFFC1B6), // Light peach background
+      appBar: AppBar(
+        backgroundColor: Color(0xFFFFC1B6),
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black87),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/smartedu_logo.png', height: 80), // Replace with actual logo
+              Image.asset('assets/smartedu_logo.png', height: 80),
               SizedBox(height: 20),
               Text(
                 "Öğrenci Platformuna Hoş Geldiniz",
@@ -69,7 +79,7 @@ class SWelcomeScreen extends StatelessWidget {
                 onPressed: () {},
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.red[300],
-                  minimumSize: Size(double.infinity, 35), // Google butonu küçültüldü
+                  minimumSize: Size(double.infinity, 35),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
