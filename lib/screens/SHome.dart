@@ -55,11 +55,11 @@ class SHome extends StatelessWidget {
 
             // Kartlar
             Expanded(
-              child: Padding(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 20),
                     _buildCard(
                       context: context,
                       color: const Color(0xFF30BFC1),
@@ -69,7 +69,8 @@ class SHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => STopics(lessonTitle: 'KONU ANLATIMI'),
+                            builder: (context) =>
+                                STopics(lessonTitle: 'KONU ANLATIMI'),
                           ),
                         );
                       },
@@ -87,7 +88,8 @@ class SHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => STopics(lessonTitle: 'SORU BANKASI'),
+                            builder: (context) =>
+                                STopics(lessonTitle: 'SORU BANKASI'),
                           ),
                         );
                       },
@@ -105,7 +107,8 @@ class SHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => STopics(lessonTitle: 'ALIŞTIRMALAR'),
+                            builder: (context) =>
+                                STopics(lessonTitle: 'ALIŞTIRMALAR'),
                           ),
                         );
                       },
@@ -122,7 +125,8 @@ class SHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => STopics(lessonTitle: 'LABORATUVAR'),
+                            builder: (context) =>
+                                STopics(lessonTitle: 'LABORATUVAR'),
                           ),
                         );
                       },
@@ -136,16 +140,18 @@ class SHome extends StatelessWidget {
                       text: 'YAPAY ZEKA İLE ÖĞREN',
                       image: 'assets/ai_robot.png',
                       onTap: () {
-                        // şimdilik boş bırakıldı veya başka sayfaya yönlendirilebilir
+                        // şimdilik boş bırakıldı
                       },
                       isImageBig: false,
                       height: 100,
                       textSize: 19,
                     ),
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),
             ),
+
           ],
         ),
       ),
