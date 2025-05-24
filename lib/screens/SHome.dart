@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'STopics.dart'; // STopics ekranını import etmeyi unutma
+import 'package:smartedu/screens/GeminiEğitimSayfasi.dart';
+import 'package:smartedu/screens/STopics.dart'; // STopics ekranını import etmeyi unutma
 
 class SHome extends StatelessWidget {
   final String lessonTitle;
@@ -11,55 +12,56 @@ class SHome extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFEFF1FF),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Üst bar
-            Container(
-              height: 70,
-              color: const Color(0xFFCFEFF2),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white54,
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Color(0xFF040415)),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          lessonTitle,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2C3E50),
-                          ),
-                          overflow: TextOverflow.ellipsis,
+        child: SingleChildScrollView( // Burada eklendi
+          child: Column(
+            children: [
+              // Üst bar
+              Container(
+                height: 70,
+                color: const Color(0xFFCFEFF2),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white54,
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back,
+                              color: Color(0xFF040415)),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 48),
-                  ],
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            lessonTitle,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2C3E50),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 48),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            // Kartlar
-            Expanded(
-              child: SingleChildScrollView(
+              // Kartlar
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
                     _buildCard(
                       context: context,
                       color: const Color(0xFF30BFC1),
@@ -140,19 +142,23 @@ class SHome extends StatelessWidget {
                       text: 'YAPAY ZEKA İLE ÖĞREN',
                       image: 'assets/ai_robot.png',
                       onTap: () {
-                        // şimdilik boş bırakıldı
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const GeminiEgitimSayfasi()),
+                        );
                       },
                       isImageBig: false,
                       height: 100,
                       textSize: 19,
                     ),
-                    const SizedBox(height: 30),
                   ],
                 ),
               ),
-            ),
-
-          ],
+              const SizedBox(height: 20), // Alttan boşluk eklendi scrollda daha rahat olsun diye
+            ],
+          ),
         ),
       ),
     );
@@ -203,22 +209,22 @@ class SHome extends StatelessWidget {
               padding: const EdgeInsets.all(0),
               child: isImageBig
                   ? Image.asset(
-                      image,
-                      height: imageHeight ?? 180,
-                      fit: BoxFit.contain,
-                    )
+                image,
+                height: imageHeight ?? 180,
+                fit: BoxFit.contain,
+              )
                   : Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFEBF7FF),
-                      ),
-                      padding: const EdgeInsets.all(20),
-                      child: Image.asset(
-                        image,
-                        height: 90,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFFEBF7FF),
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Image.asset(
+                  image,
+                  height: 90,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
           ],
         ),
