@@ -6,8 +6,9 @@ import 'package:path_provider/path_provider.dart';
 
 class PDFViewerPage extends StatefulWidget {
   final String assetPath;
+  final String title;
 
-  const PDFViewerPage({super.key, required this.assetPath});
+  const PDFViewerPage({super.key, required this.assetPath, required this.title});
 
   @override
   State<PDFViewerPage> createState() => _PDFViewerPageState();
@@ -36,11 +37,16 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("PDF Görüntüleyici")),
+      appBar: AppBar(title: Text(widget.title)), // <-- konu adı
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : PDFView(
         filePath: localPath,
+        enableSwipe: true,
+        swipeHorizontal: true,
+        autoSpacing: false,
+        pageFling: true,
+        fitPolicy: FitPolicy.BOTH,
       ),
     );
   }

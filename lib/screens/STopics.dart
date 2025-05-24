@@ -1,32 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:smartedu/screens/PDFViewerPage.dart';  // PDF görüntüleyici sayfanızın dosya adı
+import 'package:smartedu/screens/PDFViewerPage.dart';
 
 class STopics extends StatelessWidget {
   final String lessonTitle;
 
-  STopics({super.key, required this.lessonTitle});
+  const STopics({super.key, required this.lessonTitle});
 
-  // Konular listesi
-  final List<String> topics = const [
-    'Doğal Sayılar',
-    'Toplama ve Çıkarma İşlemi',
-    'Çarpma ve Bölme İşlemi',
-    'Kesirler',
-    'Geometrik Şekiller',
-    'Alan Hesaplama',
-    'Zaman Ölçme',
-    'Paralarımız',
-    'Tartma',
-    'Geometrik Cisimler Ve Şekiller',
-    'Geometrik Örüntüler',
-    'Geometrik Temel Kavramlar',
-    'Uzamsal İlişkiler',
-    'Uzunluk - Çevre - Alan Ölçme',
-    'Sıvı Ölçme',
-  ];
-
-  // Her konuya karşılık gelen PDF dosyası yolu
-  final Map<String, String> topicToPdf = {
+  final Map<String, String> topicToPdf = const {
     'Doğal Sayılar': 'assets/materials/dogal_sayilar.pdf',
     'Toplama ve Çıkarma İşlemi': 'assets/materials/toplama_cikarma.pdf',
     'Çarpma ve Bölme İşlemi': 'assets/materials/carpma_bolme.pdf',
@@ -38,9 +18,9 @@ class STopics extends StatelessWidget {
     'Tartma': 'assets/materials/tartma.pdf',
     'Geometrik Cisimler Ve Şekiller': 'assets/materials/geometrik_cisimler.pdf',
     'Geometrik Örüntüler': 'assets/materials/geometrik_oruntuler.pdf',
-    'Geometrik Temel Kavramlar': 'assets/materials/geometrik_temel_kavramlar.pdf',
+    'Geometrik Temel Kavramlar': 'assets/materials/temel_kavramlar.pdf',
     'Uzamsal İlişkiler': 'assets/materials/uzamsal_iliskiler.pdf',
-    'Uzunluk - Çevre - Alan Ölçme': 'assets/materials/uzunluk_cevre_alan.pdf',
+    'Uzunluk - Çevre - Alan Ölçme': 'assets/materials/uzunluk_cevce_alan.pdf',
     'Sıvı Ölçme': 'assets/materials/sivi_olcme.pdf',
   };
 
@@ -64,19 +44,19 @@ class STopics extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         child: Column(
-          children: topics.map((topic) {
+          children: topicToPdf.keys.map((topic) {
             return GestureDetector(
               onTap: () {
-                if (topicToPdf.containsKey(topic)) {
+                final path = topicToPdf[topic];
+                if (path != null) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PDFViewerPage(assetPath: topicToPdf[topic]!),
+                      builder: (context) => PDFViewerPage(
+                        assetPath: topicToPdf[topic]!,
+                        title: topic,
+                      ),
                     ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('PDF dosyası bulunamadı!')),
                   );
                 }
               },
