@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-
-import 'package:smartedu/StudentTestApp.dart';
-
-
 import 'package:smartedu/SLoginScreen.dart';
 import 'package:smartedu/services/auth.dart';
 
 class SCreatAccountScreen extends StatefulWidget {
   @override
-   SCreateAccountScreen createState() =>  SCreateAccountScreen();
+  SCreateAccountScreen createState() =>  SCreateAccountScreen();
 }
 
 class  SCreateAccountScreen extends State< SCreatAccountScreen> {
@@ -165,34 +161,34 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
         minimumSize: Size(double.infinity, 55),
       ),
 
-  onPressed: () async {
-  bool success = await createAccount(
-    _emailController.text,
-    _passwordController.text,
-    _nameController.text,
-    _schoolController.text,
-    "",
-    _studentNumberController.text,
-    _telNumberController.text,
-    "students",
-  );
+      onPressed: () async {
+        bool success = await createAccount(
+          _emailController.text,
+          _passwordController.text,
+          _nameController.text,
+          _schoolController.text,
+          "",
+          _studentNumberController.text,
+          _telNumberController.text,
+          "students",
+        );
 
-  // Eğer kayıt başarılıysa StudentTestApp ekranına yönlendir
-  if (success) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => SLoginScreen()),
-    );
-  } else {
-    // Hata durumunda kullanıcıyı bilgilendir (opsiyonel)
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Kayıt başarısız. Lütfen tekrar deneyin.'),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
-},
+        // Eğer kayıt başarılıysa StudentTestApp ekranına yönlendir
+        if (success) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SLoginScreen()),
+          );
+        } else {
+          // Hata durumunda kullanıcıyı bilgilendir (opsiyonel)
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Kayıt başarısız. Lütfen tekrar deneyin.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
 
       child: Text(
         'KAYIT OL',

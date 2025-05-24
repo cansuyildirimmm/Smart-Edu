@@ -29,7 +29,7 @@ class SMainMenuScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "MERHABA 'ÖĞRENCİ ADI'",
+                        "ÖĞRENCİ PLATFORMU",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -223,7 +223,7 @@ class SMainMenuScreen extends StatelessWidget {
                       const SizedBox(width: 8),
                       dersKarti("Müzik", "assets/muzik_icon.png"),
                       const SizedBox(width: 8),
-                      dersKarti("Beden", "assets/notes.png"),
+                      dersKarti("İngilizce", "assets/notes.png"),
                     ],
                   ),
                 ),

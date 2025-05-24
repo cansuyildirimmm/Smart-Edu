@@ -120,8 +120,8 @@ class HomePageWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Merhaba,", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-              Text("ÖĞRETMEN İSMİ", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+
+              Text("ÖĞRETMEN PLATFORMU", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
             ],
           ),
         ],
