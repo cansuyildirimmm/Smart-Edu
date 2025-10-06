@@ -2,9 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:smartedu/screens/SMyLessons.dart';
 import 'package:smartedu/screens/SMyNotes.dart';
 import 'package:smartedu/screens/SMyProfile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SMainMenuScreen extends StatelessWidget {
+class SMainMenuScreen extends StatefulWidget {
   const SMainMenuScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SMainMenuScreen> createState() => _SMainMenuScreenState();
+}
+
+class _SMainMenuScreenState extends State<SMainMenuScreen> {
+  String userName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final doc = await FirebaseFirestore.instance
+            .collection('students')
+            .doc(user.uid)
+            .get();
+        if (doc.exists) {
+          setState(() {
+            userName = doc['name'] ?? '';
+          });
+        }
+      }
+    } catch (e) {
+      print('Kullanıcı adı alınamadı: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +62,11 @@ class SMainMenuScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "ÖĞRENCİ PLATFORMU",
-                        style: TextStyle(
+                      Text(
+                        userName.isNotEmpty
+                            ? "Merhaba $userName"
+                            : "Merhaba",
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -113,8 +149,11 @@ class SMainMenuScreen extends StatelessWidget {
                                       child: CircularProgressIndicator(
                                         value: 0.7,
                                         strokeWidth: 6,
-                                        backgroundColor: Colors.white.withOpacity(0.2),
-                                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                                        backgroundColor:
+                                            Colors.white.withOpacity(0.2),
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                                Colors.blue),
                                       ),
                                     ),
                                     Container(
@@ -125,12 +164,14 @@ class SMainMenuScreen extends StatelessWidget {
                                         shape: BoxShape.circle,
                                       ),
                                     ),
-                                    const Icon(Icons.search, size: 32, color: Colors.white),
+                                    const Icon(Icons.search,
+                                        size: 32, color: Colors.white),
                                   ],
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
-                                  child: Image.asset("assets/over_hnumbers.png", height: 80),
+                                  child: Image.asset("assets/over_hnumbers.png",
+                                      height: 80),
                                 ),
                               ],
                             ),
@@ -168,14 +209,19 @@ class SMainMenuScreen extends StatelessWidget {
                                       child: CircularProgressIndicator(
                                         value: 1.0,
                                         strokeWidth: 4,
-                                        backgroundColor: Colors.white.withOpacity(0.2),
-                                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF2C2C2E)),
+                                        backgroundColor:
+                                            Colors.white.withOpacity(0.2),
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                                Color(0xFF2C2C2E)),
                                       ),
                                     ),
-                                    const Icon(Icons.check_circle, size: 32, color: Colors.green),
+                                    const Icon(Icons.check_circle,
+                                        size: 32, color: Colors.green),
                                   ],
                                 ),
-                                Image.asset("assets/devre_elemanlari.png", height: 80),
+                                Image.asset("assets/devre_elemanlari.png",
+                                    height: 80),
                               ],
                             ),
                           ],
@@ -234,7 +280,8 @@ class SMainMenuScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SMyNotes()),
+                      MaterialPageRoute(
+                          builder: (context) => const SMyNotes()),
                     );
                   },
                   child: Column(
@@ -275,7 +322,8 @@ class SMainMenuScreen extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                text: "İyi ilerliyorsun Can. İngilizce 4. yazma çalışmanı bu hafta tamamlamaya çalış ayrıca matematikten de konu anlatımı yap.",
+                                text:
+                                    "İyi ilerliyorsun Can. İngilizce 4. yazma çalışmanı bu hafta tamamlamaya çalış ayrıca matematikten de konu anlatımı yap.",
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.black,
@@ -306,13 +354,16 @@ class SMainMenuScreen extends StatelessWidget {
                             hintText: "Asistan'a Sor..",
                             hintStyle: const TextStyle(color: Colors.white70),
                             border: InputBorder.none,
-                            prefixIcon: const Icon(Icons.search, color: Colors.white70),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                            prefixIcon: const Icon(Icons.search,
+                                color: Colors.white70),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 12),
                           ),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.smart_toy, color: Color(0xFF00A4F0)),
+                        icon: const Icon(Icons.smart_toy,
+                            color: Color(0xFF00A4F0)),
                         onPressed: () {},
                       )
                     ],
@@ -327,7 +378,8 @@ class SMainMenuScreen extends StatelessWidget {
       // BOTTOM NAVIGATION
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+        margin:
+            const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
         decoration: BoxDecoration(
           color: const Color(0xFFFF5C5C),
           borderRadius: BorderRadius.circular(30),
@@ -342,24 +394,21 @@ class SMainMenuScreen extends StatelessWidget {
           onTap: (index) {
             switch (index) {
               case 0:
-              // Ana menüde kal
                 break;
               case 1:
-              // Derslerim ekranına git
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SMyLessons()),
                 );
                 break;
               case 2:
-              // Notlarım ekranına git
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SMyNotes()),
+                  MaterialPageRoute(
+                      builder: (context) => const SMyNotes()),
                 );
                 break;
               case 3:
-              // Profil ekranına git
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SMyProfile()),
@@ -369,9 +418,12 @@ class SMainMenuScreen extends StatelessWidget {
           },
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-            BottomNavigationBarItem(icon: Icon(Icons.library_books), label: ""),
-            BottomNavigationBarItem(icon: Icon(Icons.description), label: ""),
-            BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ""),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.library_books), label: ""),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.description), label: ""),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline), label: ""),
           ],
         ),
       ),

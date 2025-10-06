@@ -1,58 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'SMainMenuScreen.dart';
 
-class SMyProfile extends StatelessWidget {
+class SMyProfile extends StatefulWidget {
   const SMyProfile({Key? key}) : super(key: key);
+
+  @override
+  State<SMyProfile> createState() => _SMyProfileState();
+}
+
+class _SMyProfileState extends State<SMyProfile> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<Map<String, dynamic>?> _getUserData() async {
+    User? user = _auth.currentUser;
+    if (user == null) return null;
+
+    DocumentSnapshot doc = await _firestore.collection('students').doc(user.uid).get();
+    if (doc.exists) {
+      return doc.data() as Map<String, dynamic>;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEFF1FF),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 40),
-              const Text(
-                "Profilim",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF223344),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Stack(
-                alignment: Alignment.bottomRight,
+        child: FutureBuilder<Map<String, dynamic>?>(
+          future: _getUserData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(child: Text("Kullanıcı bilgisi bulunamadı"));
+            }
+
+            final userData = snapshot.data!;
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.grey[300],
-                    child: const Icon(Icons.person, size: 70, color: Colors.white),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 4,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 16,
-                      child: const Icon(Icons.camera_alt, size: 16, color: Color(0xFF50D4DB)),
+                  const SizedBox(height: 40),
+                  const Text(
+                    "Profilim",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF223344),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 20),
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.grey[300],
+                        child: const Icon(Icons.person, size: 70, color: Colors.white),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 4,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 16,
+                          child: const Icon(Icons.camera_alt, size: 16, color: Color(0xFF50D4DB)),
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(userData['name'] ?? "Öğrenci İsmi", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(userData['email'] ?? "Deneme@mail.com", style: TextStyle(color: Colors.grey[600])),
+                  const SizedBox(height: 30),
+                  _buildInfoCard("Okul", userData['school'] ?? "Öğrencinin Okulu", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
+                  _buildInfoCard("Sınıf Seviyesi", userData['classLevel'] ?? "Öğrencinin Sınıf Seviyesi", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
+                  _buildInfoCard("Okul Numarası", userData['studentNumber'] ?? "Okul Numarası", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
+                  _buildInfoCard("Telefon Numarası", userData['phone'] ?? "Telefon Numarası", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
+                  _buildInfoCard("Şifre", "****************", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black, isPassword: true),
                 ],
               ),
-              const SizedBox(height: 16),
-              const Text("Öğrenci İsmi", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text("Deneme@mail.com", style: TextStyle(color: Colors.grey[600])),
-              const SizedBox(height: 30),
-              _buildInfoCard("Okul", "Öğrencinin Okulu", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
-              _buildInfoCard("Sınıf Seviyesi", "Öğrencinin Sınıf Seviyesi", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
-              _buildInfoCard("Okul Numarası", "Okul Numarası", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
-              _buildInfoCard("Telefon Numarası", "Telefon Numarası", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
-              _buildInfoCard("Şifre", "****************", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black, isPassword: true),
-            ],
-          ),
+            );
+          },
         ),
       ),
       bottomNavigationBar: Container(

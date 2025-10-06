@@ -4,7 +4,9 @@ import 'package:smartedu/screens/TMyStudentss.dart';
 import 'package:smartedu/screens/TStudentResults.dart';
 import 'package:smartedu/screens/TMyNotes.dart';
 import 'package:smartedu/screens/TMyProfile.dart';
-import  'package:smartedu/screens/TAddNote.dart' ;
+import 'package:smartedu/screens/TAddNote.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TeacherMenuScreen extends StatefulWidget {
   @override
@@ -19,8 +21,6 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
     Container(),
     TMyProfile(),
   ];
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +55,13 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
             if (index == 1) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TAddNote(
-                  onNoteAdded: (title, content) {
-
-                    print("Yeni not: $title - $content");
-                  },
-                ),),
+                MaterialPageRoute(
+                  builder: (context) => TAddNote(
+                    onNoteAdded: (title, content) {
+                      print("Yeni not: $title - $content");
+                    },
+                  ),
+                ),
               );
             } else {
               setState(() {
@@ -68,7 +69,6 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
               });
             }
           },
-
         ),
       ),
     );
@@ -91,6 +91,20 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
 }
 
 class HomePageWidget extends StatelessWidget {
+  Future<String> _getUserName() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('teachers')
+          .doc(user.uid)
+          .get();
+      if (snapshot.exists && snapshot.data()!.containsKey('name')) {
+        return snapshot['name'];
+      }
+    }
+    return 'Kullanıcı';
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -105,27 +119,45 @@ class HomePageWidget extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-    return Container(
-      margin: EdgeInsets.only(top: 20, left: 16, right: 16),
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      height: 120,
-      decoration: BoxDecoration(
-        color: Color(0xFF50D4DB),
-        borderRadius: BorderRadius.circular(21),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+    return FutureBuilder<String>(
+      future: _getUserName(),
+      builder: (context, snapshot) {
+        String displayName = 'ÖĞRETMEN PLATFORMU';
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          displayName = 'Yükleniyor...';
+        } else if (snapshot.hasData) {
+          displayName = "Merhaba ${snapshot.data!}";
+        }
 
-              Text("ÖĞRETMEN PLATFORMU", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+        return Container(
+          margin: EdgeInsets.only(top: 20, left: 16, right: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          height: 120,
+          decoration: BoxDecoration(
+            color: Color(0xFF50D4DB),
+            borderRadius: BorderRadius.circular(21),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    displayName,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -138,16 +170,20 @@ class HomePageWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildMenuCard(context, "Öğrencilerim", Color(0xFFFA6E5A), 'assets/ogrencilerim.png', TMyStudentss()),
-              _buildMenuCard(context, "Öğrenci Sonuçları", Color(0xFF6CB28E), 'assets/ogrenci_sonuc.png', TStudentResults()),
+              _buildMenuCard(context, "Öğrencilerim", Color(0xFFFA6E5A),
+                  'assets/ogrencilerim.png', TMyStudentss()),
+              _buildMenuCard(context, "Öğrenci Sonuçları", Color(0xFF6CB28E),
+                  'assets/ogrenci_sonuc.png', TStudentResults()),
             ],
           ),
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildMenuCard(context, "Notlarım", Color(0xFFFFCF86), 'assets/notes.png', TMyNotes()),
-              _buildMenuCard(context, "Bireysel Öğrenme\nRaporu", Color(0xFFD9A5B5), 'assets/bireysel_rapor.png', null),
+              _buildMenuCard(context, "Notlarım", Color(0xFFFFCF86),
+                  'assets/notes.png', TMyNotes()),
+              _buildMenuCard(context, "Bireysel Öğrenme\nRaporu",
+                  Color(0xFFD9A5B5), 'assets/bireysel_rapor.png', null),
             ],
           ),
         ],
@@ -155,11 +191,13 @@ class HomePageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuCard(BuildContext context, String title, Color color, String asset, Widget? page) {
+  Widget _buildMenuCard(BuildContext context, String title, Color color,
+      String asset, Widget? page) {
     return GestureDetector(
       onTap: () {
         if (page != null) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => page));
         }
       },
       child: Container(
@@ -173,13 +211,14 @@ class HomePageWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Image.asset(asset, fit: BoxFit.contain),
-            ),
+            Expanded(child: Image.asset(asset, fit: BoxFit.contain)),
             SizedBox(height: 8),
             Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ],
