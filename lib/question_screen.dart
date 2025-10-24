@@ -88,7 +88,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
     final currentQuestion = smartEduQuestions[_currentIndex];
 
     return Scaffold(
-      appBar: AppBar(
+      appBar:
+      AppBar(
         title: Text("Öğrenme Stili Testi"),
         automaticallyImplyLeading: false,
       ),
@@ -97,18 +98,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+
             //  Soru Numarası
             Text(
               "Soru ${_currentIndex + 1} / ${smartEduQuestions.length}",
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.indigo,
               ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20),
-
+            Spacer(),
             //  Soru İçeriği
             Container(
               padding: EdgeInsets.all(16),

@@ -40,11 +40,11 @@ class _SurveyPageState extends State<SurveyPage> {
 
   void onTestFinished() {
     final Map<String, int> scores = {
-      'Görsel': visualScore,
-      'İşitsel': auditoryScore,
-      'Kinestetik': kinestheticScore,
-      'Sözel': verbalScore,
-      'Mantıksal': logicalScore,
+      'Görsel Öğrenme': visualScore,
+      'İşitsel Öğrenme': auditoryScore,
+      'Kinestetik Öğrenme': kinestheticScore,
+      'Sözel Öğrenme': verbalScore,
+      'Mantıksal Öğrenme': logicalScore,
     };
 
     Navigator.push(
