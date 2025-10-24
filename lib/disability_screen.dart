@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/result_screen.dart';
 
-void main() => runApp(MaterialApp(home: DisabilityScreen()));
-
 class DisabilityScreen extends StatefulWidget {
+  final Map<String, int> scores;
+
+  const DisabilityScreen({Key? key, required this.scores}) : super(key: key);
+
   @override
   State<DisabilityScreen> createState() => _DisabilityScreenState();
 }
@@ -13,7 +15,7 @@ class _DisabilityScreenState extends State<DisabilityScreen> {
 
   final List<String> options = [
     "Görme Engeli",
-    "İşitme Engeli",
+    "İşitsel Engeli",
     "Fiziksel Engel",
     "Dikkat Eksikliği / Hiperaktivite",
     "Öğrenme Güçlüğü",
@@ -93,9 +95,18 @@ class _DisabilityScreenState extends State<DisabilityScreen> {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
+                    if (selectedOption == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Lütfen bir durum seçin.")),
+                      );
+                      return;
+                    }
 Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ResultScreen()),
+      MaterialPageRoute(builder: (context) => ResultScreen(
+        scores: widget.scores,
+        disability: selectedOption!,
+      ),),
     );
                   },
                   style: ElevatedButton.styleFrom(

@@ -1,157 +1,149 @@
 import 'package:flutter/material.dart';
-import 'package:smartedu/disability_screen.dart';
 
-class QuestionScreen extends StatelessWidget {
-  const QuestionScreen({super.key});
+// Soru Model Sınıfı
+
+class Question {
+  final String text;
+  final String category;
+
+  Question(this.text, this.category);
+}
+
+//Soruların Listesi
+
+final List<Question> smartEduQuestions = [
+  Question("1. Görselleri kullanarak mı daha iyi öğrenirsiniz?", "Visual"),
+  Question("2. Harita, tablo veya grafiklerle çalışmak size yardımcı olur mu?", "Visual"),
+  Question("3. Bilgileri dinleyerek mi daha iyi öğrenirsiniz?", "Auditory"),
+  Question("4. Bir konuyu anlamak için yüksek sesle tekrar eder misiniz?", "Auditory"),
+  Question("5. Öğrenirken uygulamalı etkinlikler yapmayı tercih eder misiniz?", "Kinesthetic"),
+  Question("6. Deneyerek veya dokunarak mı daha iyi öğrenirsiniz?", "Kinesthetic"),
+  Question("7. Yeni bilgileri yazarak veya okuyarak mı daha iyi öğrenirsiniz?", "Verbal"),
+  Question("8. Öğrendiklerinizi başkalarına anlatmak konuyu pekiştirir mi?", "Verbal"),
+  Question("9. Problemleri neden-sonuç ilişkisiyle mi öğrenirsiniz?", "Logical"),
+  Question("10. Öğrenirken sistematik planlar yapar mısınız?", "Logical"),
+];
+
+class QuestionScreen extends StatefulWidget {
+  final Function(int points, String category) onAnswerQuestion;
+
+  final VoidCallback onFinished;
+
+  const QuestionScreen({
+    Key? key,
+    required this.onAnswerQuestion,
+    required this.onFinished,
+  }) : super(key: key);
+
+  @override
+  _QuestionScreenState createState() => _QuestionScreenState();
+}
+
+class _QuestionScreenState extends State<QuestionScreen> {
+  int _currentIndex = 0;
+  int? _selectedPoints;
+
+  void _nextQuestion() {
+    if (_selectedPoints == null) return;
+
+    widget.onAnswerQuestion(
+      _selectedPoints!,
+      smartEduQuestions[_currentIndex].category,
+    );
+
+    if (_currentIndex < smartEduQuestions.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _selectedPoints = null;
+      });
+    } else {
+      widget.onFinished();
+    }
+  }
+
+  Widget _buildAnswerButton(String text, int points) {
+    final isSelected = _selectedPoints == points;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            _selectedPoints = points;
+          });
+        },
+        child: Text(text),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isSelected ? Colors.indigoAccent : Colors.grey[300],
+          foregroundColor: isSelected ? Colors.white : Colors.black,
+          minimumSize: Size(double.infinity, 50),
+          textStyle: TextStyle(fontSize: 16),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFEFF3FF),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
-                    )
-                  ],
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
+    final currentQuestion = smartEduQuestions[_currentIndex];
 
-            const Text(
-              '01/10',
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Öğrenme Stili Testi"),
+        automaticallyImplyLeading: false,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            //  Soru Numarası
+            Text(
+              "Soru ${_currentIndex + 1} / ${smartEduQuestions.length}",
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.teal,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
+                color: Colors.indigo,
               ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
+            //  Soru İçeriği
             Container(
-              padding: const EdgeInsets.all(20),
-              width: double.infinity,
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFD0D9DD),
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 12,
-                    offset: Offset(0, 6),
-                  ),
-                ],
+                color: Colors.indigo.shade50,
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: const Text(
-                'Soru Metni: Örneğin, "1. Görsellerle daha iyi öğrenirim."',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600,
-                ),
+              child: Text(
+                currentQuestion.text,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 30),
 
-            // EVET Butonu
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF39FF14), // Daha yumuşak neon yeşil
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shadowColor: Colors.black45,
-                ),
-                child: const Text(
-                  'EVET',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
+            // Cevap Butonları (Evet/Kısmen/Hayır)
+            _buildAnswerButton("Evet", 3),
+            _buildAnswerButton("Kısmen", 1),
+            _buildAnswerButton("Hayır", 0),
 
-            // HAYIR Butonu
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF4C4C), // Daha soft neon kırmızı
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shadowColor: Colors.black45,
-                ),
-                child: const Text(
-                  'HAYIR',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
+            Spacer(),
 
             // Sonraki Soru Butonu
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DisabilityScreen(),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF007BFF),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  elevation: 10,
-                  shadowColor: Colors.blueAccent,
-                ),
-                child: const Text(
-                  'Sonraki Soru',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
+            ElevatedButton(
+              onPressed: _selectedPoints != null ? _nextQuestion : null,
+              child: Text(
+                _currentIndex == smartEduQuestions.length - 1
+                    ? "Testi Bitir"
+                    : "Sonraki Soru",
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                backgroundColor: Colors.white,
+                disabledBackgroundColor: Colors.grey.shade400,
               ),
             ),
           ],

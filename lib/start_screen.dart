@@ -1,5 +1,5 @@
 import 'package\:flutter/material.dart';
-import 'question\_screen.dart';
+import 'package:smartedu/SurveyPage.dart';
 
 class StartScreen extends StatelessWidget {
 const StartScreen({super.key});
@@ -63,7 +63,7 @@ color: Colors.black87,
   onPressed: () {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const QuestionScreen()),
+      MaterialPageRoute(builder: (_) => SurveyPage()),
     );
   },
   child: const Text(
