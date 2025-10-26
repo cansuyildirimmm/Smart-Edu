@@ -22,7 +22,7 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFD8F3DC), // Açık yeşil arka plan
+      backgroundColor: Color(0xFFD8F3DC),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -55,7 +55,6 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
               _buildTextField(Icons.email_outlined, 'E-POSTA ADRESİ',_emailController),
               _buildTextField(Icons.phone_outlined, 'TELEFON NUMARASI',_telNumberController),
               _buildTextField(Icons.badge_outlined, 'ÖĞRENCİ NUMARASI',_studentNumberController),
-              //_buildTextField(Icons.credit_card_outlined, 'TC KİMLİK NO'),
 
               _buildPasswordField(),
               SizedBox(height: 20),
@@ -173,14 +172,12 @@ class  SCreateAccountScreen extends State< SCreatAccountScreen> {
           "students",
         );
 
-        // Eğer kayıt başarılıysa StudentTestApp ekranına yönlendir
         if (success) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => SLoginScreen()),
           );
         } else {
-          // Hata durumunda kullanıcıyı bilgilendir (opsiyonel)
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Kayıt başarısız. Lütfen tekrar deneyin.'),

@@ -27,8 +27,8 @@ Future<bool> createAccount(
       'password': password,
       'name': name,
       'school': school,
-      'branch': branch, // for teacher
-      'studentNumber': studentNumber, // for student
+      'branch': branch,
+      'studentNumber': studentNumber,
       'telNumber': telNumber,
     });
 
@@ -63,10 +63,10 @@ Future<bool> signIn(BuildContext context, String email, String password, String 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Geçersiz kullanıcı tipi.')),
       );
-      return false; // Geçersiz kullanıcı tipi
+      return false;
     }
 
-    return true; // Başarılı giriş
+    return true;
   } on FirebaseAuthException catch (e) {
     String errorMessage = 'Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.';
     if (e.code == 'user-not-found') {
@@ -105,7 +105,6 @@ Future<bool> saveTestResult({
         .add({
       'learningStyle': learningStyle,
       'disabilityStatus': disabilityStatus,
-      'date': DateTime.now(),
     });
 
     print('Test sonucu başarıyla kaydedildi.');
@@ -114,37 +113,5 @@ Future<bool> saveTestResult({
   } catch (e) {
     print('Test sonucu kaydedilirken hata: $e');
     return false;
-  }
-}
-void kaydetTestSonucu(String secilenOgrenmeBicimi, String secilenEngelDurumu) async {
-  bool sonuc = await saveTestResult(
-    kullaniciTuru: 'students',  // ya da 'teachers'
-    learningStyle: secilenOgrenmeBicimi,
-    disabilityStatus: secilenEngelDurumu,
-  );
-
-  if (sonuc) {
-    print('Test sonucu kaydedildi, devam edebilirsiniz.');
-  } else {
-    print('Test sonucu kaydedilirken hata oluştu.');
-  }
-}
-
-Future<Map<String, dynamic>?> getLatestTestResult(String kullaniciTuru) async {
-  final user = FirebaseAuth.instance.currentUser;
-  if (user == null) return null;
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection(kullaniciTuru)
-      .doc(user.uid)
-      .collection('testResults')
-      .orderBy('date', descending: true)
-      .limit(1)
-      .get();
-
-  if (snapshot.docs.isNotEmpty) {
-    return snapshot.docs.first.data();
-  } else {
-    return null;
   }
 }

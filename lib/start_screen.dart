@@ -26,7 +26,6 @@ color: Colors.black87,
 
           const SizedBox(height: 24),
 
-          // GENİŞ GÖRSEL (Yazılar kadar büyük olacak şekilde ayarlandı)
           SizedBox(
             width: double.infinity,
             height: 150,
@@ -58,7 +57,7 @@ color: Colors.black87,
     ),
     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
     elevation: 10,
-    shadowColor: const Color(0x8000A9FF), // yarı şeffaf mavi gölge
+    shadowColor: const Color(0x8000A9FF),
   ),
   onPressed: () {
     Navigator.push(

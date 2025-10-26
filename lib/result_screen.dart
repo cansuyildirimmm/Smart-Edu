@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/SurveyPage.dart'; // 'Tekrar Dene' için SurveyPage'i import edin
-import 'package:smartedu/screens/SMainMenuScreen.dart'; // 'Testi Tamamla' için SHomeScreen'i import edin (Dosya adını doğrulayın)
+import 'package:smartedu/screens/SMainMenuScreen.dart';
+import 'package:smartedu/services/auth.dart'; // 'Testi Tamamla' için SHomeScreen'i import edin (Dosya adını doğrulayın)
 
 class ResultScreen extends StatelessWidget {
 
@@ -19,7 +20,9 @@ class ResultScreen extends StatelessWidget {
       ..sort((a, b) => b.value.compareTo(a.value));
     final dominantStyle = sortedScores.first.key;
     final disability = this.disability;
+
     return Scaffold(
+
       backgroundColor: const Color(0xFFEDF1FF),
       body: SafeArea(
         child: Center(
@@ -178,7 +181,8 @@ class ResultScreen extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
+                        saveTestResult(kullaniciTuru: 'students', learningStyle: dominantStyle, disabilityStatus: disability);
 
                         Navigator.pushAndRemoveUntil(
                           context,
