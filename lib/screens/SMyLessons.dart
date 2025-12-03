@@ -4,12 +4,12 @@ import 'SHome.dart'; // SHome'u unutma
 
 class SMyLessons extends StatelessWidget {
   final List<Map<String, dynamic>> lessons = [
-    {'title': 'MATEMATİK', 'color': Color(0xFF30BFC1), 'image': 'assets/mat_icon.png', 'mainAxisCellCount': 1.6},
-    {'title': 'TÜRKÇE', 'color': Color(0xFFFE6250), 'image': 'assets/turkce_icon.png', 'mainAxisCellCount': 1.8},
-    {'title': 'FEN BİLİMLERİ', 'color': Color(0xFFB18CFE), 'image': 'assets/fen_icon.png', 'mainAxisCellCount': 1.6},
-    {'title': 'SOSYAL BİLGİLER', 'color': Color(0xFFEE719E), 'image': 'assets/ogrenci_sonuc.png', 'mainAxisCellCount': 1.8},
-    {'title': 'MÜZİK', 'color': Color(0xFFFFAB01), 'image': 'assets/muzik_icon.png', 'mainAxisCellCount': 1.6},
-    {'title': 'İNGİLİZCE', 'color': Color(0xFF6CB28E), 'image': 'assets/bireysel_rapor.png', 'mainAxisCellCount': 1.2},
+    {'title': 'MATEMATİK', 'color': Color(0xFF30BFC1), 'image': 'assets/mat_icon.png', 'mainAxisCellCount': 1.6, 'subjectKey': 'matematik'},
+    {'title': 'TÜRKÇE', 'color': Color(0xFFFE6250), 'image': 'assets/turkce_icon.png', 'mainAxisCellCount': 1.8, 'subjectKey': 'turkce'},
+    {'title': 'FEN BİLİMLERİ', 'color': Color(0xFFB18CFE), 'image': 'assets/fen_icon.png', 'mainAxisCellCount': 1.6, 'subjectKey': 'fen_bilimleri'},
+    {'title': 'SOSYAL BİLGİLER', 'color': Color(0xFFEE719E), 'image': 'assets/ogrenci_sonuc.png', 'mainAxisCellCount': 1.8, 'subjectKey': 'sosyal_bilgiler'},
+    {'title': 'MÜZİK', 'color': Color(0xFFFFAB01), 'image': 'assets/muzik_icon.png', 'mainAxisCellCount': 1.6, 'subjectKey': 'muzik'},
+    {'title': 'İNGİLİZCE', 'color': Color(0xFF6CB28E), 'image': 'assets/bireysel_rapor.png', 'mainAxisCellCount': 1.2, 'subjectKey': 'ingilizce'},
   ];
 
   @override
@@ -87,10 +87,14 @@ class SMyLessons extends StatelessWidget {
                     mainAxisCellCount: lesson['mainAxisCellCount'],
                     child: GestureDetector(
                       onTap: () {
+                        // Firestore field karşılığı ile SHome'a gönder
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SHome(lessonTitle: lesson['title']),
+                            builder: (context) => SHome(
+                              lessonTitle: lesson['title'],
+                              subject: lesson['subjectKey'], 
+                            ),
                           ),
                         );
                       },

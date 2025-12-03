@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/screens/GeminiEğitimSayfasi.dart';
-import 'package:smartedu/screens/STopics.dart'; // STopics ekranını import etmeyi unutma
+import 'package:smartedu/screens/STopics.dart'; 
 
 class SHome extends StatelessWidget {
   final String lessonTitle;
+  final String subject;     
+  final String testGrade;   
 
-  const SHome({super.key, required this.lessonTitle});
+  const SHome({
+    super.key,
+    required this.lessonTitle,
+    required this.subject,
+    this.testGrade = '3',   // default olarak 1. sınıf
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEFF1FF),
       body: SafeArea(
-        child: SingleChildScrollView( // Burada eklendi
+        child: SingleChildScrollView(
           child: Column(
             children: [
               // Üst bar
@@ -71,8 +78,12 @@ class SHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                STopics(lessonTitle: 'KONU ANLATIMI'),
+                            builder: (context) => STopics(
+                              lessonTitle: lessonTitle,
+                              subject: subject,
+                              contentType: 'konu_anlatimi',
+                              testGrade: testGrade,
+                            ),
                           ),
                         );
                       },
@@ -90,8 +101,12 @@ class SHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                STopics(lessonTitle: 'SORU BANKASI'),
+                            builder: (context) => STopics(
+                              lessonTitle: lessonTitle,
+                              subject: subject,
+                              contentType: 'soru_bankasi',
+                              testGrade: testGrade,
+                            ),
                           ),
                         );
                       },
@@ -109,8 +124,12 @@ class SHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                STopics(lessonTitle: 'ALIŞTIRMALAR'),
+                            builder: (context) => STopics(
+                              lessonTitle: lessonTitle,
+                              subject: subject,
+                              contentType: 'alistirmalar',
+                              testGrade: testGrade,
+                            ),
                           ),
                         );
                       },
@@ -127,8 +146,12 @@ class SHome extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                STopics(lessonTitle: 'LABORATUVAR'),
+                            builder: (context) => STopics(
+                              lessonTitle: lessonTitle,
+                              subject: subject,
+                              contentType: 'laboratuvar',
+                              testGrade: testGrade,
+                            ),
                           ),
                         );
                       },
@@ -146,7 +169,7 @@ class SHome extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                              const GeminiEgitimSayfasi()),
+                                  const GeminiEgitimSayfasi()),
                         );
                       },
                       isImageBig: false,
@@ -156,7 +179,7 @@ class SHome extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 20), // Alttan boşluk eklendi scrollda daha rahat olsun diye
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -209,22 +232,22 @@ class SHome extends StatelessWidget {
               padding: const EdgeInsets.all(0),
               child: isImageBig
                   ? Image.asset(
-                image,
-                height: imageHeight ?? 180,
-                fit: BoxFit.contain,
-              )
+                      image,
+                      height: imageHeight ?? 180,
+                      fit: BoxFit.contain,
+                    )
                   : Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFFEBF7FF),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Image.asset(
-                  image,
-                  height: 90,
-                  fit: BoxFit.contain,
-                ),
-              ),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFEBF7FF),
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      child: Image.asset(
+                        image,
+                        height: 90,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
             ),
           ],
         ),

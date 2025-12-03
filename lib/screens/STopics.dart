@@ -1,28 +1,34 @@
+// STopics.dart
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smartedu/screens/PDFViewerPage.dart';
 
 class STopics extends StatelessWidget {
   final String lessonTitle;
+  final String subject;
+  final String contentType;
+  final String testGrade;
 
-  const STopics({super.key, required this.lessonTitle});
+  STopics({
+    super.key,
+    required this.lessonTitle,
+    required this.subject,
+    required this.contentType,
+    required this.testGrade,
+  });
 
-  final Map<String, String> topicToPdf = const {
-    'Doğal Sayılar': 'assets/materials/dogal_sayilar.pdf',
-    'Toplama ve Çıkarma İşlemi': 'assets/materials/toplama_cikarma.pdf',
-    'Çarpma ve Bölme İşlemi': 'assets/materials/carpma_bolme.pdf',
-    'Kesirler': 'assets/materials/kesirler.pdf',
-    'Geometrik Şekiller': 'assets/materials/geometrik_sekiller.pdf',
-    'Alan Hesaplama': 'assets/materials/alan_hesaplama.pdf',
-    'Zaman Ölçme': 'assets/materials/zaman_olcme.pdf',
-    'Paralarımız': 'assets/materials/paralarimiz.pdf',
-    'Tartma': 'assets/materials/tartma.pdf',
-    'Geometrik Cisimler Ve Şekiller': 'assets/materials/geometrik_cisimler.pdf',
-    'Geometrik Örüntüler': 'assets/materials/geometrik_oruntuler.pdf',
-    'Geometrik Temel Kavramlar': 'assets/materials/temel_kavramlar.pdf',
-    'Uzamsal İlişkiler': 'assets/materials/uzamsal_iliskiler.pdf',
-    'Uzunluk - Çevre - Alan Ölçme': 'assets/materials/uzunluk_cevce_alan.pdf',
-    'Sıvı Ölçme': 'assets/materials/sivi_olcme.pdf',
-  };
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Stream<List<Map<String, dynamic>>> getTopics() {
+    return _firestore
+        .collection('materials')
+        .where('subject', isEqualTo: subject)
+        .where('contentType', isEqualTo: contentType)
+        .where('grade', isEqualTo: int.parse(testGrade)) // ✅ testGrade filtresi eklendi
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => doc.data()).toList());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,49 +47,70 @@ class STopics extends StatelessWidget {
         elevation: 0,
       ),
       backgroundColor: const Color(0xFFF5F3FF),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Column(
-          children: topicToPdf.keys.map((topic) {
-            return GestureDetector(
-              onTap: () {
-                final path = topicToPdf[topic];
-                if (path != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PDFViewerPage(
-                        assetPath: topicToPdf[topic]!,
-                        title: topic,
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: getTopics(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('Bu bölümde materyal bulunamadı.'));
+          }
+
+          final topics = snapshot.data!;
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            child: Column(
+              children: topics.map((topic) {
+                return GestureDetector(
+                  onTap: () {
+                    final storagePath = topic['storageUrl'];
+
+                    if (storagePath == null || storagePath.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('PDF yolu bulunamadı.')),
+                      );
+                      return;
+                    }
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PDFViewerPage(
+                          storagePath: storagePath, // artık Storage path gönderiliyor
+                          title: topic['title'],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    padding: const EdgeInsets.all(16),
+                    width: double.infinity,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.redAccent),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        topic['title'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                  );
-                }
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 6),
-                padding: const EdgeInsets.all(16),
-                width: double.infinity,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.redAccent),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Center(
-                  child: Text(
-                    topic,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
                   ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
+                );
+              }).toList(),
+            ),
+          );
+        },
       ),
     );
   }
