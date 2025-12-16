@@ -11,7 +11,7 @@ class SHome extends StatelessWidget {
     super.key,
     required this.lessonTitle,
     required this.subject,
-    this.testGrade = '3',   // default olarak 1. sınıf
+    this.testGrade = '2',   
   });
 
   @override

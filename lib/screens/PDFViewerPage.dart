@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 
 class PDFViewerPage extends StatefulWidget {
-  final String storagePath; // artık Firebase Storage path alıyor
+  final String storagePath; 
   final String title;
 
   const PDFViewerPage({
@@ -32,37 +32,37 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
 
   Future<void> _downloadAndLoadPDF() async {
     try {
-      // 1️⃣ Storage path'ten download URL al
       final pdfUrl = await FirebaseStorage.instance
           .ref(widget.storagePath)
           .getDownloadURL();
 
-      // 2️⃣ HTTP ile PDF indir
+      
       final response = await http.get(Uri.parse(pdfUrl));
       if (response.statusCode != 200) {
         throw Exception("PDF indirme başarısız: HTTP ${response.statusCode}");
       }
 
-      // 3️⃣ Geçici dosyaya kaydet
+      
       final filename =
           widget.title.replaceAll(RegExp(r'[^\w]'), '') + '.pdf';
       final file = File('${(await getTemporaryDirectory()).path}/$filename');
       await file.writeAsBytes(response.bodyBytes);
 
+      if (!mounted) return; 
       setState(() {
         localPath = file.path;
         isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return; 
       setState(() {
         isLoading = false;
         localPath = null;
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('PDF yüklenirken hata oluştu: ${e.toString()}')),
-        );
-      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('PDF yüklenirken hata oluştu: ${e.toString()}')),
+      );
     }
   }
 

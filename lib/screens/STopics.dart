@@ -1,7 +1,7 @@
 // STopics.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:smartedu/screens/PDFViewerPage.dart';
+import 'package:smartedu/screens/SMaterialTypePage.dart';
 
 class STopics extends StatelessWidget {
   final String lessonTitle;
@@ -24,10 +24,18 @@ class STopics extends StatelessWidget {
         .collection('materials')
         .where('subject', isEqualTo: subject)
         .where('contentType', isEqualTo: contentType)
-        .where('grade', isEqualTo: int.parse(testGrade)) // ✅ testGrade filtresi eklendi
+        .where('grade', isEqualTo: int.parse(testGrade)) 
         .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => doc.data()).toList());
+        .map((snapshot) {
+          final docs = snapshot.docs.map((doc) => doc.data()).toList();
+
+          final Map<String, Map<String, dynamic>> uniqueTopics = {};
+          for (var item in docs) {
+            uniqueTopics[item['title']] = item;
+          }
+
+          return uniqueTopics.values.toList();
+        });
   }
 
   @override
@@ -65,22 +73,14 @@ class STopics extends StatelessWidget {
               children: topics.map((topic) {
                 return GestureDetector(
                   onTap: () {
-                    final storagePath = topic['storageUrl'];
-
-                    if (storagePath == null || storagePath.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('PDF yolu bulunamadı.')),
-                      );
-                      return;
-                    }
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PDFViewerPage(
-                          storagePath: storagePath, // artık Storage path gönderiliyor
+                        builder: (context) => SMaterialTypePage(
                           title: topic['title'],
+                          subject: subject,
+                          contentType: contentType,
+                          testGrade: testGrade,
                         ),
                       ),
                     );
