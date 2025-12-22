@@ -1,139 +1,152 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'SHome.dart'; // SHome'u unutma
+import 'SHome.dart';
 
 class SMyLessons extends StatelessWidget {
+  SMyLessons({super.key});
+
   final List<Map<String, dynamic>> lessons = [
-    {'title': 'MATEMATİK', 'color': Color(0xFF30BFC1), 'image': 'assets/mat_icon.png', 'mainAxisCellCount': 1.6, 'subjectKey': 'matematik'},
-    {'title': 'TÜRKÇE', 'color': Color(0xFFFE6250), 'image': 'assets/turkce_icon.png', 'mainAxisCellCount': 1.8, 'subjectKey': 'turkce'},
-    {'title': 'FEN BİLİMLERİ', 'color': Color(0xFFB18CFE), 'image': 'assets/fen_icon.png', 'mainAxisCellCount': 1.6, 'subjectKey': 'fen_bilimleri'},
-    {'title': 'SOSYAL BİLGİLER', 'color': Color(0xFFEE719E), 'image': 'assets/ogrenci_sonuc.png', 'mainAxisCellCount': 1.8, 'subjectKey': 'sosyal_bilgiler'},
-    {'title': 'MÜZİK', 'color': Color(0xFFFFAB01), 'image': 'assets/muzik_icon.png', 'mainAxisCellCount': 1.6, 'subjectKey': 'muzik'},
-    {'title': 'İNGİLİZCE', 'color': Color(0xFF6CB28E), 'image': 'assets/bireysel_rapor.png', 'mainAxisCellCount': 1.2, 'subjectKey': 'ingilizce'},
+    {
+      'title': 'MATEMATİK',
+      'color': Color(0xFFB9DCDC),
+      'image': 'assets/mat_icon.png',
+      'subjectKey': 'matematik',
+    },
+    {
+      'title': 'TÜRKÇE',
+      'color': Color(0xFFDDB0BD),
+      'image': 'assets/turkce_icon.png',
+      'subjectKey': 'turkce',
+    },
+    {
+      'title': 'FEN\nBİLİMLERİ',
+      'color': Color(0xFFF4B49B),
+      'image': 'assets/fen_icon.png',
+      'subjectKey': 'fen_bilimleri',
+    },
+    {
+      'title': 'SOSYAL\nBİLGİLER',
+      'color': Color(0xFF5EC4BE),
+      'image': 'assets/ogrenci_sonuc.png',
+      'subjectKey': 'sosyal_bilgiler',
+    },
+    {
+      'title': 'İNGİLİZCE',
+      'color': Color(0xFFBFDCDC),
+      'image': 'assets/bireysel_rapor.png',
+      'subjectKey': 'ingilizce',
+    },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEFF1FF),
+      backgroundColor: const Color(0xFFEDEAFF),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Geri Dön Butonu
-              Padding(
-                padding: EdgeInsets.only(bottom: 12),
+              /// 🔙 Geri Butonu
+              Align(
+                alignment: Alignment.centerLeft,
                 child: GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Icon(Icons.arrow_back, color: Colors.black),
+                  child: const CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.arrow_back),
                   ),
                 ),
               ),
-              // Başlık + Arama Kutusu
+
+              const SizedBox(height: 16),
+
+              /// 🔵 Header
               Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Color(0xFF4E74F9).withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(25),
+                  color: const Color(0xFFDAD4F7),
+                  borderRadius: BorderRadius.circular(24),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "DERSLERİM",
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                    const Text(
+                      'DERSLERİM',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                    SizedBox(height: 24),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: "Ders ara...",
-                        prefixIcon: Icon(Icons.search),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide.none,
+                    const SizedBox(height: 14),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Ders ara...',
+                          prefixIcon: Icon(Icons.search),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 16),
 
-              // DERS KARTLARI
-              StaggeredGrid.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                children: lessons.map((lesson) {
-                  return StaggeredGridTile.count(
-                    crossAxisCellCount: 1,
-                    mainAxisCellCount: lesson['mainAxisCellCount'],
-                    child: GestureDetector(
+              const SizedBox(height: 20),
+
+              /// 📚 Dersler
+              Expanded(
+                child: ListView.separated(
+                  itemCount: lessons.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 14),
+                  itemBuilder: (context, index) {
+                    final lesson = lessons[index];
+                    return GestureDetector(
                       onTap: () {
-                        // Firestore field karşılığı ile SHome'a gönder
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SHome(
+                            builder: (_) => SHome(
                               lessonTitle: lesson['title'],
-                              subject: lesson['subjectKey'], 
+                              subject: lesson['subjectKey'],
                             ),
                           ),
                         );
                       },
                       child: Container(
+                        height: 90,
+                        padding: const EdgeInsets.symmetric(horizontal: 18),
                         decoration: BoxDecoration(
                           color: lesson['color'],
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                child: Text(
-                                  lesson['title'],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              lesson['title'],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                              SizedBox(height: 10),
-                              Image.asset(
-                                lesson['image'],
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
+                            ),
+                            Image.asset(
+                              lesson['image'],
+                              height: 50,
+                              fit: BoxFit.contain,
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  },
+                ),
               ),
             ],
           ),

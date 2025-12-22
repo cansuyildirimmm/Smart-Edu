@@ -4,6 +4,7 @@ import 'package:smartedu/screens/SMyNotes.dart';
 import 'package:smartedu/screens/SMyProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smartedu/screens/SBanaOzel.dart';
 
 class SMainMenuScreen extends StatefulWidget {
   const SMainMenuScreen({Key? key}) : super(key: key);
@@ -63,9 +64,7 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        userName.isNotEmpty
-                            ? "Merhaba $userName"
-                            : "Merhaba",
+                        userName.isNotEmpty ? "Merhaba $userName" : "Merhaba",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -280,8 +279,7 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const SMyNotes()),
+                      MaterialPageRoute(builder: (context) => const SMyNotes()),
                     );
                   },
                   child: Column(
@@ -354,8 +352,8 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
                             hintText: "Asistan'a Sor..",
                             hintStyle: const TextStyle(color: Colors.white70),
                             border: InputBorder.none,
-                            prefixIcon: const Icon(Icons.search,
-                                color: Colors.white70),
+                            prefixIcon:
+                                const Icon(Icons.search, color: Colors.white70),
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 12),
                           ),
@@ -378,8 +376,7 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
       // BOTTOM NAVIGATION
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        margin:
-            const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+        margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
         decoration: BoxDecoration(
           color: const Color(0xFFFF5C5C),
           borderRadius: BorderRadius.circular(30),
@@ -404,11 +401,16 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
               case 2:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const SMyNotes()),
+                  MaterialPageRoute(builder: (context) => const SBanaOzel()),
                 );
                 break;
               case 3:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SMyNotes()),
+                );
+                break;
+              case 4:
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SMyProfile()),
@@ -418,10 +420,10 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
           },
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
+            BottomNavigationBarItem(icon: Icon(Icons.library_books), label: ""),
             BottomNavigationBarItem(
-                icon: Icon(Icons.library_books), label: ""),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.description), label: ""),
+                icon: Icon(Icons.star), label: ""), // ⭐ Bana Özel
+            BottomNavigationBarItem(icon: Icon(Icons.description), label: ""),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline), label: ""),
           ],

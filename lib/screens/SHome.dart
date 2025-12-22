@@ -1,84 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/screens/GeminiEğitimSayfasi.dart';
-import 'package:smartedu/screens/STopics.dart'; 
+import 'package:smartedu/screens/STopics.dart';
 
 class SHome extends StatelessWidget {
   final String lessonTitle;
-  final String subject;     
-  final String testGrade;   
+  final String subject;
+  final String testGrade;
 
   const SHome({
     super.key,
     required this.lessonTitle,
     required this.subject,
-    this.testGrade = '2',   
+    this.testGrade = '2',
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEFF1FF),
+      backgroundColor: const Color(0xFFE6F5F5),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Üst bar
-              Container(
-                height: 70,
-                color: const Color(0xFFCFEFF2),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white54,
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.arrow_back,
-                              color: Color(0xFF040415)),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            lessonTitle,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF2C3E50),
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 48),
-                    ],
-                  ),
+        child: Column(
+          children: [
+            // ===== HEADER =====
+            Container(
+              height: 70,
+              decoration: const BoxDecoration(
+                color: Color(0xFFBFE8E8),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(24),
                 ),
               ),
-              const SizedBox(height: 20),
+              child: Row(
+                children: [
+                  const SizedBox(width: 8),
+                  Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_new,
+                          size: 18, color: Colors.black),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    lessonTitle,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  const SizedBox(width: 40),
+                ],
+              ),
+            ),
 
-              // Kartlar
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+            // ===== CONTENT =====
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    _buildCard(
-                      context: context,
-                      color: const Color(0xFF30BFC1),
-                      text: 'KONU ANLATIMI',
-                      image: 'assets/konu-anlatim.png',
+                    _menuCard(
+                      text: "KONU\nANLATIMI",
+                      color: const Color(0xFFD9A6B3),
+                      image: "assets/konu-anlatim.png",
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => STopics(
+                            builder: (_) => STopics(
                               lessonTitle: lessonTitle,
                               subject: subject,
                               contentType: 'konu_anlatimi',
@@ -87,21 +81,16 @@ class SHome extends StatelessWidget {
                           ),
                         );
                       },
-                      isImageBig: true,
-                      imageHeight: 110,
-                      textSize: 24,
                     ),
-                    const SizedBox(height: 20),
-                    _buildCard(
-                      context: context,
-                      color: const Color(0xFFEE719E),
-                      text: 'SORU BANKASI',
-                      image: 'assets/soru-b.png',
+                    _menuCard(
+                      text: "SORU\nBANKASI",
+                      color: const Color(0xFF43C6C1),
+                      image: "assets/soru-b.png",
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => STopics(
+                            builder: (_) => STopics(
                               lessonTitle: lessonTitle,
                               subject: subject,
                               contentType: 'soru_bankasi',
@@ -110,21 +99,16 @@ class SHome extends StatelessWidget {
                           ),
                         );
                       },
-                      isImageBig: true,
-                      imageHeight: 110,
-                      textSize: 24,
                     ),
-                    const SizedBox(height: 20),
-                    _buildCard(
-                      context: context,
-                      color: const Color(0xFF46D300).withOpacity(0.7),
-                      text: 'ALIŞTIRMALAR',
-                      image: 'assets/alistirma.png',
+                    _menuCard(
+                      text: "ALIŞTIRMALAR",
+                      color: const Color(0xFFFF6B6B),
+                      image: "assets/alistirma.png",
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => STopics(
+                            builder: (_) => STopics(
                               lessonTitle: lessonTitle,
                               subject: subject,
                               contentType: 'alistirmalar',
@@ -133,20 +117,16 @@ class SHome extends StatelessWidget {
                           ),
                         );
                       },
-                      isImageBig: true,
-                      textSize: 24,
                     ),
-                    const SizedBox(height: 20),
-                    _buildCard(
-                      context: context,
-                      color: const Color(0xFFFFAB01).withOpacity(0.9),
-                      text: 'LABORATUVAR',
-                      image: 'assets/lab.png',
+                    _menuCard(
+                      text: "LABORATUVAR",
+                      color: const Color(0xFFF2B857),
+                      image: "assets/lab.png",
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => STopics(
+                            builder: (_) => STopics(
                               lessonTitle: lessonTitle,
                               subject: subject,
                               contentType: 'laboratuvar',
@@ -155,99 +135,104 @@ class SHome extends StatelessWidget {
                           ),
                         );
                       },
-                      isImageBig: true,
-                      textSize: 24,
                     ),
-                    const SizedBox(height: 30),
-                    _buildCard(
-                      context: context,
-                      color: const Color(0xFF2AA3DF),
-                      text: 'YAPAY ZEKA İLE ÖĞREN',
-                      image: 'assets/ai_robot.png',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const GeminiEgitimSayfasi()),
-                        );
-                      },
-                      isImageBig: false,
-                      height: 100,
-                      textSize: 19,
-                    ),
+                    const SizedBox(height: 12),
+                    _aiCard(context),
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildCard({
-    required BuildContext context,
-    required Color color,
+  // ===== STANDART MENÜ KARTI =====
+  Widget _menuCard({
     required String text,
+    required Color color,
     required String image,
     required VoidCallback onTap,
-    required bool isImageBig,
-    double height = 140,
-    double? imageHeight,
-    required double textSize,
   }) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
       child: Container(
-        height: height,
+        margin: const EdgeInsets.only(bottom: 16),
+        height: 110,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(isImageBig ? 20 : 60),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 6,
-              offset: Offset(0, 3),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(width: 20),
-            Expanded(
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
               child: Text(
                 text,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
-                  fontSize: textSize,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
+            const Spacer(),
             Padding(
-              padding: const EdgeInsets.all(0),
-              child: isImageBig
-                  ? Image.asset(
-                      image,
-                      height: imageHeight ?? 180,
-                      fit: BoxFit.contain,
-                    )
-                  : Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFEBF7FF),
-                      ),
-                      padding: const EdgeInsets.all(20),
-                      child: Image.asset(
-                        image,
-                        height: 90,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+              padding: const EdgeInsets.only(right: 12),
+              child: Image.asset(
+                image,
+                height: 80,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ===== AI CARD =====
+  Widget _aiCard(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const GeminiEgitimSayfasi(),
+          ),
+        );
+      },
+      child: Container(
+        height: 90,
+        decoration: BoxDecoration(
+          color: const Color(0xFF4DD0E1),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Text(
+                "YAPAY ZEKA\nİLE ÖĞREN",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.white,
+                child: Image.asset(
+                  "assets/ai_robot.png",
+                  height: 32,
+                ),
+              ),
             ),
           ],
         ),
