@@ -5,9 +5,10 @@ import 'package:smartedu/screens/SMyProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smartedu/screens/SBanaOzel.dart';
+import 'lesson_mode.dart';
 
 class SMainMenuScreen extends StatefulWidget {
-  const SMainMenuScreen({Key? key}) : super(key: key);
+  const SMainMenuScreen({super.key});
 
   @override
   State<SMainMenuScreen> createState() => _SMainMenuScreenState();
@@ -57,7 +58,7 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
                   height: 80,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFB3F7E0),
+                    color: const Color(0xFFDAD7FF),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -96,6 +97,75 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
                   ),
                 ),
                 const SizedBox(height: 30),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SMyLessons(
+                                mode: LessonMode.derslerim,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF6C5CE7),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Derslerim",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SMyLessons(
+                                mode: LessonMode.banaOzel,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF90DBF4),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Bana Özel",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
 
                 // Son Çalışmalarım
                 Container(
@@ -378,7 +448,7 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
         decoration: BoxDecoration(
-          color: const Color(0xFFFF5C5C),
+          color: const Color(0xFFE66A8A),
           borderRadius: BorderRadius.circular(30),
         ),
         child: BottomNavigationBar(
@@ -395,15 +465,25 @@ class _SMainMenuScreenState extends State<SMainMenuScreen> {
               case 1:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SMyLessons()),
+                  MaterialPageRoute(
+                    builder: (context) => SMyLessons(
+                      mode: LessonMode.derslerim,
+                    ),
+                  ),
                 );
+
                 break;
               case 2:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SBanaOzel()),
+                  MaterialPageRoute(
+                    builder: (context) => SMyLessons(
+                      mode: LessonMode.banaOzel,
+                    ),
+                  ),
                 );
                 break;
+
               case 3:
                 Navigator.push(
                   context,

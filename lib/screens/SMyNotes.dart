@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'SAddNote.dart';
 
 class SMyNotes extends StatefulWidget {
-  const SMyNotes({Key? key}) : super(key: key);
+  const SMyNotes({super.key});
 
   @override
   State<SMyNotes> createState() => _SMyNotesState();
@@ -119,13 +119,13 @@ class _SMyNotesState extends State<SMyNotes> {
               ),
             );
           },
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
           child: const Icon(
             Icons.add,
             color: Colors.white,
             size: 35,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
           ),
         ),
       ),
@@ -191,7 +191,7 @@ class _SMyNotesState extends State<SMyNotes> {
 class NoteDetailPage extends StatelessWidget {
   final String content;
 
-  const NoteDetailPage({Key? key, required this.content}) : super(key: key);
+  const NoteDetailPage({super.key, required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +206,8 @@ class NoteDetailPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Text(
             content,
-            style: const TextStyle(fontSize: 20), // Metin boyutunu da düzenledim
+            style:
+                const TextStyle(fontSize: 20), // Metin boyutunu da düzenledim
           ),
         ),
       ),

@@ -1,7 +1,11 @@
+// arkadaşlar bu sayfayı çeşitli versiyonlar denerken yaptım ve şuan kullanılmıyor sanırım
+// silmeye de çekindim
+// kafanızı karıştırmasın lütfen
+
 import 'package:flutter/material.dart';
 
 class SBanaOzel extends StatelessWidget {
-  const SBanaOzel({Key? key}) : super(key: key);
+  const SBanaOzel({super.key});
 
   @override
   Widget build(BuildContext context) {

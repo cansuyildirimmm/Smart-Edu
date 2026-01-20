@@ -9,6 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TeacherMenuScreen extends StatefulWidget {
+  const TeacherMenuScreen({super.key});
+
   @override
   _TeacherMenuScreenState createState() => _TeacherMenuScreenState();
 }
@@ -91,6 +93,8 @@ class _TeacherMenuScreenState extends State<TeacherMenuScreen> {
 }
 
 class HomePageWidget extends StatelessWidget {
+  const HomePageWidget({super.key});
+
   Future<String> _getUserName() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {

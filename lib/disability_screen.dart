@@ -4,7 +4,7 @@ import 'package:smartedu/result_screen.dart';
 class DisabilityScreen extends StatefulWidget {
   final Map<String, int> scores;
 
-  const DisabilityScreen({Key? key, required this.scores}) : super(key: key);
+  const DisabilityScreen({super.key, required this.scores});
 
   @override
   State<DisabilityScreen> createState() => _DisabilityScreenState();
@@ -87,8 +87,7 @@ class _DisabilityScreenState extends State<DisabilityScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 16),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
                         ),
                       ),
                     )),
@@ -101,21 +100,23 @@ class _DisabilityScreenState extends State<DisabilityScreen> {
                       );
                       return;
                     }
-Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ResultScreen(
-        scores: widget.scores,
-        disability: selectedOption!,
-      ),),
-    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultScreen(
+                          scores: widget.scores,
+                          disability: selectedOption!,
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF318FFF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 14),
                     elevation: 4,
                   ),
                   child: Text(

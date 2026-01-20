@@ -1,0 +1,4 @@
+enum LessonMode {
+  derslerim,
+  banaOzel,
+}

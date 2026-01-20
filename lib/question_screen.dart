@@ -13,14 +13,21 @@ class Question {
 
 final List<Question> smartEduQuestions = [
   Question("1. Görselleri kullanarak mı daha iyi öğrenirsiniz?", "Visual"),
-  Question("2. Harita, tablo veya grafiklerle çalışmak size yardımcı olur mu?", "Visual"),
+  Question("2. Harita, tablo veya grafiklerle çalışmak size yardımcı olur mu?",
+      "Visual"),
   Question("3. Bilgileri dinleyerek mi daha iyi öğrenirsiniz?", "Auditory"),
-  Question("4. Bir konuyu anlamak için yüksek sesle tekrar eder misiniz?", "Auditory"),
-  Question("5. Öğrenirken uygulamalı etkinlikler yapmayı tercih eder misiniz?", "Kinesthetic"),
-  Question("6. Deneyerek veya dokunarak mı daha iyi öğrenirsiniz?", "Kinesthetic"),
-  Question("7. Yeni bilgileri yazarak veya okuyarak mı daha iyi öğrenirsiniz?", "Verbal"),
-  Question("8. Öğrendiklerinizi başkalarına anlatmak konuyu pekiştirir mi?", "Verbal"),
-  Question("9. Problemleri neden-sonuç ilişkisiyle mi öğrenirsiniz?", "Logical"),
+  Question("4. Bir konuyu anlamak için yüksek sesle tekrar eder misiniz?",
+      "Auditory"),
+  Question("5. Öğrenirken uygulamalı etkinlikler yapmayı tercih eder misiniz?",
+      "Kinesthetic"),
+  Question(
+      "6. Deneyerek veya dokunarak mı daha iyi öğrenirsiniz?", "Kinesthetic"),
+  Question("7. Yeni bilgileri yazarak veya okuyarak mı daha iyi öğrenirsiniz?",
+      "Verbal"),
+  Question("8. Öğrendiklerinizi başkalarına anlatmak konuyu pekiştirir mi?",
+      "Verbal"),
+  Question(
+      "9. Problemleri neden-sonuç ilişkisiyle mi öğrenirsiniz?", "Logical"),
   Question("10. Öğrenirken sistematik planlar yapar mısınız?", "Logical"),
 ];
 
@@ -30,10 +37,10 @@ class QuestionScreen extends StatefulWidget {
   final VoidCallback onFinished;
 
   const QuestionScreen({
-    Key? key,
+    super.key,
     required this.onAnswerQuestion,
     required this.onFinished,
-  }) : super(key: key);
+  });
 
   @override
   _QuestionScreenState createState() => _QuestionScreenState();
@@ -72,13 +79,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
             _selectedPoints = points;
           });
         },
-        child: Text(text),
         style: ElevatedButton.styleFrom(
           backgroundColor: isSelected ? Colors.indigoAccent : Colors.grey[300],
           foregroundColor: isSelected ? Colors.white : Colors.black,
           minimumSize: Size(double.infinity, 50),
           textStyle: TextStyle(fontSize: 16),
         ),
+        child: Text(text),
       ),
     );
   }
@@ -88,8 +95,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     final currentQuestion = smartEduQuestions[_currentIndex];
 
     return Scaffold(
-      appBar:
-      AppBar(
+      appBar: AppBar(
         title: Text("Öğrenme Stili Testi"),
         automaticallyImplyLeading: false,
       ),
@@ -98,7 +104,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
             //  Soru Numarası
             Text(
               "Soru ${_currentIndex + 1} / ${smartEduQuestions.length}",
@@ -136,16 +141,16 @@ class _QuestionScreenState extends State<QuestionScreen> {
             // Sonraki Soru Butonu
             ElevatedButton(
               onPressed: _selectedPoints != null ? _nextQuestion : null,
-              child: Text(
-                _currentIndex == smartEduQuestions.length - 1
-                    ? "Testi Bitir"
-                    : "Sonraki Soru",
-              ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 backgroundColor: Colors.white,
                 disabledBackgroundColor: Colors.grey.shade400,
+              ),
+              child: Text(
+                _currentIndex == smartEduQuestions.length - 1
+                    ? "Testi Bitir"
+                    : "Sonraki Soru",
               ),
             ),
           ],

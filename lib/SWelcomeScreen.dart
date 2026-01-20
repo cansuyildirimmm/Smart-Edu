@@ -3,6 +3,8 @@ import 'package:smartedu/SCreatAccountScreen.dart';
 import 'package:smartedu/SLoginScreen.dart';
 
 class SWelcomeScreen extends StatelessWidget {
+  const SWelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -16,8 +18,11 @@ class SWelcomeScreen extends StatelessWidget {
     final outlinedBorderColor = isDark ? Colors.tealAccent : Color(0xFF00838F);
     final outlinedTextColor = isDark ? Colors.white70 : Color(0xFF00838F);
     final googleButtonColor = isDark ? Color(0xFFD32F2F) : Color(0xFFF44336);
-    final googleShadowColor = isDark ? Colors.redAccent.withOpacity(0.8) : Colors.redAccent.withOpacity(0.6);
-    final secondaryTextColor = isDark ? Colors.white60 : Color(0xFF00838F).withOpacity(0.7);
+    final googleShadowColor = isDark
+        ? Colors.redAccent.withOpacity(0.8)
+        : Colors.redAccent.withOpacity(0.6);
+    final secondaryTextColor =
+        isDark ? Colors.white60 : Color(0xFF00838F).withOpacity(0.7);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -92,12 +97,14 @@ class SWelcomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SCreatAccountScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => SCreatAccountScreen()),
                   );
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: outlinedBorderColor, width: 2),
-                  backgroundColor: isDark ? Colors.transparent : Color(0xFFE0F7FF),
+                  backgroundColor:
+                      isDark ? Colors.transparent : Color(0xFFE0F7FF),
                   minimumSize: Size(double.infinity, 54),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),

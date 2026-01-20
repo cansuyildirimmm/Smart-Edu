@@ -8,6 +8,8 @@ void main() {
 }
 
 class TForgotPasswordScreen extends StatelessWidget {
+  const TForgotPasswordScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,10 +28,13 @@ class TForgotPasswordScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20),
-             Text(
-  "Şifrenizi mi Unuttunuz?",
-  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
-),
+              Text(
+                "Şifrenizi mi Unuttunuz?",
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
 
               const SizedBox(height: 10),
               Text(
@@ -37,7 +42,7 @@ class TForgotPasswordScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
               const SizedBox(height: 20),
-              
+
               // E-Posta Butonu
               OptionButton(
                 icon: Icons.email,
@@ -92,6 +97,7 @@ class OptionButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const OptionButton({
+    super.key,
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -122,8 +128,9 @@ class OptionButton extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-
+                Text(title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black)),
                 Text(subtitle, style: TextStyle(color: Colors.black54)),
               ],
             ),

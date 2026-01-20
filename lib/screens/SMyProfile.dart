@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'SMainMenuScreen.dart';
 
 class SMyProfile extends StatefulWidget {
-  const SMyProfile({Key? key}) : super(key: key);
+  const SMyProfile({super.key});
 
   @override
   State<SMyProfile> createState() => _SMyProfileState();
@@ -18,7 +18,8 @@ class _SMyProfileState extends State<SMyProfile> {
     User? user = _auth.currentUser;
     if (user == null) return null;
 
-    DocumentSnapshot doc = await _firestore.collection('students').doc(user.uid).get();
+    DocumentSnapshot doc =
+        await _firestore.collection('students').doc(user.uid).get();
     if (doc.exists) {
       return doc.data() as Map<String, dynamic>;
     }
@@ -62,7 +63,8 @@ class _SMyProfileState extends State<SMyProfile> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.grey[300],
-                        child: const Icon(Icons.person, size: 70, color: Colors.white),
+                        child: const Icon(Icons.person,
+                            size: 70, color: Colors.white),
                       ),
                       Positioned(
                         bottom: 0,
@@ -70,20 +72,39 @@ class _SMyProfileState extends State<SMyProfile> {
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
                           radius: 16,
-                          child: const Icon(Icons.camera_alt, size: 16, color: Color(0xFF50D4DB)),
+                          child: const Icon(Icons.camera_alt,
+                              size: 16, color: Color(0xFF50D4DB)),
                         ),
                       )
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Text(userData['name'] ?? "Öğrenci İsmi", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  Text(userData['email'] ?? "Deneme@mail.com", style: TextStyle(color: Colors.grey[600])),
+                  Text(userData['name'] ?? "Öğrenci İsmi",
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(userData['email'] ?? "Deneme@mail.com",
+                      style: TextStyle(color: Colors.grey[600])),
                   const SizedBox(height: 30),
-                  _buildInfoCard("Okul", userData['school'] ?? "Öğrencinin Okulu", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
-                  _buildInfoCard("Sınıf Seviyesi", userData['classLevel'] ?? "Öğrencinin Sınıf Seviyesi", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
-                  _buildInfoCard("Okul Numarası", userData['studentNumber'] ?? "Okul Numarası", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
-                  _buildInfoCard("Telefon Numarası", userData['phone'] ?? "Telefon Numarası", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black),
-                  _buildInfoCard("Şifre", "****************", cardColor: const Color(0xFFA2FF3F).withOpacity(0.7), textColor: Colors.black, isPassword: true),
+                  _buildInfoCard(
+                      "Okul", userData['school'] ?? "Öğrencinin Okulu",
+                      cardColor: const Color(0xFFA2FF3F).withOpacity(0.7),
+                      textColor: Colors.black),
+                  _buildInfoCard("Sınıf Seviyesi",
+                      userData['classLevel'] ?? "Öğrencinin Sınıf Seviyesi",
+                      cardColor: const Color(0xFFA2FF3F).withOpacity(0.7),
+                      textColor: Colors.black),
+                  _buildInfoCard("Okul Numarası",
+                      userData['studentNumber'] ?? "Okul Numarası",
+                      cardColor: const Color(0xFFA2FF3F).withOpacity(0.7),
+                      textColor: Colors.black),
+                  _buildInfoCard("Telefon Numarası",
+                      userData['phone'] ?? "Telefon Numarası",
+                      cardColor: const Color(0xFFA2FF3F).withOpacity(0.7),
+                      textColor: Colors.black),
+                  _buildInfoCard("Şifre", "****************",
+                      cardColor: const Color(0xFFA2FF3F).withOpacity(0.7),
+                      textColor: Colors.black,
+                      isPassword: true),
                 ],
               ),
             );
@@ -108,7 +129,8 @@ class _SMyProfileState extends State<SMyProfile> {
             if (index == 0) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const SMainMenuScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const SMainMenuScreen()),
               );
             } else if (index == 3) {
               // Profil ekranında zaten olduğumuz için bir şey yapma
@@ -118,14 +140,18 @@ class _SMyProfileState extends State<SMyProfile> {
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
             BottomNavigationBarItem(icon: Icon(Icons.library_books), label: ""),
             BottomNavigationBarItem(icon: Icon(Icons.description), label: ""),
-            BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ""),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline), label: ""),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(String title, String value, {bool isPassword = false, required Color cardColor, required Color textColor}) {
+  Widget _buildInfoCard(String title, String value,
+      {bool isPassword = false,
+      required Color cardColor,
+      required Color textColor}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
       child: Card(
@@ -135,8 +161,10 @@ class _SMyProfileState extends State<SMyProfile> {
           borderRadius: BorderRadius.circular(12),
         ),
         child: ListTile(
-          title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: textColor)),
-          subtitle: Text(isPassword ? "********" : value, style: TextStyle(color: textColor)),
+          title: Text(title,
+              style: TextStyle(fontWeight: FontWeight.bold, color: textColor)),
+          subtitle: Text(isPassword ? "********" : value,
+              style: TextStyle(color: textColor)),
         ),
       ),
     );

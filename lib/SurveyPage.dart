@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:smartedu/disability_screen.dart';
 import 'package:smartedu/question_screen.dart';
 
-
-
 class SurveyPage extends StatefulWidget {
+  const SurveyPage({super.key});
+
   @override
   _SurveyPageState createState() => _SurveyPageState();
 }

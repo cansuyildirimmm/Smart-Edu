@@ -3,6 +3,8 @@ import 'package:smartedu/TCreatAccountScreen.dart';
 import 'package:smartedu/TLoginScreen.dart';
 
 class TWelcomeScreen extends StatelessWidget {
+  const TWelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

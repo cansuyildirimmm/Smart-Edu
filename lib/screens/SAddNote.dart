@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SAddNote extends StatefulWidget {
   final Function(String, String) onNoteAdded;
 
-  const SAddNote({Key? key, required this.onNoteAdded}) : super(key: key);
+  const SAddNote({super.key, required this.onNoteAdded});
 
   @override
   _SAddNoteState createState() => _SAddNoteState();
@@ -72,8 +72,8 @@ class _SAddNoteState extends State<SAddNote> {
                 alignment: Alignment.bottomRight,
                 child: FloatingActionButton(
                   onPressed: _saveNote,
-                  child: const Icon(Icons.check),
                   backgroundColor: Colors.blueGrey,
+                  child: const Icon(Icons.check),
                 ),
               ),
             ],

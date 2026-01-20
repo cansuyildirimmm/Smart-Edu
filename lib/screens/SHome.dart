@@ -1,64 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/screens/GeminiEğitimSayfasi.dart';
 import 'package:smartedu/screens/STopics.dart';
+import 'lesson_mode.dart';
 
 class SHome extends StatelessWidget {
   final String lessonTitle;
   final String subject;
   final String testGrade;
+  final LessonMode mode;
 
   const SHome({
     super.key,
     required this.lessonTitle,
     required this.subject,
+    required this.mode,
     this.testGrade = '2',
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool isBanaOzel = mode == LessonMode.banaOzel;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFE6F5F5),
+      backgroundColor:
+          isBanaOzel ? const Color(0xFFFFF6E5) : const Color(0xFFE6F5F5),
       body: SafeArea(
         child: Column(
           children: [
-            // ===== HEADER =====
-            Container(
-              height: 70,
-              decoration: const BoxDecoration(
-                color: Color(0xFFBFE8E8),
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(24),
-                ),
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 8),
-                  Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_new,
-                          size: 18, color: Colors.black),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    lessonTitle,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Spacer(),
-                  const SizedBox(width: 40),
-                ],
-              ),
-            ),
+            /// ===== HEADER =====
+            isBanaOzel ? _banaOzelHeader(context) : _derslerimHeader(context),
 
-            // ===== CONTENT =====
+            /// ===== CONTENT =====
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
@@ -77,6 +49,7 @@ class SHome extends StatelessWidget {
                               subject: subject,
                               contentType: 'konu_anlatimi',
                               testGrade: testGrade,
+                              mode: mode,
                             ),
                           ),
                         );
@@ -95,6 +68,7 @@ class SHome extends StatelessWidget {
                               subject: subject,
                               contentType: 'soru_bankasi',
                               testGrade: testGrade,
+                              mode: mode,
                             ),
                           ),
                         );
@@ -113,6 +87,7 @@ class SHome extends StatelessWidget {
                               subject: subject,
                               contentType: 'alistirmalar',
                               testGrade: testGrade,
+                              mode: mode,
                             ),
                           ),
                         );
@@ -131,6 +106,7 @@ class SHome extends StatelessWidget {
                               subject: subject,
                               contentType: 'laboratuvar',
                               testGrade: testGrade,
+                              mode: mode,
                             ),
                           ),
                         );
@@ -148,7 +124,97 @@ class SHome extends StatelessWidget {
     );
   }
 
-  // ===== STANDART MENÜ KARTI =====
+  // ===== DERSLERİM HEADER (HİÇ DEĞİŞMEDİ) =====
+  Widget _derslerimHeader(BuildContext context) {
+    return Container(
+      height: 70,
+      decoration: const BoxDecoration(
+        color: Color(0xFFBFE8E8),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(24),
+        ),
+      ),
+      child: Row(
+        children: [
+          const SizedBox(width: 8),
+          Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new,
+                  size: 18, color: Colors.black),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+          const Spacer(),
+          Text(
+            lessonTitle,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Spacer(),
+          const SizedBox(width: 40),
+        ],
+      ),
+    );
+  }
+
+  // ===== BANA ÖZEL HEADER (FIGMA UYUMLU – SADECE GÖRSEL) =====
+  Widget _banaOzelHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
+      decoration: const BoxDecoration(
+        color: Color(0xFF7EE1D6), // figma mint tonu
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.white,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+              const Spacer(),
+              Image.asset(
+                'assets/koala.png', // figmadaki kuş/koala
+                height: 80,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            lessonTitle,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Senin için\nHazırlananlar',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ===== MENÜ KARTI =====
   Widget _menuCard({
     required String text,
     required Color color,
@@ -183,7 +249,6 @@ class SHome extends StatelessWidget {
               child: Image.asset(
                 image,
                 height: 80,
-                fit: BoxFit.contain,
               ),
             ),
           ],

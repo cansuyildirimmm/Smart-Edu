@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 
 class PDFViewerPage extends StatefulWidget {
-  final String storagePath; 
+  final String storagePath;
   final String title;
 
   const PDFViewerPage({
@@ -36,25 +36,22 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
           .ref(widget.storagePath)
           .getDownloadURL();
 
-      
       final response = await http.get(Uri.parse(pdfUrl));
       if (response.statusCode != 200) {
         throw Exception("PDF indirme başarısız: HTTP ${response.statusCode}");
       }
 
-      
-      final filename =
-          widget.title.replaceAll(RegExp(r'[^\w]'), '') + '.pdf';
+      final filename = '${widget.title.replaceAll(RegExp(r'[^\w]'), '')}.pdf';
       final file = File('${(await getTemporaryDirectory()).path}/$filename');
       await file.writeAsBytes(response.bodyBytes);
 
-      if (!mounted) return; 
+      if (!mounted) return;
       setState(() {
         localPath = file.path;
         isLoading = false;
       });
     } catch (e) {
-      if (!mounted) return; 
+      if (!mounted) return;
       setState(() {
         isLoading = false;
         localPath = null;

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'TDetailedResults.dart'; // TDetailedResults.dart sayfasını ekledik
 
 class TStudentResults extends StatelessWidget {
-  const TStudentResults({Key? key}) : super(key: key);
+  const TStudentResults({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = TextEditingController();
+    final TextEditingController controller = TextEditingController();
 
     return Scaffold(
       backgroundColor: const Color(0xFFCFEFF2),
@@ -53,13 +53,13 @@ class TStudentResults extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: TextField(
-                controller: _controller,
+                controller: controller,
                 decoration: InputDecoration(
                   hintText: 'Öğrenci adı',
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.close),
-                    onPressed: () => _controller.clear(),
+                    onPressed: () => controller.clear(),
                   ),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 15),
@@ -71,12 +71,14 @@ class TStudentResults extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (context, index) {
-                  return GestureDetector( // GestureDetector ekledik
+                  return GestureDetector(
+                    // GestureDetector ekledik
                     onTap: () {
                       // TDetailedResults sayfasına geçiş
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => TDetailedResults()),
+                        MaterialPageRoute(
+                            builder: (context) => TDetailedResults()),
                       );
                     },
                     child: Container(

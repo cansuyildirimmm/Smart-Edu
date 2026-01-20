@@ -3,6 +3,8 @@ import 'package:smartedu/SWelcomeScreen.dart';
 import 'package:smartedu/TWelcomeScreen.dart';
 
 class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +86,8 @@ class OnboardingScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => SWelcomeScreen()),
+                              MaterialPageRoute(
+                                  builder: (_) => SWelcomeScreen()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -113,7 +116,8 @@ class OnboardingScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => TWelcomeScreen()),
+                              MaterialPageRoute(
+                                  builder: (_) => TWelcomeScreen()),
                             );
                           },
                           style: OutlinedButton.styleFrom(

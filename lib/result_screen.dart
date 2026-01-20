@@ -4,25 +4,22 @@ import 'package:smartedu/screens/SMainMenuScreen.dart';
 import 'package:smartedu/services/auth.dart'; // 'Testi Tamamla' için SHomeScreen'i import edin (Dosya adını doğrulayın)
 
 class ResultScreen extends StatelessWidget {
-
   final Map<String, int> scores;
   final String disability;
   const ResultScreen({
-    Key? key,
+    super.key,
     required this.scores,
     required this.disability,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-
     final sortedScores = scores.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
     final dominantStyle = sortedScores.first.key;
     final disability = this.disability;
 
     return Scaffold(
-
       backgroundColor: const Color(0xFFEDF1FF),
       body: SafeArea(
         child: Center(
@@ -150,10 +147,11 @@ class ResultScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => SurveyPage(),
                           ),
-                              (route) => route.isFirst,
+                          (route) => route.isFirst,
                         );
                       },
-                      borderRadius: BorderRadius.circular(30), // Ripple efekti için
+                      borderRadius:
+                          BorderRadius.circular(30), // Ripple efekti için
                       child: Column(
                         children: [
                           CircleAvatar(
@@ -182,17 +180,22 @@ class ResultScreen extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () async {
-                        saveTestResult(kullaniciTuru: 'students', learningStyle: dominantStyle, disabilityStatus: disability);
+                        saveTestResult(
+                            kullaniciTuru: 'students',
+                            learningStyle: dominantStyle,
+                            disabilityStatus: disability);
 
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SMainMenuScreen(), // SHome.dart'taki class adınız
+                            builder: (context) =>
+                                SMainMenuScreen(), // SHome.dart'taki class adınız
                           ),
-                              (Route<dynamic> route) => false,
+                          (Route<dynamic> route) => false,
                         );
                       },
-                      borderRadius: BorderRadius.circular(30), // Ripple efekti için
+                      borderRadius:
+                          BorderRadius.circular(30), // Ripple efekti için
                       child: Column(
                         children: [
                           CircleAvatar(
