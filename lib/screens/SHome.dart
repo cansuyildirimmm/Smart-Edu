@@ -6,7 +6,7 @@ import 'lesson_mode.dart';
 class SHome extends StatelessWidget {
   final String lessonTitle;
   final String subject;
-  final String testGrade;
+  final int testGrade;
   final LessonMode mode;
 
   const SHome({
@@ -14,7 +14,7 @@ class SHome extends StatelessWidget {
     required this.lessonTitle,
     required this.subject,
     required this.mode,
-    this.testGrade = '2',
+    this.testGrade = 2,
   });
 
   @override
@@ -50,6 +50,7 @@ class SHome extends StatelessWidget {
                               contentType: 'konu_anlatimi',
                               testGrade: testGrade,
                               mode: mode,
+                              isQuestionBank: false, // 🔹 otomatik ayarlandı
                             ),
                           ),
                         );
@@ -69,6 +70,7 @@ class SHome extends StatelessWidget {
                               contentType: 'soru_bankasi',
                               testGrade: testGrade,
                               mode: mode,
+                              isQuestionBank: true, // 🔹 otomatik ayarlandı
                             ),
                           ),
                         );
@@ -88,6 +90,7 @@ class SHome extends StatelessWidget {
                               contentType: 'alistirmalar',
                               testGrade: testGrade,
                               mode: mode,
+                              isQuestionBank: false, // 🔹 otomatik ayarlandı
                             ),
                           ),
                         );
@@ -107,6 +110,7 @@ class SHome extends StatelessWidget {
                               contentType: 'laboratuvar',
                               testGrade: testGrade,
                               mode: mode,
+                              isQuestionBank: false, // 🔹 otomatik ayarlandı
                             ),
                           ),
                         );

@@ -1,15 +1,16 @@
-// STopics.dart
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smartedu/screens/SMaterialTypePage.dart';
 import 'lesson_mode.dart';
+import 'package:smartedu/screens/TestListPage.dart';
 
 class STopics extends StatelessWidget {
   final String lessonTitle;
   final String subject;
-  final String contentType;
-  final String testGrade;
+  final String contentType; 
+  final int testGrade;
   final LessonMode mode;
+  final bool isQuestionBank; 
 
   STopics({
     super.key,
@@ -18,27 +19,44 @@ class STopics extends StatelessWidget {
     required this.contentType,
     required this.testGrade,
     required this.mode,
+    required this.isQuestionBank, 
   });
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Stream<List<Map<String, dynamic>>> getTopics() {
-    return _firestore
-        .collection('materials')
-        .where('subject', isEqualTo: subject)
-        .where('contentType', isEqualTo: contentType)
-        .where('grade', isEqualTo: int.parse(testGrade))
-        .snapshots()
-        .map((snapshot) {
-      final docs = snapshot.docs.map((doc) => doc.data()).toList();
-
-      final Map<String, Map<String, dynamic>> uniqueTopics = {};
-      for (var item in docs) {
-        uniqueTopics[item['title']] = item;
-      }
-
-      return uniqueTopics.values.toList();
-    });
+    if (isQuestionBank) {
+      return _firestore
+          .collection('tests')
+          .where('subject', isEqualTo: subject)
+          .where('grade', isEqualTo: testGrade)
+          .snapshots()
+          .map((snapshot) {
+        final docs = snapshot.docs.map((doc) => doc.data()).toList();
+        final Map<String, Map<String, dynamic>> uniqueTopics = {};
+        for (var item in docs) {
+          if (!uniqueTopics.containsKey(item['topic'])) {
+            uniqueTopics[item['topic']] = item;
+          }
+        }
+        return uniqueTopics.values.toList();
+      });
+    } else {
+      return _firestore
+          .collection('materials')
+          .where('subject', isEqualTo: subject)
+          .where('contentType', isEqualTo: contentType)
+          .where('grade', isEqualTo: testGrade)
+          .snapshots()
+          .map((snapshot) {
+        final docs = snapshot.docs.map((doc) => doc.data()).toList();
+        final Map<String, Map<String, dynamic>> uniqueTopics = {};
+        for (var item in docs) {
+          uniqueTopics[item['title']] = item;
+        }
+        return uniqueTopics.values.toList();
+      });
+    }
   }
 
   @override
@@ -67,23 +85,41 @@ class STopics extends StatelessWidget {
                 final topics = snapshot.data!;
 
                 return SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   child: Column(
                     children: topics.map((topic) {
+                      final String title = topic['title'];
+
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SMaterialTypePage(
-                                title: topic['title'],
-                                subject: subject,
-                                contentType: contentType,
-                                testGrade: testGrade,
+                          if (isQuestionBank) {
+                            // 🔹 DÜZELTME: TestListPage'e giderken isBanaOzel parametresini gönderiyoruz
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TestListPage(
+                                  subject: subject,
+                                  grade: testGrade,
+                                  topic: topic['topic'], 
+                                  title: topic['title'], 
+                                  isBanaOzel: isBanaOzel, // 🔥 KRİTİK EKLENTİ
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SMaterialTypePage(
+                                  title: title,
+                                  subject: subject,
+                                  contentType: contentType,
+                                  testGrade: testGrade,
+                                  isBanaOzel: isBanaOzel, 
+                                ),
+                              ),
+                            );
+                          }
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 6),
@@ -92,15 +128,20 @@ class STopics extends StatelessWidget {
                           height: 80,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            border: Border.all(color: Colors.redAccent),
-                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                              color: isBanaOzel 
+                                  ? const Color(0xFF7FE3D6) 
+                                  : const Color(0xFFFF5C5C), // RedAccent yerine AppBar rengiyle uyumlu yapıldı
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12), // Daha modern görünüm için 5'ten 12'ye çekildi
                           ),
                           child: Center(
                             child: Text(
-                              topic['title'],
+                              title,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 18, // 20 biraz büyüktü, 18 daha dengeli
                                 color: Colors.black,
                               ),
                             ),
@@ -118,24 +159,22 @@ class STopics extends StatelessWidget {
     );
   }
 
-  // ===== DERSLERİM APPBAR (HİÇ DEĞİŞMEDİ) =====
   AppBar _derslerimAppBar() {
     return AppBar(
       title: Text(
         lessonTitle,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
-          color: Color(0xFF2C3E50),
+          color: Colors.white,
         ),
       ),
-      backgroundColor: const Color(0xFFFF5C5C).withOpacity(0.8),
-      iconTheme: const IconThemeData(color: Colors.black),
+      backgroundColor: const Color(0xFFFF5C5C),
+      iconTheme: const IconThemeData(color: Colors.white),
       centerTitle: true,
       elevation: 0,
     );
   }
 
-  // ===== BANA ÖZEL HEADER (FIGMA – KUŞLU / KOALALI) =====
   Widget _banaOzelHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -153,7 +192,7 @@ class STopics extends StatelessWidget {
               CircleAvatar(
                 backgroundColor: Colors.white,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFF4DB6AC)),
                   onPressed: () => Navigator.pop(context),
                 ),
               ),

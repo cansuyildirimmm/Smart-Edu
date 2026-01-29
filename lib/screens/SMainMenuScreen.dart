@@ -4,7 +4,6 @@ import 'package:smartedu/screens/SMyNotes.dart';
 import 'package:smartedu/screens/SMyProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:smartedu/screens/SBanaOzel.dart';
 import 'lesson_mode.dart';
 
 class SMainMenuScreen extends StatefulWidget {
