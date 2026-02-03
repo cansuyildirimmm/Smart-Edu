@@ -5,14 +5,12 @@ import 'package:smartedu/services/auth.dart';
 
 void main() {
   runApp(MaterialApp(
-
     home: TCreateAccountScreen(),
   ));
 }
 
-
 class TCreateAccountScreen extends StatefulWidget {
-  TCreateAccountScreen({super.key});
+  const TCreateAccountScreen({super.key});
 
   @override
   _TCreateAccountScreenState createState() => _TCreateAccountScreenState();
@@ -26,31 +24,24 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
   final _branchController = TextEditingController();
   final _telNumberController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Color(0xFFFFD93D),
       body: SafeArea(
         child: SingleChildScrollView(
-
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-
                 IconButton(
                   icon: Icon(Icons.arrow_back, size: 28),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
-
                 SizedBox(height: 10),
-
                 Center(
                   child: Text(
                     "HESAP OLUŞTURUN",
@@ -61,16 +52,19 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 20),
                 _buildTextField(Icons.person, "AD-SOYAD", _nameController),
-                _buildTextField(Icons.work, "BRANŞ UZMANLIK ALANI", _branchController),
-                _buildTextField(Icons.school, "ÇALIŞTIĞINIZ OKUL", _schoolController),
-                _buildTextField(Icons.email, "E-POSTA ADRESİ", _emailController),
-                _buildTextField(Icons.phone, "TELEFON NUMARASI", _telNumberController),
-                _buildTextField(Icons.lock, "ŞİFRE", _passwordController, isPassword: true),
+                _buildTextField(
+                    Icons.work, "BRANŞ UZMANLIK ALANI", _branchController),
+                _buildTextField(
+                    Icons.school, "ÇALIŞTIĞINIZ OKUL", _schoolController),
+                _buildTextField(
+                    Icons.email, "E-POSTA ADRESİ", _emailController),
+                _buildTextField(
+                    Icons.phone, "TELEFON NUMARASI", _telNumberController),
+                _buildTextField(Icons.lock, "ŞİFRE", _passwordController,
+                    isPassword: true),
                 SizedBox(height: 20),
-
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -81,7 +75,6 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-
                     onPressed: () async {
                       await createAccount(
                         _emailController.text,
@@ -93,7 +86,6 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
                         _telNumberController.text,
                         "teachers",
                       );
-
                     },
                     child: Text(
                       "KAYIT OL",
@@ -101,7 +93,6 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 15),
                 Center(
                   child: TextButton(
@@ -110,7 +101,6 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
                         context,
                         MaterialPageRoute(builder: (context) => TLoginScreen()),
                       );
-
                     },
                     child: Text(
                       "Zaten bir hesabınız var mı? Giriş Yap",
@@ -118,18 +108,14 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 15),
-
                 Center(
                   child: Text(
                     "Hesabınızla Devam Edin",
                     style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
                 ),
-
                 SizedBox(height: 10),
-
                 Center(
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
@@ -161,13 +147,13 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
     );
   }
 
-
-  Widget _buildTextField(IconData icon, String hint, TextEditingController controller, {bool isPassword = false}) {
+  Widget _buildTextField(
+      IconData icon, String hint, TextEditingController controller,
+      {bool isPassword = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: TextField(
         controller: controller,
-
         obscureText: isPassword,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.black),
@@ -179,7 +165,9 @@ class _TCreateAccountScreenState extends State<TCreateAccountScreen> {
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,
           ),
-          suffixIcon: isPassword ? Icon(Icons.visibility_off, color: Colors.black54) : null,
+          suffixIcon: isPassword
+              ? Icon(Icons.visibility_off, color: Colors.black54)
+              : null,
         ),
       ),
     );

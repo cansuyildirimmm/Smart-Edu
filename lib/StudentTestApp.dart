@@ -17,9 +17,6 @@ class StudentTestApp extends StatelessWidget {
   }
 }
 
-
-
-
 class BlindTestScreen extends StatefulWidget {
   const BlindTestScreen({super.key});
 

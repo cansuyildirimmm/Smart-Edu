@@ -2,102 +2,150 @@ import 'package:flutter/material.dart';
 import 'package:smartedu/SWelcomeScreen.dart';
 import 'package:smartedu/TWelcomeScreen.dart';
 
-
-
 class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2A195C),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Görsel
-            Container(
-              width: 300,
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-
-                  image: AssetImage("assets/images/onboard.jpg"),
-
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(height: 50),
-
-            // "Bir seçim yapınız" metni
-            const Text(
-              'Bir seçim yapınız.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Butonlar
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Öğrenci Butonu
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-
-                      MaterialPageRoute(builder: (context) => SWelcomeScreen()),
-
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3D5CFF),
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+      // Arka plan degrade renk
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF3D5CFF), Color(0xFF2A195C)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Başlık
+                  Text(
+                    'Hoşgeldiniz!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
+                      shadows: [
+                        Shadow(
+                          color: Colors.black45,
+                          offset: Offset(1, 2),
+                          blurRadius: 3,
+                        ),
+                      ],
                     ),
                   ),
-                  child: const Text(
-                    "Öğrenci",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 20),
+                  SizedBox(height: 20),
 
-                // Öğretmen Butonu
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-
-                      MaterialPageRoute(builder: (context) => TWelcomeScreen()),
-
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2A195C),
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Colors.white), // Çerçeve ekledim
+                  // Görsel
+                  Container(
+                    height: 220,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 15,
+                          offset: Offset(0, 8),
+                        ),
+                      ],
+                      image: DecorationImage(
+                        image: AssetImage("assets/onboard.jpg"),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    "Öğretmen",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  SizedBox(height: 40),
+
+                  // Seçim açıklaması
+                  Text(
+                    'Lütfen kullanıcı tipinizi seçiniz',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Poppins',
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ],
+                  SizedBox(height: 30),
+
+                  // Butonlar
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Öğrenci Butonu
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => SWelcomeScreen()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            elevation: 8,
+                          ),
+                          child: Text(
+                            "Öğrenci",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF3D5CFF),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20),
+
+                      // Öğretmen Butonu
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => TWelcomeScreen()),
+                            );
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Colors.white, width: 2),
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: Text(
+                            "Öğretmen",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-// onboarding

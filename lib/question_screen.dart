@@ -1,131 +1,161 @@
 import 'package:flutter/material.dart';
-import 'package:smartedu/disability_screen.dart';
 
-class QuestionScreen extends StatelessWidget {
-  const QuestionScreen({super.key});
+// Soru Model Sınıfı
+
+class Question {
+  final String text;
+  final String category;
+
+  Question(this.text, this.category);
+}
+
+//Soruların Listesi
+
+final List<Question> smartEduQuestions = [
+  Question("1. Görselleri kullanarak mı daha iyi öğrenirsiniz?", "Visual"),
+  Question("2. Harita, tablo veya grafiklerle çalışmak size yardımcı olur mu?",
+      "Visual"),
+  Question("3. Bilgileri dinleyerek mi daha iyi öğrenirsiniz?", "Auditory"),
+  Question("4. Bir konuyu anlamak için yüksek sesle tekrar eder misiniz?",
+      "Auditory"),
+  Question("5. Öğrenirken uygulamalı etkinlikler yapmayı tercih eder misiniz?",
+      "Kinesthetic"),
+  Question(
+      "6. Deneyerek veya dokunarak mı daha iyi öğrenirsiniz?", "Kinesthetic"),
+  Question("7. Yeni bilgileri yazarak veya okuyarak mı daha iyi öğrenirsiniz?",
+      "Verbal"),
+  Question("8. Öğrendiklerinizi başkalarına anlatmak konuyu pekiştirir mi?",
+      "Verbal"),
+  Question(
+      "9. Problemleri neden-sonuç ilişkisiyle mi öğrenirsiniz?", "Logical"),
+  Question("10. Öğrenirken sistematik planlar yapar mısınız?", "Logical"),
+];
+
+class QuestionScreen extends StatefulWidget {
+  final Function(int points, String category) onAnswerQuestion;
+
+  final VoidCallback onFinished;
+
+  const QuestionScreen({
+    super.key,
+    required this.onAnswerQuestion,
+    required this.onFinished,
+  });
+
+  @override
+  _QuestionScreenState createState() => _QuestionScreenState();
+}
+
+class _QuestionScreenState extends State<QuestionScreen> {
+  int _currentIndex = 0;
+  int? _selectedPoints;
+
+  void _nextQuestion() {
+    if (_selectedPoints == null) return;
+
+    widget.onAnswerQuestion(
+      _selectedPoints!,
+      smartEduQuestions[_currentIndex].category,
+    );
+
+    if (_currentIndex < smartEduQuestions.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _selectedPoints = null;
+      });
+    } else {
+      widget.onFinished();
+    }
+  }
+
+  Widget _buildAnswerButton(String text, int points) {
+    final isSelected = _selectedPoints == points;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            _selectedPoints = points;
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isSelected ? Colors.indigoAccent : Colors.grey[300],
+          foregroundColor: isSelected ? Colors.white : Colors.black,
+          minimumSize: Size(double.infinity, 50),
+          textStyle: TextStyle(fontSize: 16),
+        ),
+        child: Text(text),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final currentQuestion = smartEduQuestions[_currentIndex];
+
     return Scaffold(
-      backgroundColor: const Color(0xFFEFF3FF),
+      appBar: AppBar(
+        title: Text("Öğrenme Stili Testi"),
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 50),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Geri butonu
-            Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            const Text(
-              '05/10',
+            //  Soru Numarası
+            Text(
+              "Soru ${_currentIndex + 1} / ${smartEduQuestions.length}",
               style: TextStyle(
-                fontSize: 18,
-                color: Colors.teal,
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
+                color: Colors.indigo,
               ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
-
-            // Soru Metni (Daha kısa ve genişliği butonlarla uyumlu)
+            SizedBox(height: 20),
+            Spacer(),
+            //  Soru İçeriği
             Container(
-              padding: const EdgeInsets.all(16),
-              width: 300, // Butonlarla aynı genişlikte
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFD0D9DD),
-                borderRadius: BorderRadius.circular(20),
+                color: Colors.indigo.shade50,
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: const Text(
-                'Soru Metni: Örneğin, "1. Görsellerle daha iyi öğrenirim."',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,  // Kalın metin
-                ),
+              child: Text(
+                currentQuestion.text,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 30),
 
-            // Evet Butonu - Neon Yeşil
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF00FF00), // Neon Yeşil
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,  // Kenarlar dikdörtgen olacak
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 16),
-                shadowColor: Colors.black, // Gölgeyi siyah yaptık
-              ),
-              child: const Text(
-                'EVET',
-                style: TextStyle(
-                  color: Colors.black,  // Yazıyı siyah yaptık
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
+            // Cevap Butonları (Evet/Kısmen/Hayır)
+            _buildAnswerButton("Evet", 3),
+            _buildAnswerButton("Kısmen", 1),
+            _buildAnswerButton("Hayır", 0),
 
-            // Hayır Butonu - Neon Kırmızı
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF0000), // Neon Kırmızı
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,  // Kenarlar dikdörtgen olacak
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 16),
-                shadowColor: Colors.black, // Gölgeyi siyah yaptık
-              ),
-              child: const Text(
-                'HAYIR',
-                style: TextStyle(
-                  color: Colors.black,  // Yazıyı siyah yaptık
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
+            Spacer(),
 
-                // Sonraki Soru Butonu
+            // Sonraki Soru Butonu
             ElevatedButton(
-              onPressed: () {
-                // Sonraki soru işlemi
-                // Burada sonraki soruya geçiş yapabilirsiniz
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>  DisabilityScreen(), // Yeni soru ekranı
-                  ),
-                );
-              },
+              onPressed: _selectedPoints != null ? _nextQuestion : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF00A9FF),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
-                elevation: 6,
-                shadowColor: Colors.blueAccent,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                backgroundColor: Colors.white,
+                disabledBackgroundColor: Colors.grey.shade400,
               ),
-              child: const Text(
-                'Sonraki Soru',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              child: Text(
+                _currentIndex == smartEduQuestions.length - 1
+                    ? "Testi Bitir"
+                    : "Sonraki Soru",
               ),
             ),
           ],
         ),
       ),
     );
-  }}
+  }
+}

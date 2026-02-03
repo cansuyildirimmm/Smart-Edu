@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'TAddNote.dart';
 
-
 class Note {
   String title;
   String content;
@@ -13,14 +12,15 @@ class Note {
 }
 
 class TMyNotes extends StatefulWidget {
+  const TMyNotes({super.key});
+
   @override
   _TMyNotesState createState() => _TMyNotesState();
 }
 
 class _TMyNotesState extends State<TMyNotes> {
-  List<Note> _notes = [];  
+  final List<Note> _notes = [];
 
-  
   void _addNote() {
     Navigator.push(
       context,
@@ -28,7 +28,7 @@ class _TMyNotesState extends State<TMyNotes> {
         builder: (context) => TAddNote(
           onNoteAdded: (newNoteTitle, newNoteContent) {
             setState(() {
-              _notes.add(Note(title: newNoteTitle, content: newNoteContent));  
+              _notes.add(Note(title: newNoteTitle, content: newNoteContent));
             });
           },
         ),
@@ -36,10 +36,9 @@ class _TMyNotesState extends State<TMyNotes> {
     );
   }
 
-  
   Widget _buildNoteCard(Note note) {
     return GestureDetector(
-      onTap: () => _viewNoteDetails(note), 
+      onTap: () => _viewNoteDetails(note),
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         padding: EdgeInsets.all(16),
@@ -48,19 +47,18 @@ class _TMyNotesState extends State<TMyNotes> {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
-          note.title,  
+          note.title,
           style: TextStyle(fontSize: 16),
         ),
       ),
     );
   }
 
-
   void _viewNoteDetails(Note note) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => NoteDetailPage(note: note), 
+        builder: (context) => NoteDetailPage(note: note),
       ),
     );
   }
@@ -77,12 +75,10 @@ class _TMyNotesState extends State<TMyNotes> {
               child: ListView.builder(
                 itemCount: _notes.length,
                 itemBuilder: (context, index) {
-                  return _buildNoteCard(_notes[index]);  
+                  return _buildNoteCard(_notes[index]);
                 },
               ),
             ),
-
-            
             Positioned(
               top: 24,
               left: 16,
@@ -100,8 +96,6 @@ class _TMyNotesState extends State<TMyNotes> {
                 ),
               ),
             ),
-
-            
             Positioned(
               top: 40,
               left: 0,
@@ -124,8 +118,8 @@ class _TMyNotesState extends State<TMyNotes> {
         padding: const EdgeInsets.only(bottom: 12),
         child: FloatingActionButton(
           backgroundColor: Color(0xFF2C3E50),
+          onPressed: _addNote,
           child: Icon(Icons.add, color: Colors.white),
-          onPressed: _addNote,  
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -137,22 +131,22 @@ class _TMyNotesState extends State<TMyNotes> {
 class NoteDetailPage extends StatelessWidget {
   final Note note;
 
-  NoteDetailPage({required this.note});
+  const NoteDetailPage({super.key, required this.note});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(note.title),  
+        title: Text(note.title),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);  
+            Navigator.pop(context);
           },
         ),
-         backgroundColor: Color(0xFFCFEFF2),
+        backgroundColor: Color(0xFFCFEFF2),
       ),
-      backgroundColor: Color(0xFFCFEFF2), 
+      backgroundColor: Color(0xFFCFEFF2),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -160,7 +154,7 @@ class NoteDetailPage extends StatelessWidget {
           children: [
             SizedBox(height: 16),
             Text(
-              note.content,  
+              note.content,
               style: TextStyle(fontSize: 20),
             ),
           ],
@@ -169,6 +163,3 @@ class NoteDetailPage extends StatelessWidget {
     );
   }
 }
-
-
-

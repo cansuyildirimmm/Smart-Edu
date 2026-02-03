@@ -1,0 +1,1 @@
+C:\Users\mavera\Desktop\C++\flutter_application_1\ogretmen_menu\build\app\intermediates\cxx\Debug\2c3m3a25\obj\arm64-v8a

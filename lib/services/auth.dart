@@ -27,8 +27,8 @@ Future<bool> createAccount(
       'password': password,
       'name': name,
       'school': school,
-      'branch': branch, // for teacher
-      'studentNumber': studentNumber, // for student
+      'branch': branch,
+      'studentNumber': studentNumber,
       'telNumber': telNumber,
     });
 
@@ -63,10 +63,10 @@ Future<bool> signIn(BuildContext context, String email, String password, String 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Geçersiz kullanıcı tipi.')),
       );
-      return false; // Geçersiz kullanıcı tipi
+      return false;
     }
 
-    return true; // Başarılı giriş
+    return true;
   } on FirebaseAuthException catch (e) {
     String errorMessage = 'Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.';
     if (e.code == 'user-not-found') {
@@ -86,6 +86,32 @@ Future<bool> signIn(BuildContext context, String email, String password, String 
       SnackBar(content: Text('Giriş sırasında bir hata oluştu: $e')),
     );
     print('Genel Hata: $e');
+    return false;
+  }
+}
+Future<bool> saveTestResult({
+  required String kullaniciTuru,
+  required String learningStyle,
+  required String disabilityStatus,
+}) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return false;
+
+    await FirebaseFirestore.instance
+        .collection(kullaniciTuru)
+        .doc(user.uid)
+        .collection('testResults')
+        .add({
+      'learningStyle': learningStyle,
+      'disabilityStatus': disabilityStatus,
+    });
+
+    print('Test sonucu başarıyla kaydedildi.');
+    return true;
+
+  } catch (e) {
+    print('Test sonucu kaydedilirken hata: $e');
     return false;
   }
 }

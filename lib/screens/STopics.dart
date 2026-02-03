@@ -1,72 +1,229 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smartedu/screens/SMaterialTypePage.dart';
+import 'lesson_mode.dart';
+import 'package:smartedu/screens/TestListPage.dart';
 
 class STopics extends StatelessWidget {
   final String lessonTitle;
+  final String subject;
+  final String contentType; 
+  final int testGrade;
+  final LessonMode mode;
+  final bool isQuestionBank; 
 
-  const STopics({super.key, required this.lessonTitle});
+  STopics({
+    super.key,
+    required this.lessonTitle,
+    required this.subject,
+    required this.contentType,
+    required this.testGrade,
+    required this.mode,
+    required this.isQuestionBank, 
+  });
 
-  final List<String> topics = const [
-    'Doğal Sayılar',
-    'Toplama ve Çıkarma İşlemi',
-    'Çarpma ve Bölme İşlemi',
-    'Kesirler',
-    'Geometrik Şekiller',
-    'Alan Hesaplama',
-    'Zaman Ölçme',
-    'Paralarımız',
-    'Tartma',
-    'Geometrik Cisimler Ve Şekiller',
-    'Geometrik Örüntüler',
-    'Geometrik Temel Kavramlar',
-    'Uzamsal İlişkiler',
-    'Uzunluk - Çevre - Alan Ölçme',
-    'Sıvı Ölçme',
-  ];
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Stream<List<Map<String, dynamic>>> getTopics() {
+    if (isQuestionBank) {
+      return _firestore
+          .collection('tests')
+          .where('subject', isEqualTo: subject)
+          .where('grade', isEqualTo: testGrade)
+          .snapshots()
+          .map((snapshot) {
+        final docs = snapshot.docs.map((doc) => doc.data()).toList();
+        final Map<String, Map<String, dynamic>> uniqueTopics = {};
+        for (var item in docs) {
+          if (!uniqueTopics.containsKey(item['topic'])) {
+            uniqueTopics[item['topic']] = item;
+          }
+        }
+        return uniqueTopics.values.toList();
+      });
+    } else {
+      return _firestore
+          .collection('materials')
+          .where('subject', isEqualTo: subject)
+          .where('contentType', isEqualTo: contentType)
+          .where('grade', isEqualTo: testGrade)
+          .snapshots()
+          .map((snapshot) {
+        final docs = snapshot.docs.map((doc) => doc.data()).toList();
+        final Map<String, Map<String, dynamic>> uniqueTopics = {};
+        for (var item in docs) {
+          uniqueTopics[item['title']] = item;
+        }
+        return uniqueTopics.values.toList();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final bool isBanaOzel = mode == LessonMode.banaOzel;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          lessonTitle,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF2C3E50),
-          ),
-        ),
-        backgroundColor: const Color(0xFFFF5C5C).withOpacity(0.8),
-        iconTheme: const IconThemeData(color: Colors.black),
-        centerTitle: true,
-        elevation: 0,
-      ),
       backgroundColor: const Color(0xFFF5F3FF),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Column(
-          children: topics.map((topic) {
-            return Container(
-              margin: const EdgeInsets.symmetric(vertical: 6),  
-              padding: const EdgeInsets.all(16),
-              width: double.infinity,  
-              height: 80,  
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.redAccent),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Center(  
-                child: Text(
-                  topic,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,  
-                    color: Colors.black,  
+      appBar: isBanaOzel ? null : _derslerimAppBar(),
+      body: Column(
+        children: [
+          if (isBanaOzel) _banaOzelHeader(context),
+          Expanded(
+            child: StreamBuilder<List<Map<String, dynamic>>>(
+              stream: getTopics(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text('Bu bölümde materyal bulunamadı.'),
+                  );
+                }
+
+                final topics = snapshot.data!;
+
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  child: Column(
+                    children: topics.map((topic) {
+                      final String title = topic['title'];
+
+                      return GestureDetector(
+                        onTap: () {
+                          if (isQuestionBank) {
+                            // 🔹 DÜZELTME: TestListPage'e giderken isBanaOzel parametresini gönderiyoruz
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TestListPage(
+                                  subject: subject,
+                                  grade: testGrade,
+                                  topic: topic['topic'], 
+                                  title: topic['title'], 
+                                  isBanaOzel: isBanaOzel, // 🔥 KRİTİK EKLENTİ
+                                ),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SMaterialTypePage(
+                                  title: title,
+                                  subject: subject,
+                                  contentType: contentType,
+                                  testGrade: testGrade,
+                                  isBanaOzel: isBanaOzel, 
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          padding: const EdgeInsets.all(16),
+                          width: double.infinity,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: isBanaOzel 
+                                  ? const Color(0xFF7FE3D6) 
+                                  : const Color(0xFFFF5C5C), // RedAccent yerine AppBar rengiyle uyumlu yapıldı
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12), // Daha modern görünüm için 5'ten 12'ye çekildi
+                          ),
+                          child: Center(
+                            child: Text(
+                              title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18, // 20 biraz büyüktü, 18 daha dengeli
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  AppBar _derslerimAppBar() {
+    return AppBar(
+      title: Text(
+        lessonTitle,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: const Color(0xFFFF5C5C),
+      iconTheme: const IconThemeData(color: Colors.white),
+      centerTitle: true,
+      elevation: 0,
+    );
+  }
+
+  Widget _banaOzelHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        color: Color(0xFF7FE3D6),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.white,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFF4DB6AC)),
+                  onPressed: () => Navigator.pop(context),
                 ),
               ),
-            );
-          }).toList(),
-        ),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Image.asset(
+                  'assets/kus.png',
+                  height: 80,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            lessonTitle,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Senin için\nHazırlananlar',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
+          ),
+        ],
       ),
     );
   }

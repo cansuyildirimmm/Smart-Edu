@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TAddNote extends StatefulWidget {
-  final Function(String, String) onNoteAdded; 
+  final Function(String, String) onNoteAdded;
 
-  TAddNote({required this.onNoteAdded});
+  const TAddNote({super.key, required this.onNoteAdded});
 
   @override
   _TAddNoteState createState() => _TAddNoteState();
@@ -17,9 +17,8 @@ class _TAddNoteState extends State<TAddNote> {
     String title = _titleController.text.trim();
     String content = _contentController.text.trim();
 
-    
     if (title.isNotEmpty || content.isNotEmpty) {
-      widget.onNoteAdded(title, content); 
+      widget.onNoteAdded(title, content);
       Navigator.pop(context);
     }
   }
@@ -55,8 +54,6 @@ class _TAddNoteState extends State<TAddNote> {
                 ],
               ),
               SizedBox(height: 32),
-
-              
               TextField(
                 controller: _titleController,
                 style: TextStyle(
@@ -69,8 +66,6 @@ class _TAddNoteState extends State<TAddNote> {
                   border: InputBorder.none,
                 ),
               ),
-
-              
               TextField(
                 controller: _contentController,
                 decoration: InputDecoration(
@@ -80,16 +75,13 @@ class _TAddNoteState extends State<TAddNote> {
                 ),
                 maxLines: null,
               ),
-
               Spacer(),
-
-              
               Align(
                 alignment: Alignment.bottomRight,
                 child: FloatingActionButton(
                   onPressed: _saveNote,
-                  child: Icon(Icons.check),
                   backgroundColor: Colors.blueGrey,
+                  child: Icon(Icons.check),
                 ),
               )
             ],

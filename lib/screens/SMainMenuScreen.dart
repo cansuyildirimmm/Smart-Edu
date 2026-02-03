@@ -1,10 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/screens/SMyLessons.dart';
 import 'package:smartedu/screens/SMyNotes.dart';
-import 'package:smartedu/screens/SMyProfile.dart'; 
+import 'package:smartedu/screens/SMyProfile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'lesson_mode.dart';
 
-class SMainMenuScreen extends StatelessWidget {
-  const SMainMenuScreen({Key? key}) : super(key: key);
+class SMainMenuScreen extends StatefulWidget {
+  const SMainMenuScreen({super.key});
+
+  @override
+  State<SMainMenuScreen> createState() => _SMainMenuScreenState();
+}
+
+class _SMainMenuScreenState extends State<SMainMenuScreen> {
+  String userName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final doc = await FirebaseFirestore.instance
+            .collection('students')
+            .doc(user.uid)
+            .get();
+        if (doc.exists) {
+          setState(() {
+            userName = doc['name'] ?? '';
+          });
+        }
+      }
+    } catch (e) {
+      print('Kullanıcı adı alınamadı: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,22 +57,21 @@ class SMainMenuScreen extends StatelessWidget {
                   height: 80,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFB3F7E0),
+                    color: const Color(0xFFDAD7FF),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "MERHABA ‘ÖĞRENCİ ADI’",
-                        style: TextStyle(
+                      Text(
+                        userName.isNotEmpty ? "Merhaba $userName" : "Merhaba",
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigate to SMyProfile without hiding the bottom navigation bar
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -62,12 +96,81 @@ class SMainMenuScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SMyLessons(
+                                mode: LessonMode.derslerim,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF6C5CE7),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Derslerim",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SMyLessons(
+                                mode: LessonMode.banaOzel,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF90DBF4),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Bana Özel",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
 
                 // Son Çalışmalarım
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Color(0x80CACFF5),
+                    color: const Color(0x80CACFF5),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
@@ -114,8 +217,11 @@ class SMainMenuScreen extends StatelessWidget {
                                       child: CircularProgressIndicator(
                                         value: 0.7,
                                         strokeWidth: 6,
-                                        backgroundColor: Colors.white.withOpacity(0.2),
-                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                                        backgroundColor:
+                                            Colors.white.withOpacity(0.2),
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                                Colors.blue),
                                       ),
                                     ),
                                     Container(
@@ -126,12 +232,14 @@ class SMainMenuScreen extends StatelessWidget {
                                         shape: BoxShape.circle,
                                       ),
                                     ),
-                                    const Icon(Icons.search, size: 32, color: Colors.white),
+                                    const Icon(Icons.search,
+                                        size: 32, color: Colors.white),
                                   ],
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
-                                  child: Image.asset("assets/over_hnumbers.png", height: 80),
+                                  child: Image.asset("assets/over_hnumbers.png",
+                                      height: 80),
                                 ),
                               ],
                             ),
@@ -169,14 +277,19 @@ class SMainMenuScreen extends StatelessWidget {
                                       child: CircularProgressIndicator(
                                         value: 1.0,
                                         strokeWidth: 4,
-                                        backgroundColor: Colors.white.withOpacity(0.2),
-                                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF2C2C2E)),
+                                        backgroundColor:
+                                            Colors.white.withOpacity(0.2),
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                                Color(0xFF2C2C2E)),
                                       ),
                                     ),
-                                    const Icon(Icons.check_circle, size: 32, color: Colors.green),
+                                    const Icon(Icons.check_circle,
+                                        size: 32, color: Colors.green),
                                   ],
                                 ),
-                                Image.asset("assets/devre_elemanlari.png", height: 80),
+                                Image.asset("assets/devre_elemanlari.png",
+                                    height: 80),
                               ],
                             ),
                           ],
@@ -198,7 +311,7 @@ class SMainMenuScreen extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Color(0x80CACFF5),
+                      color: const Color(0x80CACFF5),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
@@ -224,7 +337,7 @@ class SMainMenuScreen extends StatelessWidget {
                       const SizedBox(width: 8),
                       dersKarti("Müzik", "assets/muzik_icon.png"),
                       const SizedBox(width: 8),
-                      dersKarti("Beden", "assets/notes.png"),
+                      dersKarti("İngilizce", "assets/notes.png"),
                     ],
                   ),
                 ),
@@ -244,7 +357,7 @@ class SMainMenuScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Color(0x80CACFF5),
+                          color: const Color(0x80CACFF5),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text(
@@ -276,7 +389,8 @@ class SMainMenuScreen extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                text: "İyi ilerliyorsun Can. İngilizce 4. yazma çalışmanı bu hafta tamamlamaya çalış ayrıca matematikten de konu anlatımı yap.",
+                                text:
+                                    "İyi ilerliyorsun Can. İngilizce 4. yazma çalışmanı bu hafta tamamlamaya çalış ayrıca matematikten de konu anlatımı yap.",
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.black,
@@ -294,7 +408,7 @@ class SMainMenuScreen extends StatelessWidget {
                 // Asistan kutusu
                 Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFF48484A),
+                    color: const Color(0xFF48484A),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   margin: const EdgeInsets.only(top: 30),
@@ -305,15 +419,18 @@ class SMainMenuScreen extends StatelessWidget {
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
                             hintText: "Asistan'a Sor..",
-                            hintStyle: TextStyle(color: Colors.white70),
+                            hintStyle: const TextStyle(color: Colors.white70),
                             border: InputBorder.none,
-                            prefixIcon: Icon(Icons.search, color: Colors.white70),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                            prefixIcon:
+                                const Icon(Icons.search, color: Colors.white70),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 12),
                           ),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.smart_toy, color: Color(0xFF00A4F0)),
+                        icon: const Icon(Icons.smart_toy,
+                            color: Color(0xFF00A4F0)),
                         onPressed: () {},
                       )
                     ],
@@ -330,7 +447,7 @@ class SMainMenuScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
         decoration: BoxDecoration(
-          color: const Color(0xFFFF5C5C),
+          color: const Color(0xFFE66A8A),
           borderRadius: BorderRadius.circular(30),
         ),
         child: BottomNavigationBar(
@@ -341,19 +458,53 @@ class SMainMenuScreen extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           iconSize: 30,
           onTap: (index) {
-            // Navigate to the SMyProfile screen when the profile icon is tapped
-            if (index == 3) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SMyProfile()), 
-              );
+            switch (index) {
+              case 0:
+                break;
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SMyLessons(
+                      mode: LessonMode.derslerim,
+                    ),
+                  ),
+                );
+
+                break;
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SMyLessons(
+                      mode: LessonMode.banaOzel,
+                    ),
+                  ),
+                );
+                break;
+
+              case 3:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SMyNotes()),
+                );
+                break;
+              case 4:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SMyProfile()),
+                );
+                break;
             }
           },
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
             BottomNavigationBarItem(icon: Icon(Icons.library_books), label: ""),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.star), label: ""), // ⭐ Bana Özel
             BottomNavigationBarItem(icon: Icon(Icons.description), label: ""),
-            BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ""),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline), label: ""),
           ],
         ),
       ),
@@ -363,20 +514,20 @@ class SMainMenuScreen extends StatelessWidget {
   Widget dersKarti(String dersAdi, String imgUrl) {
     return Container(
       width: 150,
-      height: 100, 
+      height: 100,
       decoration: BoxDecoration(
-        color: Color(0xFF3A3A3C),
+        color: const Color(0xFF3A3A3C),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, 
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(imgUrl, height: 50),
           const SizedBox(height: 6),
           Text(
             dersAdi,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
