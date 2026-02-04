@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/SCreatAccountScreen.dart';
 import '/SForgotPasswordScreen.dart';
 import 'package:smartedu/StudentTestApp.dart';
+import 'package:smartedu/screens/SMainMenuScreen.dart';
 import '/services/auth.dart';
 class SLoginScreen extends StatelessWidget {
   final _eMailController = TextEditingController();
@@ -106,10 +107,21 @@ class SLoginScreen extends StatelessWidget {
                 onPressed: () async {
                   bool success = await signIn(context, _eMailController.text, _passwordController.text, "students");
                   if (success) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => StudentTestApp()), // Bu kısmı kendi sayfanla değiştir
-                    );
+                    // Test tamamlanmış mı kontrol et
+                    bool hasTest = await hasCompletedTest();
+                    if (hasTest) {
+                      // Test tamamlanmış, direkt ana menüye git
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SMainMenuScreen()),
+                      );
+                    } else {
+                      // Test tamamlanmamış, teste yönlendir
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => StudentTestApp()),
+                      );
+                    }
                   }
                 },
                 child: Text(

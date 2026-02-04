@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../services/activity_tracking_service.dart';
 
 class TestSolvePage extends StatefulWidget {
   final String subject;
@@ -25,12 +27,14 @@ class TestSolvePage extends StatefulWidget {
 class _TestSolvePageState extends State<TestSolvePage> {
   List<Map<String, dynamic>> questions = [];
   int currentIndex = 0;
-  Map<int, String> userAnswers = {}; 
+  Map<int, String> userAnswers = {};
   bool isLoading = true;
+  DateTime? _testStartTime;
 
   @override
   void initState() {
     super.initState();
+    _testStartTime = DateTime.now();
     _fetchQuestions();
   }
 
@@ -109,7 +113,52 @@ class _TestSolvePageState extends State<TestSolvePage> {
     }
   }
 
-  void _showResult() {
+  Future<void> _saveTestResult(int correctAnswers, int wrongAnswers) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      final duration = _testStartTime != null
+          ? DateTime.now().difference(_testStartTime!).inSeconds
+          : 0;
+
+      // Test sonucunu testScores koleksiyonuna kaydet
+      await FirebaseFirestore.instance
+          .collection('students')
+          .doc(user.uid)
+          .collection('testScores')
+          .add({
+        'subject': widget.subject,
+        'grade': widget.grade,
+        'topic': widget.topic,
+        'testTitle': widget.testTitle,
+        'completedAt': FieldValue.serverTimestamp(),
+        'score': correctAnswers,
+        'totalQuestions': questions.length,
+        'correctAnswers': correctAnswers,
+        'wrongAnswers': wrongAnswers,
+        'duration': duration,
+        'isBanaOzel': widget.isBanaOzel,
+      });
+
+      // Aktivite logla
+      await ActivityTrackingService().logTestActivity(
+        subject: widget.subject,
+        topic: widget.topic,
+        testTitle: widget.testTitle,
+        score: correctAnswers,
+        totalQuestions: questions.length,
+        duration: duration,
+        isBanaOzel: widget.isBanaOzel,
+      );
+
+      print('Test sonucu başarıyla kaydedildi.');
+    } catch (e) {
+      print('Test sonucu kaydetme hatası: $e');
+    }
+  }
+
+  void _showResult() async {
     int score = 0;
     for (int i = 0; i < questions.length; i++) {
       if (userAnswers[i] == questions[i]['correctOption']) {
@@ -119,6 +168,9 @@ class _TestSolvePageState extends State<TestSolvePage> {
 
     int wrong = questions.length - score;
     final Color mainColor = widget.isBanaOzel ? const Color(0xFF4DB6AC) : Colors.redAccent;
+
+    // Test sonucunu Firestore'a kaydet
+    await _saveTestResult(score, wrong);
 
     showDialog(
       context: context,

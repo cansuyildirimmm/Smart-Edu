@@ -115,3 +115,33 @@ Future<bool> saveTestResult({
     return false;
   }
 }
+
+/// Kullanıcının test sonucunun olup olmadığını kontrol et
+Future<bool> hasCompletedTest() async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return false;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('students')
+        .doc(user.uid)
+        .collection('testResults')
+        .limit(1)
+        .get();
+
+    return snapshot.docs.isNotEmpty;
+  } catch (e) {
+    print('Test kontrolü hatası: $e');
+    return false;
+  }
+}
+
+/// Kullanıcı oturumunu kapat
+Future<void> signOut() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    print('Oturum kapatıldı.');
+  } catch (e) {
+    print('Oturum kapatma hatası: $e');
+  }
+}

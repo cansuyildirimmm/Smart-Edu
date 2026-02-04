@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:just_audio/just_audio.dart';
+import '../services/activity_tracking_service.dart';
 
 class PodcastPlayerPage extends StatefulWidget {
   final String storagePath;
   final String title;
+  final String subject;
+  final String topic;
 
   const PodcastPlayerPage({
     super.key,
     required this.storagePath,
     required this.title,
+    this.subject = '',
+    this.topic = '',
   });
 
   @override
@@ -19,11 +24,31 @@ class PodcastPlayerPage extends StatefulWidget {
 class _PodcastPlayerPageState extends State<PodcastPlayerPage> {
   final AudioPlayer _player = AudioPlayer();
   bool isLoading = true;
+  final ActivityTrackingService _activityService = ActivityTrackingService();
+  String? _activityId;
 
   @override
   void initState() {
     super.initState();
     _loadAudio();
+    _startTracking();
+  }
+
+  Future<void> _startTracking() async {
+    _activityId = await _activityService.startMaterialActivity(
+      materialType: 'podcast',
+      subject: widget.subject,
+      topic: widget.topic,
+      title: widget.title,
+    );
+  }
+
+  Future<void> _stopTracking() async {
+    if (_activityId != null) {
+      await _activityService.completeMaterialActivity(
+        activityId: _activityId!,
+      );
+    }
   }
 
   Future<void> _loadAudio() async {
@@ -55,6 +80,7 @@ class _PodcastPlayerPageState extends State<PodcastPlayerPage> {
 
   @override
   void dispose() {
+    _stopTracking();
     _player.dispose();
     super.dispose();
   }

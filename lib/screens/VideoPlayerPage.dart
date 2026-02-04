@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:video_player/video_player.dart';
+import '../services/activity_tracking_service.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   final String storagePath;
   final String title;
+  final String subject;
+  final String topic;
 
   const VideoPlayerPage({
     super.key,
     required this.storagePath,
     required this.title,
+    this.subject = '',
+    this.topic = '',
   });
 
   @override
@@ -19,11 +24,31 @@ class VideoPlayerPage extends StatefulWidget {
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
   VideoPlayerController? _controller;
   bool isLoading = true;
+  final ActivityTrackingService _activityService = ActivityTrackingService();
+  String? _activityId;
 
   @override
   void initState() {
     super.initState();
     _loadVideo();
+    _startTracking();
+  }
+
+  Future<void> _startTracking() async {
+    _activityId = await _activityService.startMaterialActivity(
+      materialType: 'video',
+      subject: widget.subject,
+      topic: widget.topic,
+      title: widget.title,
+    );
+  }
+
+  Future<void> _stopTracking() async {
+    if (_activityId != null) {
+      await _activityService.completeMaterialActivity(
+        activityId: _activityId!,
+      );
+    }
   }
 
   Future<void> _loadVideo() async {
@@ -60,6 +85,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
 
   @override
   void dispose() {
+    _stopTracking();
     _controller?.dispose();
     super.dispose();
   }

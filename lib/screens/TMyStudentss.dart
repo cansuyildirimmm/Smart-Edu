@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
-import 'TAddStudent.dart'; 
+import 'TAddStudent.dart';
+import '../services/teacher_student_service.dart';
 
-class TMyStudentss extends StatelessWidget {
+class TMyStudentss extends StatefulWidget {
   const TMyStudentss({super.key});
+
+  @override
+  State<TMyStudentss> createState() => _TMyStudentssState();
+}
+
+class _TMyStudentssState extends State<TMyStudentss> {
+  final _searchController = TextEditingController();
+  final _service = TeacherStudentService();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +26,7 @@ class TMyStudentss extends StatelessWidget {
       backgroundColor: const Color(0xFFCFEFF2),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),  
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
           child: Column(
             children: [
               // Geri Butonu
@@ -18,12 +34,12 @@ class TMyStudentss extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: Color(0xFFF8F2FF), 
+                    color: Color(0xFFF8F2FF),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back_ios_new),
-                    color: Color(0xFF4C00BF), 
+                    color: const Color(0xFF4C00BF),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -31,7 +47,7 @@ class TMyStudentss extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 30), 
+              const SizedBox(height: 30),
 
               // Başlık
               const Center(
@@ -58,15 +74,29 @@ class TMyStudentss extends StatelessWidget {
                   children: [
                     const Icon(Icons.search, color: Colors.grey),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: _searchController,
+                        decoration: const InputDecoration(
                           hintText: 'Öğrenci adı',
                           border: InputBorder.none,
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value.toLowerCase();
+                          });
+                        },
                       ),
                     ),
-                    const Icon(Icons.clear, color: Colors.grey),
+                    GestureDetector(
+                      onTap: () {
+                        _searchController.clear();
+                        setState(() {
+                          _searchQuery = '';
+                        });
+                      },
+                      child: const Icon(Icons.clear, color: Colors.grey),
+                    ),
                     const SizedBox(width: 8),
                     const Icon(Icons.tune, color: Colors.grey),
                   ],
@@ -78,7 +108,6 @@ class TMyStudentss extends StatelessWidget {
               // Öğrenci Ekle Butonu
               GestureDetector(
                 onTap: () {
-                  // TAddStudent sayfasına geçiş
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const TAddStudent()),
@@ -93,7 +122,6 @@ class TMyStudentss extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Yazı sola
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
@@ -105,8 +133,6 @@ class TMyStudentss extends StatelessWidget {
                           ),
                         ),
                       ),
-
-                      // Sağda artı ikonu
                       Container(
                         margin: const EdgeInsets.only(right: 10),
                         decoration: const BoxDecoration(
@@ -132,94 +158,141 @@ class TMyStudentss extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // Öğrenci Kartları
+              // Öğrenci Kartları - StreamBuilder ile
               Expanded(
-                child: ListView.builder(
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          // Öğrenci Bilgileri
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Öğrenci Adı",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                const Text("Öğrencinin Okulu"),
-                                const SizedBox(height: 8),
-                                
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFF3F4F6), 
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.shopping_bag,
-                                        color: Colors.grey,
-                                        size: 18,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      const Text(
-                                        "SINIF",
-                                        style: TextStyle(fontSize: 13),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      const Icon(
-                                        Icons.note,
-                                        color: Colors.grey,
-                                        size: 18,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      const Text(
-                                        "Öğrenci Numarası",
-                                        style: TextStyle(fontSize: 13),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                child: StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: _service.getTeacherStudents(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('Öğrenciler yüklenirken bir hata oluştu.'),
+                      );
+                    }
+
+                    final students = snapshot.data ?? [];
+
+                    if (students.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'Henüz öğrenci eklemediniz.\nYukarıdaki butonu kullanarak öğrenci ekleyebilirsiniz.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
                           ),
-                          
-                          Column(
+                        ),
+                      );
+                    }
+
+                    // Arama filtresi uygula
+                    final filteredStudents = _searchQuery.isEmpty
+                        ? students
+                        : students.where((s) {
+                            final name = (s['name'] ?? '').toLowerCase();
+                            return name.contains(_searchQuery);
+                          }).toList();
+
+                    if (filteredStudents.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'Aramanızla eşleşen öğrenci bulunamadı.',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      itemCount: filteredStudents.length,
+                      itemBuilder: (context, index) {
+                        final student = filteredStudents[index];
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
                             children: [
-                              Container(
-                                margin: const EdgeInsets.only(top: 5),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFF8F2FF), 
-                                  shape: BoxShape.circle,
+                              // Öğrenci Bilgileri
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      student['name'] ?? 'İsimsiz',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(student['school'] ?? 'Okul bilgisi yok'),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFF3F4F6),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_bag,
+                                            color: Colors.grey,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            student['branch'] ?? 'Sınıf',
+                                            style: const TextStyle(fontSize: 13),
+                                          ),
+                                          const SizedBox(width: 16),
+                                          const Icon(
+                                            Icons.note,
+                                            color: Colors.grey,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            student['studentNumber'] ?? 'No',
+                                            style: const TextStyle(fontSize: 13),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(6),
-                                  child: Icon(
-                                    Icons.person,
-                                    color: Color(0xFF4C00BF), 
-                                    size: 30,
+                              ),
+                              Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 5),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFF8F2FF),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(6),
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Color(0xFF4C00BF),
+                                        size: 30,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     );
                   },
                 ),

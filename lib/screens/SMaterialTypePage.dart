@@ -173,11 +173,26 @@ class SMaterialTypePage extends StatelessWidget {
 
       Widget page;
       if (fileType == 'pdf') {
-        page = PDFViewerPage(storagePath: storagePath, title: title);
+        page = PDFViewerPage(
+          storagePath: storagePath,
+          title: title,
+          subject: subject,
+          topic: contentType,
+        );
       } else if (fileType == 'video') {
-        page = VideoPlayerPage(storagePath: storagePath, title: title);
+        page = VideoPlayerPage(
+          storagePath: storagePath,
+          title: title,
+          subject: subject,
+          topic: contentType,
+        );
       } else {
-        page = PodcastPlayerPage(storagePath: storagePath, title: title);
+        page = PodcastPlayerPage(
+          storagePath: storagePath,
+          title: title,
+          subject: subject,
+          topic: contentType,
+        );
       }
 
       Navigator.push(context, MaterialPageRoute(builder: (context) => page));

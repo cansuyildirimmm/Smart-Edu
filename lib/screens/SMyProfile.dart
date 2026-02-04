@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'SMainMenuScreen.dart';
+import 'package:smartedu/OnboardingScreen.dart';
+import 'package:smartedu/services/auth.dart';
 
 class SMyProfile extends StatefulWidget {
   const SMyProfile({super.key});
@@ -105,6 +107,40 @@ class _SMyProfileState extends State<SMyProfile> {
                       cardColor: const Color(0xFFA2FF3F).withOpacity(0.7),
                       textColor: Colors.black,
                       isPassword: true),
+                  const SizedBox(height: 30),
+                  // Çıkış Yap Butonu
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        await signOut();
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OnboardingScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      icon: const Icon(Icons.logout, color: Colors.white),
+                      label: const Text(
+                        'Çıkış Yap',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             );
