@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartedu/services/tts_service.dart';
 
 // Soru Model Sınıfı
 
@@ -49,6 +50,22 @@ class QuestionScreen extends StatefulWidget {
 class _QuestionScreenState extends State<QuestionScreen> {
   int _currentIndex = 0;
   int? _selectedPoints;
+  final TtsService _ttsService = TtsService();
+
+  @override
+  void initState() {
+    super.initState();
+    _speakQuestion();
+  }
+
+  Future<void> _speakQuestion() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      final q = smartEduQuestions[_currentIndex];
+      String text = "Soru ${_currentIndex + 1}. ${q.text}. Seçenekler: Evet, Kısmen, Hayır.";
+      _ttsService.speak(text);
+    }
+  }
 
   void _nextQuestion() {
     if (_selectedPoints == null) return;
@@ -63,6 +80,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
         _currentIndex++;
         _selectedPoints = null;
       });
+      _speakQuestion();
     } else {
       widget.onFinished();
     }

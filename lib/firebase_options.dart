@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -55,6 +52,14 @@ class DefaultFirebaseOptions {
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDFGvEb6xZFfqrgsXz87_XnWFpjoxgC0b8',
     appId: '1:1023470004948:android:1997dffedea35249cc6941',
+    messagingSenderId: '1023470004948',
+    projectId: 'smart-edu-firebase',
+    storageBucket: 'smart-edu-firebase.firebasestorage.app',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDFGvEb6xZFfqrgsXz87_XnWFpjoxgC0b8',
+    appId: '1:1023470004948:web:1997dffedea35249cc6941',
     messagingSenderId: '1023470004948',
     projectId: 'smart-edu-firebase',
     storageBucket: 'smart-edu-firebase.firebasestorage.app',

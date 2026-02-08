@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'lesson_mode.dart';
 import '../services/teacher_notes_service.dart';
+import '../services/tts_service.dart';
 
 class SMainMenuScreen extends StatefulWidget {
   const SMainMenuScreen({super.key});
@@ -17,11 +18,20 @@ class SMainMenuScreen extends StatefulWidget {
 class _SMainMenuScreenState extends State<SMainMenuScreen> {
   String userName = '';
   final TeacherNotesService _notesService = TeacherNotesService();
+  final TtsService _ttsService = TtsService();
 
   @override
   void initState() {
     super.initState();
     _loadUserName();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(seconds: 1)); // Sayfa geçişi tamamlansın
+      _ttsService.speak("Ana Menüdesiniz.");
+    }
   }
 
   Future<void> _loadUserName() async {

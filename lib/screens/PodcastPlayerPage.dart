@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:just_audio/just_audio.dart';
 import '../services/activity_tracking_service.dart';
+import '../services/tts_service.dart';
 
 class PodcastPlayerPage extends StatefulWidget {
   final String storagePath;
@@ -26,12 +27,21 @@ class _PodcastPlayerPageState extends State<PodcastPlayerPage> {
   bool isLoading = true;
   final ActivityTrackingService _activityService = ActivityTrackingService();
   String? _activityId;
+  final TtsService _ttsService = TtsService();
 
   @override
   void initState() {
     super.initState();
     _loadAudio();
     _startTracking();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 1000));
+      _ttsService.speak("${widget.title} podcasti oynatılıyor.");
+    }
   }
 
   Future<void> _startTracking() async {
@@ -154,6 +164,10 @@ class _PodcastPlayerPageState extends State<PodcastPlayerPage> {
                       ),
                       onPressed: () {
                         _player.playing ? _player.pause() : _player.play();
+                        
+                        if (_ttsService.isEnabled) {
+                           _ttsService.speak(_player.playing ? "Podcast durduruldu" : "Podcast oynatılıyor");
+                        }
                       },
                     ),
                   ],

@@ -6,7 +6,9 @@ import 'package:smartedu/screens/VideoPlayerPage.dart';
 import 'package:smartedu/screens/PodcastPlayerPage.dart';
 import 'package:smartedu/services/recommendation_service.dart';
 
-class SMaterialTypePage extends StatelessWidget {
+import '../services/tts_service.dart';
+
+class SMaterialTypePage extends StatefulWidget {
   final String title;
   final String subject;
   final String contentType;
@@ -23,6 +25,26 @@ class SMaterialTypePage extends StatelessWidget {
   });
 
   @override
+  State<SMaterialTypePage> createState() => _SMaterialTypePageState();
+}
+
+class _SMaterialTypePageState extends State<SMaterialTypePage> {
+  final TtsService _ttsService = TtsService();
+
+  @override
+  void initState() {
+    super.initState();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      _ttsService.speak("Materyal türü seçim ekranındasınız.");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
 
@@ -30,7 +52,7 @@ class SMaterialTypePage extends StatelessWidget {
       backgroundColor: const Color(0xFFF8F9FF),
       appBar: AppBar(
         title: Text(
-          isBanaOzel ? "Senin İçin Önerilenler" : title,
+          widget.isBanaOzel ? "Senin İçin Önerilenler" : widget.title,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xFF2C3E50),
@@ -41,7 +63,7 @@ class SMaterialTypePage extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
       ),
-      body: isBanaOzel
+      body: widget.isBanaOzel
           ? _buildBanaOzelBody(context, userId)
           : _buildNormalBody(context),
     );
@@ -153,11 +175,11 @@ class SMaterialTypePage extends StatelessWidget {
     try {
       final querySnapshot = await FirebaseFirestore.instance
           .collection('materials')
-          .where('subject', isEqualTo: subject)
-          .where('contentType', isEqualTo: contentType)
-          .where('title', isEqualTo: title)
+          .where('subject', isEqualTo: widget.subject)
+          .where('contentType', isEqualTo: widget.contentType)
+          .where('title', isEqualTo: widget.title)
           .where('fileType', isEqualTo: fileType)
-          .where('grade', isEqualTo: testGrade)
+          .where('grade', isEqualTo: widget.testGrade)
           .limit(1)
           .get();
 
@@ -175,23 +197,23 @@ class SMaterialTypePage extends StatelessWidget {
       if (fileType == 'pdf') {
         page = PDFViewerPage(
           storagePath: storagePath,
-          title: title,
-          subject: subject,
-          topic: contentType,
+          title: widget.title,
+          subject: widget.subject,
+          topic: widget.contentType,
         );
       } else if (fileType == 'video') {
         page = VideoPlayerPage(
           storagePath: storagePath,
-          title: title,
-          subject: subject,
-          topic: contentType,
+          title: widget.title,
+          subject: widget.subject,
+          topic: widget.contentType,
         );
       } else {
         page = PodcastPlayerPage(
           storagePath: storagePath,
-          title: title,
-          subject: subject,
-          topic: contentType,
+          title: widget.title,
+          subject: widget.subject,
+          topic: widget.contentType,
         );
       }
 

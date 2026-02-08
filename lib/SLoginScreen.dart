@@ -3,6 +3,7 @@ import '/SCreatAccountScreen.dart';
 import '/SForgotPasswordScreen.dart';
 import 'package:smartedu/StudentTestApp.dart';
 import 'package:smartedu/screens/SMainMenuScreen.dart';
+import 'package:smartedu/start_screen.dart';
 import '/services/auth.dart';
 class SLoginScreen extends StatelessWidget {
   final _eMailController = TextEditingController();
@@ -190,6 +191,24 @@ class SLoginScreen extends StatelessWidget {
                     color: Color(0xFFD44638),
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const StartScreen()),
+                  );
+                },
+                child: Text(
+                  'Misafir Olarak Devam Et',
+                  style: TextStyle(
+                    color: Color(0xFF323142),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),

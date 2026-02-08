@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'SMainMenuScreen.dart';
 import 'package:smartedu/OnboardingScreen.dart';
 import 'package:smartedu/services/auth.dart';
+import '../services/tts_service.dart';
 
 class SMyProfile extends StatefulWidget {
   const SMyProfile({super.key});
@@ -15,6 +16,20 @@ class SMyProfile extends StatefulWidget {
 class _SMyProfileState extends State<SMyProfile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TtsService _ttsService = TtsService();
+
+  @override
+  void initState() {
+    super.initState();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      _ttsService.speak("Profilim ekranındasınız.");
+    }
+  }
 
   Future<Map<String, dynamic>?> _getUserData() async {
     User? user = _auth.currentUser;

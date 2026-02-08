@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/result_screen.dart';
+import 'package:smartedu/services/tts_service.dart';
 
 class DisabilityScreen extends StatefulWidget {
   final Map<String, int> scores;
@@ -12,6 +13,7 @@ class DisabilityScreen extends StatefulWidget {
 
 class _DisabilityScreenState extends State<DisabilityScreen> {
   String? selectedOption;
+  final TtsService _ttsService = TtsService();
 
   final List<String> options = [
     "Görme Engeli",
@@ -83,6 +85,13 @@ class _DisabilityScreenState extends State<DisabilityScreen> {
                             setState(() {
                               selectedOption = value;
                             });
+
+                            if (value == "Görme Engeli") {
+                              _ttsService.setEnabled(true);
+                              _ttsService.speak("Görme Engeli seçildi. Sesli asistan aktif edildi.");
+                            } else {
+                              _ttsService.setEnabled(false);
+                            }
                           },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),

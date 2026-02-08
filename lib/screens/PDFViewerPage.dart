@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import '../services/activity_tracking_service.dart';
+import '../services/tts_service.dart';
 
 class PDFViewerPage extends StatefulWidget {
   final String storagePath;
@@ -30,12 +31,21 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
   bool isLoading = true;
   final ActivityTrackingService _activityService = ActivityTrackingService();
   String? _activityId;
+  final TtsService _ttsService = TtsService();
 
   @override
   void initState() {
     super.initState();
     _downloadAndLoadPDF();
     _startTracking();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 1000));
+      _ttsService.speak("${widget.title} belgesi açıldı.");
+    }
   }
 
   Future<void> _startTracking() async {

@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'SAddNote.dart';
 import '../services/teacher_notes_service.dart';
 
+import '../services/tts_service.dart';
+
 class SMyNotes extends StatefulWidget {
   const SMyNotes({super.key});
 
@@ -13,6 +15,20 @@ class SMyNotes extends StatefulWidget {
 class _SMyNotesState extends State<SMyNotes> {
   List<String> studentNotes = [];
   final TeacherNotesService _notesService = TeacherNotesService();
+  final TtsService _ttsService = TtsService();
+
+  @override
+  void initState() {
+    super.initState();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      _ttsService.speak("Notlarım ekranındasınız.");
+    }
+  }
 
   void _addNote(String title, String content) {
     setState(() {

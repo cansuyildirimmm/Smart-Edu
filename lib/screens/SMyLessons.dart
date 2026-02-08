@@ -2,13 +2,39 @@ import 'package:flutter/material.dart';
 import 'SHome.dart';
 import 'lesson_mode.dart';
 
-class SMyLessons extends StatelessWidget {
+import '../services/tts_service.dart';
+
+class SMyLessons extends StatefulWidget {
   final LessonMode mode;
 
-  SMyLessons({
+  const SMyLessons({
     super.key,
     this.mode = LessonMode.derslerim,
   });
+
+  @override
+  State<SMyLessons> createState() => _SMyLessonsState();
+}
+
+class _SMyLessonsState extends State<SMyLessons> {
+  final TtsService _ttsService = TtsService();
+
+  @override
+  void initState() {
+    super.initState();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      if (widget.mode == LessonMode.banaOzel) {
+        _ttsService.speak("Bana özel kısmına hoşgeldiniz. Sizin için hazırlanan içerikleri burada bulabilirsiniz.");
+      } else {
+        _ttsService.speak("Ders seçimi ekranındasınız. Lütfen bir ders seçin.");
+      }
+    }
+  }
 
   final List<Map<String, dynamic>> lessons = [
     {
@@ -54,7 +80,7 @@ class SMyLessons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isBanaOzel = mode == LessonMode.banaOzel;
+    final bool isBanaOzel = widget.mode == LessonMode.banaOzel;
 
     return Scaffold(
       backgroundColor:
@@ -161,7 +187,7 @@ class SMyLessons extends StatelessWidget {
                             builder: (_) => SHome(
                               lessonTitle: lesson['title'],
                               subject: lesson['subjectKey'],
-                              mode: mode, // 🔥 KRİTİK SATIR
+                              mode: widget.mode, // 🔥 KRİTİK SATIR
                             ),
                           ),
                         );

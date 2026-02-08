@@ -3,7 +3,9 @@ import 'package:smartedu/screens/GeminiEğitimSayfasi.dart';
 import 'package:smartedu/screens/STopics.dart';
 import 'lesson_mode.dart';
 
-class SHome extends StatelessWidget {
+import '../services/tts_service.dart';
+
+class SHome extends StatefulWidget {
   final String lessonTitle;
   final String subject;
   final int testGrade;
@@ -18,8 +20,30 @@ class SHome extends StatelessWidget {
   });
 
   @override
+  State<SHome> createState() => _SHomeState();
+}
+
+class _SHomeState extends State<SHome> {
+  final TtsService _ttsService = TtsService();
+
+  @override
+  void initState() {
+    super.initState();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      String text =
+          "${widget.lessonTitle} dersindesiniz. Konu anlatımı, soru bankası, alıştırmalar, laboratuvar ve yapay zeka ile öğren sekmeleri mevcuttur.";
+      _ttsService.speak(text);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bool isBanaOzel = mode == LessonMode.banaOzel;
+    final bool isBanaOzel = widget.mode == LessonMode.banaOzel;
 
     return Scaffold(
       backgroundColor:
@@ -45,11 +69,11 @@ class SHome extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => STopics(
-                              lessonTitle: lessonTitle,
-                              subject: subject,
+                              lessonTitle: widget.lessonTitle,
+                              subject: widget.subject,
                               contentType: 'konu_anlatimi',
-                              testGrade: testGrade,
-                              mode: mode,
+                              testGrade: widget.testGrade,
+                              mode: widget.mode,
                               isQuestionBank: false, // 🔹 otomatik ayarlandı
                             ),
                           ),
@@ -65,11 +89,11 @@ class SHome extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => STopics(
-                              lessonTitle: lessonTitle,
-                              subject: subject,
+                              lessonTitle: widget.lessonTitle,
+                              subject: widget.subject,
                               contentType: 'soru_bankasi',
-                              testGrade: testGrade,
-                              mode: mode,
+                              testGrade: widget.testGrade,
+                              mode: widget.mode,
                               isQuestionBank: true, // 🔹 otomatik ayarlandı
                             ),
                           ),
@@ -85,11 +109,11 @@ class SHome extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => STopics(
-                              lessonTitle: lessonTitle,
-                              subject: subject,
+                              lessonTitle: widget.lessonTitle,
+                              subject: widget.subject,
                               contentType: 'alistirmalar',
-                              testGrade: testGrade,
-                              mode: mode,
+                              testGrade: widget.testGrade,
+                              mode: widget.mode,
                               isQuestionBank: false, // 🔹 otomatik ayarlandı
                             ),
                           ),
@@ -105,11 +129,11 @@ class SHome extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => STopics(
-                              lessonTitle: lessonTitle,
-                              subject: subject,
+                              lessonTitle: widget.lessonTitle,
+                              subject: widget.subject,
                               contentType: 'laboratuvar',
-                              testGrade: testGrade,
-                              mode: mode,
+                              testGrade: widget.testGrade,
+                              mode: widget.mode,
                               isQuestionBank: false, // 🔹 otomatik ayarlandı
                             ),
                           ),
@@ -154,7 +178,7 @@ class SHome extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            lessonTitle,
+            widget.lessonTitle,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -198,7 +222,7 @@ class SHome extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            lessonTitle,
+            widget.lessonTitle,
             style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,

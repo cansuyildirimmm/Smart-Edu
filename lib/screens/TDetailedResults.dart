@@ -47,7 +47,7 @@ class _TDetailedResultsState extends State<TDetailedResults> {
       final summaryFuture = _reportingService.getStudentSummaryReport(widget.studentUid);
       final materialFuture = _reportingService.getMaterialUsageReport(widget.studentUid);
 
-      final results = await Future.wait([summaryFuture, materialFuture]);
+      final results = await Future.wait<Map<String, dynamic>>([summaryFuture, materialFuture]);
 
       print('DEBUG: Materyal Raporu: ${results[1]}');
       print('DEBUG: PDF Count: ${results[1]['pdfCount']}');

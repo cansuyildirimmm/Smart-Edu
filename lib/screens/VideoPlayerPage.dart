@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:video_player/video_player.dart';
 import '../services/activity_tracking_service.dart';
+import '../services/tts_service.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   final String storagePath;
@@ -26,12 +27,21 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   bool isLoading = true;
   final ActivityTrackingService _activityService = ActivityTrackingService();
   String? _activityId;
+  final TtsService _ttsService = TtsService();
 
   @override
   void initState() {
     super.initState();
     _loadVideo();
     _startTracking();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 1000));
+      _ttsService.speak("${widget.title} videosu oynatılıyor.");
+    }
   }
 
   Future<void> _startTracking() async {
@@ -141,6 +151,10 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                             _controller!.value.isPlaying
                                 ? _controller!.pause()
                                 : _controller!.play();
+                            
+                            if (_ttsService.isEnabled) {
+                              _ttsService.speak(_controller!.value.isPlaying ? "Video oynatılıyor" : "Video durduruldu");
+                            }
                           });
                         },
                       ),

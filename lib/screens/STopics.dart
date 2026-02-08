@@ -4,7 +4,9 @@ import 'package:smartedu/screens/SMaterialTypePage.dart';
 import 'lesson_mode.dart';
 import 'package:smartedu/screens/TestListPage.dart';
 
-class STopics extends StatelessWidget {
+import '../services/tts_service.dart';
+
+class STopics extends StatefulWidget {
   final String lessonTitle;
   final String subject;
   final String contentType; 
@@ -12,7 +14,7 @@ class STopics extends StatelessWidget {
   final LessonMode mode;
   final bool isQuestionBank; 
 
-  STopics({
+  const STopics({
     super.key,
     required this.lessonTitle,
     required this.subject,
@@ -22,14 +24,34 @@ class STopics extends StatelessWidget {
     required this.isQuestionBank, 
   });
 
+  @override
+  State<STopics> createState() => _STopicsState();
+}
+
+class _STopicsState extends State<STopics> {
+  final TtsService _ttsService = TtsService();
+
+  @override
+  void initState() {
+    super.initState();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      _ttsService.speak("${widget.lessonTitle} dersi, konu seçimi ekranındasınız.");
+    }
+  }
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Stream<List<Map<String, dynamic>>> getTopics() {
-    if (isQuestionBank) {
+    if (widget.isQuestionBank) {
       return _firestore
           .collection('tests')
-          .where('subject', isEqualTo: subject)
-          .where('grade', isEqualTo: testGrade)
+          .where('subject', isEqualTo: widget.subject)
+          .where('grade', isEqualTo: widget.testGrade)
           .snapshots()
           .map((snapshot) {
         final docs = snapshot.docs.map((doc) => doc.data()).toList();
@@ -44,9 +66,9 @@ class STopics extends StatelessWidget {
     } else {
       return _firestore
           .collection('materials')
-          .where('subject', isEqualTo: subject)
-          .where('contentType', isEqualTo: contentType)
-          .where('grade', isEqualTo: testGrade)
+          .where('subject', isEqualTo: widget.subject)
+          .where('contentType', isEqualTo: widget.contentType)
+          .where('grade', isEqualTo: widget.testGrade)
           .snapshots()
           .map((snapshot) {
         final docs = snapshot.docs.map((doc) => doc.data()).toList();
@@ -61,7 +83,7 @@ class STopics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isBanaOzel = mode == LessonMode.banaOzel;
+    final bool isBanaOzel = widget.mode == LessonMode.banaOzel;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F3FF),
@@ -92,14 +114,14 @@ class STopics extends StatelessWidget {
 
                       return GestureDetector(
                         onTap: () {
-                          if (isQuestionBank) {
+                          if (widget.isQuestionBank) {
                             // 🔹 DÜZELTME: TestListPage'e giderken isBanaOzel parametresini gönderiyoruz
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => TestListPage(
-                                  subject: subject,
-                                  grade: testGrade,
+                                  subject: widget.subject,
+                                  grade: widget.testGrade,
                                   topic: topic['topic'], 
                                   title: topic['title'], 
                                   isBanaOzel: isBanaOzel, // 🔥 KRİTİK EKLENTİ
@@ -112,9 +134,9 @@ class STopics extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => SMaterialTypePage(
                                   title: title,
-                                  subject: subject,
-                                  contentType: contentType,
-                                  testGrade: testGrade,
+                                  subject: widget.subject,
+                                  contentType: widget.contentType,
+                                  testGrade: widget.testGrade,
                                   isBanaOzel: isBanaOzel, 
                                 ),
                               ),
@@ -162,7 +184,7 @@ class STopics extends StatelessWidget {
   AppBar _derslerimAppBar() {
     return AppBar(
       title: Text(
-        lessonTitle,
+        widget.lessonTitle,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.white,
@@ -208,7 +230,7 @@ class STopics extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            lessonTitle,
+            widget.lessonTitle,
             style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,

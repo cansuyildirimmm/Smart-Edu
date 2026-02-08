@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smartedu/screens/TestSolvePage.dart';
 import 'package:smartedu/services/recommendation_service.dart';
 
-class TestListPage extends StatelessWidget {
+import '../services/tts_service.dart';
+
+class TestListPage extends StatefulWidget {
   final String subject;
   final int grade;
   final String topic;
@@ -20,17 +22,37 @@ class TestListPage extends StatelessWidget {
     this.isBanaOzel = false,
   });
 
+  @override
+  State<TestListPage> createState() => _TestListPageState();
+}
+
+class _TestListPageState extends State<TestListPage> {
+  final TtsService _ttsService = TtsService();
+
+  @override
+  void initState() {
+    super.initState();
+    _announcePage();
+  }
+
+  void _announcePage() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      _ttsService.speak("${widget.title} test listesi ekranındasınız. Lütfen bir test seçin.");
+    }
+  }
+
   /// 🔹 Matris kurallarına göre filtrelenmiş testleri getiren fonksiyon
   Future<QuerySnapshot<Map<String, dynamic>>> _getPersonalizedTests() async {
     final userId = FirebaseAuth.instance.currentUser?.uid ?? "";
     
     Query<Map<String, dynamic>> query = FirebaseFirestore.instance
         .collection('tests')
-        .where('subject', isEqualTo: subject)
-        .where('grade', isEqualTo: grade)
-        .where('topic', isEqualTo: topic);
+        .where('subject', isEqualTo: widget.subject)
+        .where('grade', isEqualTo: widget.grade)
+        .where('topic', isEqualTo: widget.topic);
 
-    if (isBanaOzel) {
+    if (widget.isBanaOzel) {
       final userDoc = await FirebaseFirestore.instance
           .collection('students')
           .doc(userId)
@@ -64,7 +86,7 @@ class TestListPage extends StatelessWidget {
       backgroundColor: const Color(0xFFF8F9FF),
       appBar: AppBar(
         title: Text(
-          isBanaOzel ? "Senin İçin Seçilenler" : title,
+          widget.isBanaOzel ? "Senin İçin Seçilenler" : widget.title,
           style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF2C3E50)),
         ),
         backgroundColor: Colors.white,
@@ -122,7 +144,7 @@ class TestListPage extends StatelessWidget {
   }
 
   Widget _buildTestListItem(BuildContext context, {required String testTitle, required String difficulty}) {
-    if (isBanaOzel) {
+    if (widget.isBanaOzel) {
       // 🌟 SADECE BANA ÖZEL: Şık, Gradyanlı ve Gölgeli Tasarım
       return _buildModernButton(
         context,
@@ -177,9 +199,9 @@ class TestListPage extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => TestSolvePage(
-          subject: subject,
-          grade: grade,
-          topic: topic,
+          subject: widget.subject,
+          grade: widget.grade,
+          topic: widget.topic,
           testTitle: testTitle,
         ),
       ),

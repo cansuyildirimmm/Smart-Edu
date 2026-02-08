@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/activity_tracking_service.dart';
+import '../services/tts_service.dart';
 
 class TestSolvePage extends StatefulWidget {
   final String subject;
@@ -30,12 +31,28 @@ class _TestSolvePageState extends State<TestSolvePage> {
   Map<int, String> userAnswers = {};
   bool isLoading = true;
   DateTime? _testStartTime;
+  final TtsService _ttsService = TtsService();
 
   @override
   void initState() {
     super.initState();
     _testStartTime = DateTime.now();
     _fetchQuestions();
+    _announceStart();
+  }
+
+  void _announceStart() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 1000));
+      _ttsService.speak("${widget.testTitle} testi başlıyor.");
+    }
+  }
+
+  void _announceQuestion(int index) async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      _ttsService.speak("Soru ${index + 1}. Seçenekler: A, B, C.");
+    }
   }
 
   void _fetchQuestions() async {
@@ -82,6 +99,7 @@ class _TestSolvePageState extends State<TestSolvePage> {
           questions = fetchedQuestions;
           isLoading = false;
         });
+        _announceQuestion(0);
       }
     } catch (e) {
       print("Firestore Hatası: $e");
@@ -100,6 +118,7 @@ class _TestSolvePageState extends State<TestSolvePage> {
       setState(() {
         currentIndex++;
       });
+      _announceQuestion(currentIndex);
     } else {
       _showResult();
     }
@@ -110,6 +129,7 @@ class _TestSolvePageState extends State<TestSolvePage> {
       setState(() {
         currentIndex--;
       });
+      _announceQuestion(currentIndex);
     }
   }
 
@@ -171,6 +191,10 @@ class _TestSolvePageState extends State<TestSolvePage> {
 
     // Test sonucunu Firestore'a kaydet
     await _saveTestResult(score, wrong);
+
+    if (_ttsService.isEnabled) {
+      _ttsService.speak("Test bitti. Doğru sayısı: $score. Yanlış sayısı: $wrong.");
+    }
 
     showDialog(
       context: context,

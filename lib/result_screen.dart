@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:smartedu/SurveyPage.dart'; // 'Tekrar Dene' için SurveyPage'i import edin
 import 'package:smartedu/screens/SMainMenuScreen.dart';
-import 'package:smartedu/services/auth.dart'; // 'Testi Tamamla' için SHomeScreen'i import edin (Dosya adını doğrulayın)
+import 'package:smartedu/screens/SMainMenuScreen.dart';
+import 'package:smartedu/services/auth.dart';
+import 'package:smartedu/services/tts_service.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
   final Map<String, int> scores;
   final String disability;
   const ResultScreen({
@@ -13,11 +15,39 @@ class ResultScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final sortedScores = scores.entries.toList()
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+  final TtsService _ttsService = TtsService();
+  late String dominantStyle;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateDominantStyle();
+    _announceResults();
+  }
+
+  void _calculateDominantStyle() {
+    final sortedScores = widget.scores.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
-    final dominantStyle = sortedScores.first.key;
-    final disability = this.disability;
+    dominantStyle = sortedScores.first.key;
+  }
+
+  void _announceResults() async {
+    if (_ttsService.isEnabled) {
+      await Future.delayed(Duration(milliseconds: 500));
+      String text =
+          "Test sonuçlarınız: Öğrenme biçiminiz $dominantStyle. Engel durumunuz ${widget.disability}.";
+      _ttsService.speak(text);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // dominantStyle zaten initState'te hesaplandı
+    final disability = widget.disability;
 
     return Scaffold(
       backgroundColor: const Color(0xFFEDF1FF),
