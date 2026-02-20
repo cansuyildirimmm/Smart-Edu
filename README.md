@@ -1,11 +1,20 @@
-# Smart-Edu
+<div align="center">
+  <img src="assets/smartedu_logo.png" alt="Smart-Edu Logo" width="130"/>
+  <h2>Smart-Edu</h2>
+  <p>
+    <em>Engel Durumuna ve Öğrenme Biçimine Göre Kişiselleştirilmiş Eğitim Platformu</em><br/>
+    <em>Personalized Education Platform Based on Learning Style and Disability Status</em>
+  </p>
 
-![TÜBİTAK 2209-A](https://img.shields.io/badge/T%C3%9CB%C4%B0TAK%202209--A-Kabul%20Edildi-brightgreen)
-![Flutter](https://img.shields.io/badge/Flutter-3.6%2B-02569B?logo=flutter&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-Backend-FFCA28?logo=firebase&logoColor=black)
-![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)
-![Dart](https://img.shields.io/badge/Dart-3.6%2B-0175C2?logo=dart&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+  ![TÜBİTAK 2209-A](https://img.shields.io/badge/T%C3%9CB%C4%B0TAK%202209--A-Kabul%20Edildi-brightgreen)
+  ![Flutter](https://img.shields.io/badge/Flutter-3.6%2B-02569B?logo=flutter&logoColor=white)
+  ![Firebase](https://img.shields.io/badge/Firebase-Backend-FFCA28?logo=firebase&logoColor=black)
+  ![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)
+  ![Dart](https://img.shields.io/badge/Dart-3.6%2B-0175C2?logo=dart&logoColor=white)
+  ![License](https://img.shields.io/badge/License-MIT-yellow)
+</div>
+
+> **Not:** `assets/smartedu_logo.png` satırını projenizin logosunu yüklediğiniz URL ile değiştirin.
 
 ---
 
@@ -150,6 +159,32 @@ Servisler katmanı (`lib/services/`) yedi bileşen içermektedir: `auth`, `tts_s
 ### TUBITAK 2209-A Destegi
 
 Bu proje, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı kapsamında kabul edilmiş ve desteklenmiştir. Program, üniversite öğrencilerinin özgün araştırma projelerini hayata geçirmelerine olanak tanımaktadır.
+
+---
+
+### Ekip
+
+| Rol | Ad Soyad | Iletisim |
+|-----|----------|---------|
+| Gelistirici | <!-- Gelistirici Adi Soyadi --> | <!-- eposta@ornek.edu.tr --> |
+| Gelistirici | <!-- Gelistirici Adi Soyadi --> | <!-- eposta@ornek.edu.tr --> |
+| Danisman | <!-- Danisman Hoca Adi Soyadi --> | <!-- eposta@ornek.edu.tr --> |
+
+**Kurum:** <!-- Universite Adi, Fakulte/Bolum Adi -->
+
+---
+
+### Katkida Bulunma
+
+1. Bu depoyu fork edin
+2. Yeni bir dal oluşturun: `git checkout -b ozellik/aciklama`
+3. Değişikliklerinizi commit edin: `git commit -m 'Ozellik: kisa aciklama'`
+4. Dalınızı push edin: `git push origin ozellik/aciklama`
+5. Pull request açın
+
+Hata bildirimi veya öneri için GitHub Issues bölümünü kullanın.
+
+**Kodlama standartları:** `flutter_lints` kuralları uygulanmaktadır. Tüm UI metinleri Türkçe olmalıdır.
 
 ---
 
@@ -302,6 +337,32 @@ The services layer (`lib/services/`) contains seven components: `auth`, `tts_ser
 ### TÜBİTAK 2209-A Support
 
 This project has been accepted and supported under the TÜBİTAK (The Scientific and Technological Research Council of Türkiye) 2209-A University Students Research Projects Support Program. The program enables university students to bring their original research projects to life.
+
+---
+
+### Team
+
+| Role | Name | Contact |
+|------|------|---------|
+| Developer | <!-- Developer Full Name --> | <!-- email@example.edu.tr --> |
+| Developer | <!-- Developer Full Name --> | <!-- email@example.edu.tr --> |
+| Supervisor | <!-- Supervisor Full Name --> | <!-- email@example.edu.tr --> |
+
+**Institution:** <!-- University Name, Faculty/Department Name -->
+
+---
+
+### Contributing
+
+1. Fork this repository
+2. Create a new branch: `git checkout -b feature/description`
+3. Commit your changes: `git commit -m 'Feature: short description'`
+4. Push to the branch: `git push origin feature/description`
+5. Open a pull request
+
+For bug reports or suggestions, use the GitHub Issues section.
+
+**Coding standards:** `flutter_lints` rules are enforced. All UI text must remain in Turkish.
 
 ---
 

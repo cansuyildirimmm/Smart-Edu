@@ -50,33 +50,30 @@ Platform, birbirinden bağımsız iki kullanıcı rolü üzerine inşa edilmişt
 
 ### 2.2 Navigasyon Akisi
 
-```
-main.dart
-  └── SplashScreen (3 saniye bekleme)
-        └── OnboardingScreen (Rol Seçimi)
-              |
-              |-- OGRENCI YOLU
-              |     SWelcomeScreen (Giriş/Kayıt Kapısı)
-              |       ├── SLoginScreen
-              |       └── SCreatAccountScreen
-              |             └── SurveyPage (Öğrenme Stili Değerlendirmesi)
-              |                   └── DisabilityScreen (Engel Durumu Seçimi)
-              |                         └── ResultScreen (Sonuç Gösterimi + Firebase Kayıt)
-              |                               └── SMainMenuScreen (Ana Panel)
-              |                                     ├── SMyLessons → SHome (Derslerim/Bana Özel)
-              |                                     │     └── GeminiEğitimSayfasi (AI)
-              |                                     ├── SMyProfile
-              |                                     └── SMyNotes
-              |
-              └-- OGRETMEN YOLU
-                    TWelcomeScreen (Giriş/Kayıt Kapısı)
-                      ├── TLoginScreen
-                      └── TCreatAccountScreen
-                            └── TMainMenuScreen (Ana Panel)
-                                  ├── TMyStudentss → TDetailedResults
-                                  ├── TStudentResults
-                                  ├── TMyNotes
-                                  └── TMyProfile
+Uygulamanın tam ekran geçiş akışı aşağıdaki diyagramda gösterilmektedir:
+
+```mermaid
+flowchart TD
+    A([main.dart]) --> B[SplashScreen]
+    B --> C[OnboardingScreen]
+    C -->|Ogrenci| D[SWelcomeScreen]
+    C -->|Ogretmen| E[TWelcomeScreen]
+    D --> F[Giris / Kayit]
+    F --> G[SurveyPage]
+    G --> H[DisabilityScreen]
+    H --> I[ResultScreen]
+    I --> J[SMainMenuScreen]
+    J --> K[SMyLessons]
+    J --> L[SMyProfile]
+    J --> M[SMyNotes]
+    K --> N[SHome]
+    N --> O[GeminiEgitimSayfasi]
+    E --> P[Giris / Kayit]
+    P --> Q[TMainMenuScreen]
+    Q --> R[TMyStudentss]
+    Q --> S[TStudentResults]
+    Q --> T[TMyNotes]
+    R --> U[TDetailedResults]
 ```
 
 ### 2.3 Dosya Organizasyonu
@@ -165,6 +162,30 @@ Sistemde kullanılan beş öğrenme stili kategorisi, temel modalite teorileri i
 **DisabilityScreen:** Öğrenci, beş engel türünden birisini veya "engel yok" seçeneğini seçer. Görme Engeli seçimi anında TTS servisini aktive eder.
 
 **ResultScreen:** En yüksek puana sahip stil "baskın öğrenme stili" olarak belirlenir. Baskın stil ve seçilen engel türü Firebase Firestore'a kaydedilir. Bu kayıt işlemi `auth.dart` içindeki `saveTestResult()` fonksiyonu aracılığıyla `students/{uid}/testResults/` alt koleksiyonuna yazılmaktadır.
+
+Aşağıdaki akış diyagramı, öğrencinin kayıt sonrasından ders içeriğine erişimine kadar geçen karar mekanizmasını göstermektedir:
+
+```mermaid
+flowchart TD
+    A([Yeni Ogrenci]) --> B{hasCompletedTest?}
+    B -->|Evet| Z([SMainMenuScreen])
+    B -->|Hayir| C[SurveyPage]
+    C --> D[Puan Birikimi]
+    D --> E[Baskin Stil Belirleme]
+    E --> F[DisabilityScreen]
+    F --> G{Gorme Engeli?}
+    G -->|Evet| H[TtsService enabled=true]
+    G -->|Hayir| I[TtsService enabled=false]
+    H --> J[ResultScreen]
+    I --> J
+    J --> K[saveTestResult to Firestore]
+    K --> L{Ders Modu}
+    L -->|Bana Ozel| M[getRecommendedMaterials]
+    L -->|Derslerim| N[Standart Icerik]
+    M --> O[Filtrelenmis Icerik ve Sorular]
+    O --> Z
+    N --> Z
+```
 
 ### 3.5 Tek Seferlik Kisilastirma Kisiti
 
@@ -478,6 +499,66 @@ teachers/{uid}
           ├── studentNumber: string
           ├── school: string
           └── addedAt: ServerTimestamp
+```
+
+Koleksiyon yapısının varlık-ilişki modeli aşağıdaki diyagramda gösterilmektedir:
+
+```mermaid
+erDiagram
+    STUDENTS {
+        string uid PK
+        string email
+        string name
+        string school
+        string branch
+        string studentNumber
+        string telNumber
+    }
+    TEST_RESULTS {
+        string docId PK
+        string studentUid FK
+        string learningStyle
+        string disabilityStatus
+        timestamp createdAt
+    }
+    ACTIVITIES {
+        string docId PK
+        string studentUid FK
+        string type
+        string subject
+        number score
+        number duration
+        timestamp timestamp
+    }
+    TEACHER_NOTES {
+        string docId PK
+        string studentUid FK
+        string senderUid FK
+        string content
+        boolean isRead
+        timestamp timestamp
+    }
+    TEACHERS {
+        string uid PK
+        string email
+        string name
+        string school
+        string branch
+    }
+    TEACHER_STUDENTS {
+        string teacherUid FK
+        string studentUid FK
+        string name
+        string studentNumber
+        timestamp addedAt
+    }
+
+    STUDENTS ||--o{ TEST_RESULTS : "sahip"
+    STUDENTS ||--o{ ACTIVITIES : "kaydeder"
+    STUDENTS ||--o{ TEACHER_NOTES : "alir"
+    TEACHERS ||--o{ TEACHER_STUDENTS : "yonetir"
+    TEACHERS ||--o{ TEACHER_NOTES : "gonderir"
+    TEACHER_STUDENTS }o--|| STUDENTS : "referans"
 ```
 
 ### 7.2 Temel Tasarım Kararlari
