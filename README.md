@@ -353,9 +353,3 @@ This project has been accepted and supported under the TÜBİTAK (The Scientific
 For bug reports or suggestions, use the GitHub Issues section.
 
 **Coding standards:** `flutter_lints` rules are enforced. All UI text must remain in Turkish.
-
----
-
-### License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
