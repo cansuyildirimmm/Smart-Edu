@@ -20,9 +20,9 @@
 
 <!-- TÜRKÇE VERSİYON -->
 
-## Turkce
+## Türkçe
 
-### Proje Hakkinda
+### Proje Hakkında
 
 Smart-Edu, görme engeli, işitsel engel, fiziksel engel, ADHD ve öğrenme güçlüğü gibi çeşitli engel durumları nedeniyle eğitimine verim alarak devam edemeyen öğrencilere yönelik geliştirilmiş, kişiselleştirilmiş bir mobil eğitim platformudur. Proje, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı tarafından kabul edilmiştir.
 
@@ -32,9 +32,9 @@ Platform, öğrenci ve öğretmen olmak üzere iki ayrı kullanıcı rolüne sah
 
 ---
 
-### Temel Ozellikler
+### Temel Özellikler
 
-**Ogrenci Tarafı:**
+**Öğrenci Tarafı:**
 
 - Öğrenme stili ve engel durumu değerlendirmesi (tek seferlik, sistemin çekirdek bileşeni)
 - Değerlendirme sonucuna göre otomatik içerik uyarlaması ("Bana Özel" modu)
@@ -45,7 +45,7 @@ Platform, öğrenci ve öğretmen olmak üzere iki ayrı kullanıcı rolüne sah
 - Türkçe Metin-Okuma (TTS) erişilebilirlik sistemi (görme engelli öğrenciler için otomatik aktivasyon)
 - Öğretmen notu alma sistemi
 
-**Ogretmen Tarafı:**
+**Öğretmen Tarafı:**
 
 - Öğrenci arama, ekleme ve yönetimi
 - Bireysel öğrenci ilerleme raporları (günlük çalışma süresi, materyal kullanımı, test skorları)
@@ -54,27 +54,27 @@ Platform, öğrenci ve öğretmen olmak üzere iki ayrı kullanıcı rolüne sah
 
 ---
 
-### Ekran Goruntuleri
+### Ekran Görüntüleri
 
 Aşağıdaki placeholder'ları kendi ekran görüntülerinizin URL veya dosya yoluyla değiştirin.
 
-**Kullanici Giris Akisi**
+**Kullanıcı Giriş Akışı**
 
-| Rol Seçimi | Oğrenme Stili Testi | Analiz Sonucu |
+| Rol Seçimi | Öğrenme Stili Testi | Analiz Sonucu |
 |:---:|:---:|:---:|
 | ![Rol Seçimi](screenshots/onboarding.png) | ![Öğrenme Stili Testi](screenshots/survey.png) | ![Analiz Sonucu](screenshots/result.png) |
 
-**Ana Platform Ekranlari**
+**Ana Platform Ekranları**
 
-| Oğrenci Ana Menü | Ders İçerik Merkezi | Öğretmen Analitik Paneli |
+| Öğrenci Ana Menü | Ders İçerik Merkezi | Öğretmen Analitik Paneli |
 |:---:|:---:|:---:|
 | ![Öğrenci Ana Menü](screenshots/student_home.png) | ![Ders İçerik Merkezi](screenshots/lesson_hub.png) | ![Öğretmen Analitik](screenshots/teacher_analytics.png) |
 
 ---
 
-### Teknoloji Yigini
+### Teknoloji Yığını
 
-| Katman | Teknoloji | Versiyon | Acıklama |
+| Katman | Teknoloji | Versiyon | Açıklama |
 |--------|-----------|----------|----------|
 | Mobil Framework | Flutter | 3.6+ | Dart 3.6+ ile çapraz platform |
 | Kimlik Doğrulama | Firebase Auth | 5.5.1 | E-posta/şifre tabanlı |
@@ -97,20 +97,20 @@ Aşağıdaki placeholder'ları kendi ekran görüntülerinizin URL veya dosya yo
 
 **Gereksinimler:** Flutter SDK 3.6+, Dart SDK 3.6+, Android Studio veya VS Code, bağlı Android cihaz veya emülatör (minSdk 24)
 
-**Adim 1 — Depoyu klonlayın**
+**Adım 1 — Depoyu klonlayın**
 
 ```bash
 git clone https://github.com/KULLANICI_ADINIZ/Smart-Edu.git
 cd Smart-Edu
 ```
 
-**Adim 2 — Bağımlılıkları yükleyin**
+**Adım 2 — Bağımlılıkları yükleyin**
 
 ```bash
 flutter pub get
 ```
 
-**Adim 3 — Firebase yapılandırması**
+**Adım 3 — Firebase yapılandırması**
 
 `lib/firebase_options.dart` dosyası mevcut Firebase projesi için yapılandırılmıştır. Kendi Firebase projenizi kullanmak istiyorsanız:
 
@@ -119,7 +119,7 @@ dart pub global activate flutterfire_cli
 flutterfire configure
 ```
 
-**Adim 4 — Uygulamayı çalıştırın**
+**Adım 4 — Uygulamayı çalıştırın**
 
 ```bash
 flutter run
@@ -133,19 +133,19 @@ flutter build apk
 
 ---
 
-### Mimari Genel Bakis
+### Mimari Genel Bakış
 
 ```
 main.dart → Splash (3s) → OnboardingScreen (Rol Seçimi)
   |
-  |-- Oğrenci Yolu
+  |-- Öğrenci Yolu
   |     SWelcomeScreen → Giriş/Kayıt → SurveyPage → DisabilityScreen
   |     → ResultScreen → SMainMenuScreen
   |           |-- Derslerim (Standart mod)
   |           |-- Bana Özel (Kişiselleştirilmiş mod)
   |           |-- Profil / Notlar
   |
-  |-- Oğretmen Yolu
+  |-- Öğretmen Yolu
         TWelcomeScreen → Giriş/Kayıt → TMainMenuScreen
               |-- Öğrencilerim (Arama, Ekleme, Yönetim)
               |-- Öğrenci Sonuçları (Analitik Raporlar)
@@ -156,7 +156,7 @@ Servisler katmanı (`lib/services/`) yedi bileşen içermektedir: `auth`, `tts_s
 
 ---
 
-### TUBITAK 2209-A Destegi
+### TÜBİTAK 2209-A Desteği
 
 Bu proje, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı kapsamında kabul edilmiş ve desteklenmiştir. Program, üniversite öğrencilerinin özgün araştırma projelerini hayata geçirmelerine olanak tanımaktadır.
 
@@ -164,17 +164,17 @@ Bu proje, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Deste
 
 ### Ekip
 
-| Rol | Ad Soyad | Iletisim |
+| Rol | Ad Soyad | İletişim |
 |-----|----------|---------|
-| Gelistirici | <!-- Gelistirici Adi Soyadi --> | <!-- eposta@ornek.edu.tr --> |
-| Gelistirici | <!-- Gelistirici Adi Soyadi --> | <!-- eposta@ornek.edu.tr --> |
-| Danisman | <!-- Danisman Hoca Adi Soyadi --> | <!-- eposta@ornek.edu.tr --> |
+| Geliştirici | <!-- Geliştirici Adı Soyadı --> | <!-- eposta@ornek.edu.tr --> |
+| Geliştirici | <!-- Geliştirici Adı Soyadı --> | <!-- eposta@ornek.edu.tr --> |
+| Danışman | <!-- Danışman Hoca Adı Soyadı --> | <!-- eposta@ornek.edu.tr --> |
 
-**Kurum:** <!-- Universite Adi, Fakulte/Bolum Adi -->
+**Kurum:** <!-- Üniversite Adı, Fakülte/Bölüm Adı -->
 
 ---
 
-### Katkida Bulunma
+### Katkıda Bulunma
 
 1. Bu depoyu fork edin
 2. Yeni bir dal oluşturun: `git checkout -b ozellik/aciklama`
