@@ -183,13 +183,6 @@ Hata bildirimi veya öneri için GitHub Issues bölümünü kullanın.
 
 **Kodlama standartları:** `flutter_lints` kuralları uygulanmaktadır. Tüm UI metinleri Türkçe olmalıdır.
 
----
-
-### Lisans
-
-Bu proje MIT Lisansı kapsamında lisanslanmıştır. Ayrıntılar için `LICENSE` dosyasına bakınız.
-
----
 
 ---
 
