@@ -14,8 +14,6 @@
   ![License](https://img.shields.io/badge/License-MIT-yellow)
 </div>
 
-> **Not:** `assets/smartedu_logo.png` satırını projenizin logosunu yüklediğiniz URL ile değiştirin.
-
 ---
 
 <!-- TÜRKÇE VERSİYON -->
