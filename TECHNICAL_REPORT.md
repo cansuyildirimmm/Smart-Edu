@@ -1,12 +1,12 @@
 # Smart-Edu: Teknik Rapor
 
-**Engel Durumuna ve Oğrenme Bicimine Gore Kisisellestirilmis Egitim Platformu**
+**Engel Durumuna ve Öğrenme Biçimine Göre Kişiselleştirilmiş Eğitim Platformu**
 
 TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı
 
 ---
 
-## Icerik
+## İçerik
 
 1. [Giriş ve Motivasyon](#1-giris-ve-motivasyon)
 2. [Sistem Mimarisi](#2-sistem-mimarisi)
@@ -20,23 +20,23 @@ TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Prog
 
 ---
 
-## 1. Giris ve Motivasyon
+## 1. Giriş ve Motivasyon
 
-### 1.1 Problem Tanimi
+### 1.1 Problem Tanımı
 
 Geleneksel eğitim sistemleri, içerik sunum biçimi ve öğrenme hızı açısından büyük ölçüde homojen bir yapıya sahiptir. Bu yapı, bireysel öğrenme farklılıkları göz ardı etmekte; başta görme engeli, işitsel engel, fiziksel engel, Dikkat Eksikliği ve Hiperaktivite Bozukluğu (DEHB) ve öğrenme güçlüğü olmak üzere çeşitli engel durumlarına sahip öğrenciler için ciddi bir engel oluşturmaktadır. Söz konusu öğrenciler, içeriğin sunum biçiminin kendi duyusal ve bilişsel süreçleriyle uyumsuzluğu nedeniyle eğitimden yeterince verim alamamaktadır.
 
-### 1.2 Cozum Yaklasımı
+### 1.2 Çözüm Yaklaşımı
 
 Smart-Edu, bu problemi iki boyutlu bir kişiselleştirme yaklaşımıyla ele almaktadır:
 
-**Boyut 1 — Oğrenme Stili:** Her öğrencinin birincil öğrenme modalitesi tespit edilerek içerik sunum öncelikleri buna göre belirlenmektedir.
+**Boyut 1 — Öğrenme Stili:** Her öğrencinin birincil öğrenme modalitesi tespit edilerek içerik sunum öncelikleri buna göre belirlenmektedir.
 
 **Boyut 2 — Engel Durumu:** Tespit edilen engel türüne göre belirli içerik formatları elenmekte veya ön plana çıkarılmakta; soru bankası parametreleri (zorluk seviyesi, görsel yoğunluk, soru adedi) uyarlanmaktadır.
 
 Her iki boyutun kesişimi, sistemin öneri motorunu oluşturmakta ve 5x5'lik bir içerik-engel uyarlama matrisine dönüşmektedir.
 
-### 1.3 TUBITAK 2209-A Baglami
+### 1.3 TÜBİTAK 2209-A Bağlamı
 
 Bu çalışma, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı kapsamında kabul edilmiş ve finansal destek almıştır. Program, üniversite öğrencilerinin özgün araştırma ve uygulama projelerini hayata geçirmelerini teşvik etmektedir.
 
@@ -44,11 +44,11 @@ Bu çalışma, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri 
 
 ## 2. Sistem Mimarisi
 
-### 2.1 Cift Rol Mimarisi
+### 2.1 Çift Rol Mimarisi
 
 Platform, birbirinden bağımsız iki kullanıcı rolü üzerine inşa edilmiştir: **Öğrenci** ve **Öğretmen**. Her iki rol, ayrı kimlik doğrulama ve navigasyon akışlarına sahiptir. Rol seçimi, uygulamanın ilk çalışmasında `OnboardingScreen` üzerinden yapılmakta; seçilen rol, Firebase Firestore'daki farklı koleksiyonlara yönlendirme belirlemektedir.
 
-### 2.2 Navigasyon Akisi
+### 2.2 Navigasyon Akışı
 
 Uygulamanın tam ekran geçiş akışı aşağıdaki diyagramda gösterilmektedir:
 
@@ -56,9 +56,9 @@ Uygulamanın tam ekran geçiş akışı aşağıdaki diyagramda gösterilmektedi
 flowchart TD
     A([main.dart]) --> B[SplashScreen]
     B --> C[OnboardingScreen]
-    C -->|Ogrenci| D[SWelcomeScreen]
-    C -->|Ogretmen| E[TWelcomeScreen]
-    D --> F[Giris / Kayit]
+    C -->|Öğrenci| D[SWelcomeScreen]
+    C -->|Öğretmen| E[TWelcomeScreen]
+    D --> F[Giriş / Kayıt]
     F --> G[SurveyPage]
     G --> H[DisabilityScreen]
     H --> I[ResultScreen]
@@ -68,7 +68,7 @@ flowchart TD
     J --> M[SMyNotes]
     K --> N[SHome]
     N --> O[GeminiEgitimSayfasi]
-    E --> P[Giris / Kayit]
+    E --> P[Giriş / Kayıt]
     P --> Q[TMainMenuScreen]
     Q --> R[TMyStudentss]
     Q --> S[TStudentResults]
@@ -103,7 +103,7 @@ lib/
       └── reporting_service.dart
 ```
 
-### 2.4 Servis Katmani
+### 2.4 Servis Katmanı
 
 Uygulama iş mantığı, birbirinden bağımsız yedi servis sınıfı üzerine dağıtılmıştır:
 
@@ -117,43 +117,43 @@ Uygulama iş mantığı, birbirinden bağımsız yedi servis sınıfı üzerine 
 | Not Sistemi | `teacher_notes_service.dart` | Öğretmenden öğrenciye not iletimi, okundu takibi |
 | Raporlama | `reporting_service.dart` | Çalışma süresi ve materyal kullanım analitiği |
 
-### 2.5 Durum Yonetimi
+### 2.5 Durum Yönetimi
 
 Uygulama, harici bir durum yönetimi kütüphanesi kullanmamaktadır. Durum yönetimi doğrudan Flutter'ın `StatefulWidget` mekanizması üzerine kurulmuştur. Gerçek zamanlı Firebase verileri, `StreamBuilder` widget'ı aracılığıyla dinlenmektedir. Tek seferlik veri yüklemeleri ise `FutureBuilder` ile yönetilmektedir.
 
 ---
 
-## 3. Ogrenme Stili Analiz Algoritmasi
+## 3. Öğrenme Stili Analiz Algoritması
 
 Bu bölüm, platformun en kritik bileşenini oluşturan kişiselleştirme algoritmasını teknik açıdan açıklamaktadır.
 
-### 3.1 Teorik Cerceve
+### 3.1 Teorik Çerçeve
 
 Platform, öğrenme stili sınıflandırmasında VARK (Fleming, 1992) veya Kolb (1984) gibi tek bir teorik modeli esas almak yerine, özgün ve karma bir kategorizasyon yaklaşımı benimsemektedir. Bu tercihin gerekçesi şu şekilde özetlenebilir: söz konusu köklü modeller, özel gereksinimli öğrencilerin çok boyutlu eğitim ihtiyaçlarını tam olarak karşılamamakta ve engel-içerik etkileşimini modelleme kapasitesinden yoksundur.
 
 Sistemde kullanılan beş öğrenme stili kategorisi, temel modalite teorileri ile erişilebilirlik gereksinimleri gözetilerek pratik bir çerçevede tanımlanmıştır.
 
-### 3.2 Ogrenme Stili Kategorileri
+### 3.2 Öğrenme Stili Kategorileri
 
-| # | Kategori | Acıklama |
+| # | Kategori | Açıklama |
 |---|----------|----------|
-| 1 | Gorsel Ogrenme | Diyagram, tablo, video ve görsel materyallerle öğrenme |
-| 2 | Isitsel Ogrenme | Dinleme, sözlü açıklama ve podcast ile öğrenme |
-| 3 | Kinestetik Ogrenme | Uygulama, deney ve etkileşimli aktivitelerle öğrenme |
-| 4 | Sozel Ogrenme | Okuma, yazma ve metin bazlı içeriklerle öğrenme |
-| 5 | Mantiksal Ogrenme | Analitik düşünme, problem çözme ve mantık örüntüleriyle öğrenme |
+| 1 | Görsel Öğrenme | Diyagram, tablo, video ve görsel materyallerle öğrenme |
+| 2 | İşitsel Öğrenme | Dinleme, sözlü açıklama ve podcast ile öğrenme |
+| 3 | Kinestetik Öğrenme | Uygulama, deney ve etkileşimli aktivitelerle öğrenme |
+| 4 | Sözel Öğrenme | Okuma, yazma ve metin bazlı içeriklerle öğrenme |
+| 5 | Mantıksal Öğrenme | Analitik düşünme, problem çözme ve mantık örüntüleriyle öğrenme |
 
 ### 3.3 Engel Durumu Kategorileri
 
-| # | Engel Turu | Sistem Yanıtı |
+| # | Engel Türü | Sistem Yanıtı |
 |---|------------|---------------|
-| 1 | Gorme Engeli | TTS otomatik devreye girer; podcast önceliklendirilir, görsel içerik engellenir |
-| 2 | Isitsel Engeli | Sesli içerik (podcast, video sesi) engellenir; PDF/metin içerik önceliklendirilir |
+| 1 | Görme Engeli | TTS otomatik devreye girer; podcast önceliklendirilir, görsel içerik engellenir |
+| 2 | İşitsel Engeli | Sesli içerik (podcast, video sesi) engellenir; PDF/metin içerik önceliklendirilir |
 | 3 | Fiziksel Engel | Etkileşim gerektiren içerikler minimize edilir; standart içerik sunum korunur |
 | 4 | ADHD | İçerik miktarı sınırlandırılır (limit: 2-3); zorluk seviyesi düşürülür; dikkat dağıtıcı unsurlar azaltılır |
-| 5 | Ogrenme Guclugu | Zorluk seviyesi düşürülür; görsel destekleyici içerik önceliklendirilir |
+| 5 | Öğrenme Güçlüğü | Zorluk seviyesi düşürülür; görsel destekleyici içerik önceliklendirilir |
 
-### 3.4 Degerlendirme Sureci
+### 3.4 Değerlendirme Süreci
 
 Öğrenme stili değerlendirmesi, üç ekrandan oluşan ardışık bir akış içinde gerçekleştirilmektedir:
 
@@ -167,27 +167,27 @@ Aşağıdaki akış diyagramı, öğrencinin kayıt sonrasından ders içeriğin
 
 ```mermaid
 flowchart TD
-    A([Yeni Ogrenci]) --> B{hasCompletedTest?}
+    A([Yeni Öğrenci]) --> B{hasCompletedTest?}
     B -->|Evet| Z([SMainMenuScreen])
-    B -->|Hayir| C[SurveyPage]
+    B -->|Hayır| C[SurveyPage]
     C --> D[Puan Birikimi]
-    D --> E[Baskin Stil Belirleme]
+    D --> E[Baskın Stil Belirleme]
     E --> F[DisabilityScreen]
-    F --> G{Gorme Engeli?}
+    F --> G{Görme Engeli?}
     G -->|Evet| H[TtsService enabled=true]
-    G -->|Hayir| I[TtsService enabled=false]
+    G -->|Hayır| I[TtsService enabled=false]
     H --> J[ResultScreen]
     I --> J
     J --> K[saveTestResult to Firestore]
     K --> L{Ders Modu}
-    L -->|Bana Ozel| M[getRecommendedMaterials]
-    L -->|Derslerim| N[Standart Icerik]
-    M --> O[Filtrelenmis Icerik ve Sorular]
+    L -->|Bana Özel| M[getRecommendedMaterials]
+    L -->|Derslerim| N[Standart İçerik]
+    M --> O[Filtrelenmiş İçerik ve Sorular]
     O --> Z
     N --> Z
 ```
 
-### 3.5 Tek Seferlik Kisilastirma Kisiti
+### 3.5 Tek Seferlik Kişiselleştirme Kısıtı
 
 Değerlendirme, her öğrenci için yalnızca bir kez gerçekleştirilebilir. Bu kısıt, `auth.dart` içindeki `hasCompletedTest()` fonksiyonu ile uygulanmaktadır. Fonksiyon, Firestore'daki `testResults` alt koleksiyonunda belge bulunup bulunmadığını kontrol etmekte; belge mevcutsa öğrenci doğrudan ana panele yönlendirilmektedir.
 
@@ -204,21 +204,21 @@ Future<bool> hasCompletedTest() async {
 }
 ```
 
-### 3.6 Icerik Uyarlama Matrisi
+### 3.6 İçerik Uyarlama Matrisi
 
 `recommendation_service.dart` içindeki `getRecommendedMaterials(String style, String disability)` fonksiyonu, öğrenme stili ve engel türünün kesişimine göre önceliklendirilmiş içerik türleri listesi döndürmektedir. Döndürülen liste `['video', 'pdf', 'podcast']` elemanlarının bir alt kümesini, öncelik sırasıyla içermektedir.
 
-**Icerik Türü Oneri Matrisi:**
+**İçerik Türü Öneri Matrisi:**
 
-| Ogrenme Stili | Gorme Engeli | Isitsel Engeli | Fiziksel Engel | ADHD | Ogrenme Guclugu |
+| Öğrenme Stili | Görme Engeli | İşitsel Engeli | Fiziksel Engel | ADHD | Öğrenme Güçlüğü |
 |---------------|:---:|:---:|:---:|:---:|:---:|
-| Gorsel | podcast | pdf | video, pdf | video, pdf | video, pdf |
-| Isitsel | podcast | pdf | podcast, pdf | podcast, pdf | podcast, pdf |
+| Görsel | podcast | pdf | video, pdf | video, pdf | video, pdf |
+| İşitsel | podcast | pdf | podcast, pdf | podcast, pdf | podcast, pdf |
 | Kinestetik | podcast | pdf | pdf, podcast | video, podcast | pdf, podcast |
-| Sozel | podcast | pdf | podcast, pdf | pdf, podcast | pdf, podcast |
-| Mantiksal | podcast | pdf | pdf, podcast | video, pdf | pdf, podcast |
+| Sözel | podcast | pdf | podcast, pdf | pdf, podcast | pdf, podcast |
+| Mantıksal | podcast | pdf | pdf, podcast | video, pdf | pdf, podcast |
 
-**Matris Tasarım Ilkeleri:**
+**Matris Tasarım İlkeleri:**
 
 - Görme Engeli + Her Stil → Podcast (ses tabanlı): Görsel içerik hiçbir öğrenme stiliyle sunulamaz.
 - İşitsel Engel + Her Stil → PDF (metin tabanlı): Ses içeriği hiçbir öğrenme stiliyle sunulamaz.
@@ -240,13 +240,13 @@ Future<bool> hasCompletedTest() async {
 
 **Soru Filtresi Matrisi:**
 
-| Ogrenme Stili | Gorme Engeli | Isitsel Engeli | Fiziksel Engel | ADHD | Ogrenme Guclugu |
+| Öğrenme Stili | Görme Engeli | İşitsel Engeli | Fiziksel Engel | ADHD | Öğrenme Güçlüğü |
 |---------------|:---:|:---:|:---:|:---:|:---:|
-| Gorsel | orta, görsel:hayır | orta, görsel:evet | orta, görsel:evet | kolay, görsel:evet | kolay, görsel:evet |
-| Isitsel | kolay, görsel:hayır | orta, görsel:hayır | kolay, görsel:hayır | kolay, görsel:hayır, limit:2 | kolay, görsel:hayır |
+| Görsel | orta, görsel:hayır | orta, görsel:evet | orta, görsel:evet | kolay, görsel:evet | kolay, görsel:evet |
+| İşitsel | kolay, görsel:hayır | orta, görsel:hayır | kolay, görsel:hayır | kolay, görsel:hayır, limit:2 | kolay, görsel:hayır |
 | Kinestetik | kolay, görsel:hayır | orta, görsel:evet | orta, görsel:evet | kolay, görsel:evet, limit:3 | kolay, görsel:evet |
-| Sozel | kolay, görsel:hayır | orta, görsel:hayır | kolay, görsel:hayır | kolay, görsel:hayır, limit:2 | kolay, görsel:hayır |
-| Mantiksal | orta, görsel:hayır | zor, görsel:hayır | orta, görsel:hayır | kolay, görsel:hayır, limit:2 | kolay, görsel:evet |
+| Sözel | kolay, görsel:hayır | orta, görsel:hayır | kolay, görsel:hayır | kolay, görsel:hayır, limit:2 | kolay, görsel:hayır |
+| Mantıksal | orta, görsel:hayır | zor, görsel:hayır | orta, görsel:hayır | kolay, görsel:hayır, limit:2 | kolay, görsel:evet |
 
 **Filtre Yorumu:**
 
@@ -254,19 +254,19 @@ Future<bool> hasCompletedTest() async {
 - `isVisual: false` → Görme Engeli durumunda ve sözel/mantıksal stilde grafik/şema içeren sorular sorgu dışı bırakılır.
 - `limit: 2 | 3` → ADHD öğrencilerin dikkat süreleri göz önünde bulundurularak soru sayısı kısıtlanır.
 
-### 3.8 Oğrenme Modu Sistemi
+### 3.8 Öğrenme Modu Sistemi
 
 Uygulama, iki farklı ders modu sunmaktadır:
 
 **Derslerim Modu (`LessonMode.derslerim`):** Standart müfredat içeriklerine filtresiz erişim. Tüm içerik türleri ve tüm zorluk seviyeleri mevcuttur.
 
-**Bana Ozel Modu (`LessonMode.banaOzel`):** `RecommendationService` tarafından öğrenme stili ve engel profiline göre filtrelenmiş içerik ve soru bankası. Ekran başlığı ve renk şeması bu modda farklılaşmaktadır.
+**Bana Özel Modu (`LessonMode.banaOzel`):** `RecommendationService` tarafından öğrenme stili ve engel profiline göre filtrelenmiş içerik ve soru bankası. Ekran başlığı ve renk şeması bu modda farklılaşmaktadır.
 
 Mod bilgisi, `SMainMenuScreen → SMyLessons → SHome` navigasyon yığını boyunca `LessonMode` enum değeri olarak taşınmaktadır.
 
 ---
 
-## 4. Erisilebilirlik Sistemi
+## 4. Erişilebilirlik Sistemi
 
 ### 4.1 Metin-Okuma (TTS) Servisi
 
@@ -300,7 +300,7 @@ class TtsService {
 | `stop()` | Aktif seslendirmeyi durdurur |
 | `isEnabled` | Aktiflik durumunu sorgular |
 
-### 4.2 Otomatik Aktivasyon Mantigi
+### 4.2 Otomatik Aktivasyon Mantığı
 
 `DisabilityScreen` ekranında kullanıcı engel türünü seçtiği anda aşağıdaki kural işletilmektedir:
 
@@ -313,15 +313,15 @@ Bu mekanizma, görme engelli kullanıcıların navigasyon sürecini tamamlamak i
 
 TTS etkin olduğunda, ekranlar yüklendiğinde ilgili ekranın içeriğini tanımlayan bir metin `speak()` metoduna iletilmektedir. Bu sayede görme engelli öğrenciler ekranlar arasında geçiş yaptıklarında bulundukları konumu sesli olarak öğrenebilmektedir.
 
-### 4.4 Isitsel Engel Uyarlaması
+### 4.4 İşitsel Engel Uyarlaması
 
 İşitsel engelli öğrenciler için TTS aktivasyonu yapılmamaktadır; bunun yerine içerik öneri matrisi, podcast ve video ses içeriklerini bu profil için tamamen devre dışı bırakmaktadır. Soru bankası filtreleri `isVisual: false` olarak ayarlanmakta (grafik/şema gerektiren sorular hariç tutulmakta) ve PDF önceliği ön plana çıkmaktadır.
 
 ---
 
-## 5. Ogretmen-Ogrenci Iletisim ve Analitik Sistemi
+## 5. Öğretmen-Öğrenci İletişim ve Analitik Sistemi
 
-### 5.1 Oğretmen-Oğrenci Iliskisi Yonetimi
+### 5.1 Öğretmen-Öğrenci İlişkisi Yönetimi
 
 `teacher_student_service.dart` servisi, öğretmenlerin öğrenci havuzunu yönetmesine olanak tanımaktadır.
 
@@ -361,7 +361,7 @@ TTS etkin olduğunda, ekranlar yüklendiğinde ilgili ekranın içeriğini tanı
 
 `activity_tracking_service.dart`, öğrenci etkileşimlerini iki farklı tipte Firestore belgesine kaydetmektedir:
 
-**Test Cozme Aktivitesi (`test_solve`):**
+**Test Çözme Aktivitesi (`test_solve`):**
 
 ```
 students/{uid}/activities/{docId}
@@ -376,7 +376,7 @@ students/{uid}/activities/{docId}
   timestamp: ServerTimestamp
 ```
 
-**Materyal Gorunturleme Aktivitesi (`material_view`):**
+**Materyal Görüntüleme Aktivitesi (`material_view`):**
 
 ```
 students/{uid}/activities/{docId}
@@ -397,7 +397,7 @@ students/{uid}/activities/{docId}
 
 `reporting_service.dart`, öğretmenin `TDetailedResults` ekranında görüntülediği analitik verileri üretmektedir. İki ana rapor türü mevcuttur:
 
-**Oğrenci Özet Raporu:**
+**Öğrenci Özet Raporu:**
 - `todayStudyDurationMinutes`: Bugüne ait `material_view` aktivitelerindeki süre toplamı
 - `recentTests`: Son 5 test skoru
 - `completedActivities`: Son 5 tamamlanmış aktivite
@@ -410,13 +410,13 @@ students/{uid}/activities/{docId}
 
 ---
 
-## 6. Teknoloji Yigini ve Bagimliliklar
+## 6. Teknoloji Yığını ve Bağımlılıklar
 
-### 6.1 Temel Cerceve
+### 6.1 Temel Çerçeve
 
 Flutter 3.6+ ve Dart 3.6+ kullanılarak geliştirilmiş olan uygulama, Android için minSdk 24, compileSdk 36 ve targetSdk 30 hedef yapılandırmasına sahiptir.
 
-### 6.2 Paket Bagimlilikları
+### 6.2 Paket Bağımlılıkları
 
 | Paket | Versiyon | Kategori | Kullanım |
 |-------|----------|----------|---------|
@@ -561,7 +561,7 @@ erDiagram
     TEACHER_STUDENTS }o--|| STUDENTS : "referans"
 ```
 
-### 7.2 Temel Tasarım Kararlari
+### 7.2 Temel Tasarım Kararları
 
 **UID Belge Kimliği:** Hem öğrenci hem de öğretmen koleksiyonlarında belge kimliği olarak Firebase Auth UID kullanılmaktadır. Bu yaklaşım, Firestore güvenlik kuralları aracılığıyla kullanıcıların yalnızca kendi belgelerine erişmesini kolaylaştırmaktadır.
 
@@ -573,42 +573,27 @@ erDiagram
 
 ---
 
-## 8. Guvenlik ve Kullanici Izolasyonu
+## 8. Güvenlik ve Kullanıcı İzolasyonu
 
 ### 8.1 Kimlik Doğrulama
 
 Kullanıcı kimlik doğrulaması Firebase Authentication altyapısı üzerinden e-posta ve şifre mekanizmasıyla sağlanmaktadır. Oturum yönetimi Firebase SDK tarafından idare edilmekte; istemci tarafında oturum durumu elle yönetilmemektedir.
 
-### 8.2 Kullanici İzolasyonu Prensibi
+### 8.2 Kullanıcı İzolasyonu Prensibi
 
 Kullanıcılar yalnızca kendi UID'leri altındaki Firestore belgelerine erişmektedir. Öğretmenler, sisteme ekledikleri öğrencilerin verilerine `teachers/{uid}/students/{studentUid}` alt koleksiyonu üzerinden erişebilmektedir. Öğrenciler ise doğrudan başka öğrencilerin belgelerine erişememektedir.
 
-### 8.3 Tek Seferlik Değerlendirme Kisiti
+### 8.3 Tek Seferlik Değerlendirme Kısıtı
 
 Öğrenme stili ve engel durumu değerlendirmesi yalnızca bir kez gerçekleştirilebilmektedir. Bu kısıt, `hasCompletedTest()` fonksiyonu aracılığıyla uygulanmaktadır. Öğrencinin değerlendirme sonucunu tekrar tekrar değiştirerek öneri motorunu manipüle etmesi bu şekilde engellenmektedir.
 
 ---
 
-## 9. Sonuc ve Gelecek Calismalar
-
-### 9.1 Sistemin Katkısı
+## 9. Sonuç 
 
 Smart-Edu, eğitimdeki kişiselleştirme sorununa çift boyutlu bir çözüm sunmaktadır: öğrenme stili analizi ve engel durumu uyarlamasının kesişiminde konumlanan özgün bir algoritma, 25 farklı (5 öğrenme stili x 5 engel türü) öğrenci profili için ayrıştırılmış içerik ve soru bankası stratejileri üretmektedir. Mevcut tekil boyutlu sistemlerin aksine, bu çerçeve öğrencinin hem nasıl öğrendiğini hem de hangi erişilebilirlik kısıtlarıyla çalıştığını eş zamanlı değerlendirmektedir.
 
 Gerçek zamanlı öğretmen-öğrenci iletişim altyapısı, öğrencinin sistem içindeki ilerleme verilerini sınıf öğretmenine şeffaf biçimde sunmakta ve pedagojik müdahale kapısını açmaktadır.
 
-### 9.2 Gelecek Calismalar
 
-**Adaptif Algoritma Geliştirmesi:** Mevcut kural tabanlı (rule-based) algoritma, öğrenci aktivite geçmişinden elde edilen verilerle eğitilen bir makine öğrenimi modeline dönüştürülebilir. Bu geçiş, başlangıçta belirlenen statik profilin ötesine geçerek dinamik kişiselleştirme imkânı sunacaktır.
 
-**iOS Desteği:** Uygulama Flutter ile geliştirilmiş olmakla birlikte mevcut durumda yalnızca Android hedeflenmektedir. Apple platformu için gerekli yapılandırma ve ekstra TTS/audio izin yönetimi tamamlanarak iOS dağıtımı gerçekleştirilebilir.
-
-**Cevrimdışı Mod:** `sqflite` bağımlılığı mevcut olmakla birlikte, aktif bir çevrimdışı önbellekleme katmanı henüz uygulanmamıştır. Firestore çevrimdışı kalıcılık özelliği ve `sqflite` kombinasyonuyla ağ bağlantısı gerektirmeyen bir kullanım deneyimi sağlanabilir.
-
-**Kapsamlı Test Altyapısı:** Birim testleri yalnızca `test/widget_test.dart` dosyasıyla sınırlıdır. Öneri algoritması, aktivite takip servisi ve raporlama servisi için kapsamlı birim ve entegrasyon testleri geliştirilmelidir.
-
-**Analitik Derinleştirme:** Mevcut raporlama sistemi günlük bazda özet istatistikler sunmaktadır. Haftalık/aylık trend analizi, konu başarı haritaları ve öğrenme hızı eğrileri pedagojik değerini önemli ölçüde artıracaktır.
-
----
-
-*Bu teknik rapor, Smart-Edu uygulamasının kaynak kodu analizi temel alınarak hazırlanmıştır. Raporda yer alan tüm tablo verileri, algoritma açıklamaları ve şema bilgileri doğrudan uygulamanın kaynak kodundan türetilmiştir.*
