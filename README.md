@@ -1,6 +1,5 @@
 <div align="center">
   <img src="assets/smartedu_logo.png" alt="Smart-Edu Logo" width="130"/>
-  <h2>Smart-Edu</h2>
   <p>
     <em>Engel Durumuna ve Öğrenme Biçimine Göre Kişiselleştirilmiş Eğitim Platformu</em><br/>
     <em>Personalized Education Platform Based on Learning Style and Disability Status</em>
