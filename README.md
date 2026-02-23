@@ -1,6 +1,5 @@
 <div align="center">
   <img src="assets/smartedu_logo.png" alt="Smart-Edu Logo" width="130"/>
-  <h2>Smart-Edu</h2>
   <p>
     <em>Engel Durumuna ve Öğrenme Biçimine Göre Kişiselleştirilmiş Eğitim Platformu</em><br/>
     <em>Personalized Education Platform Based on Learning Style and Disability Status</em>
@@ -13,8 +12,6 @@
   ![Dart](https://img.shields.io/badge/Dart-3.6%2B-0175C2?logo=dart&logoColor=white)
   ![License](https://img.shields.io/badge/License-MIT-yellow)
 </div>
-
-> **Not:** `assets/smartedu_logo.png` satırını projenizin logosunu yüklediğiniz URL ile değiştirin.
 
 ---
 
@@ -186,13 +183,6 @@ Hata bildirimi veya öneri için GitHub Issues bölümünü kullanın.
 
 **Kodlama standartları:** `flutter_lints` kuralları uygulanmaktadır. Tüm UI metinleri Türkçe olmalıdır.
 
----
-
-### Lisans
-
-Bu proje MIT Lisansı kapsamında lisanslanmıştır. Ayrıntılar için `LICENSE` dosyasına bakınız.
-
----
 
 ---
 
@@ -363,9 +353,3 @@ This project has been accepted and supported under the TÜBİTAK (The Scientific
 For bug reports or suggestions, use the GitHub Issues section.
 
 **Coding standards:** `flutter_lints` rules are enforced. All UI text must remain in Turkish.
-
----
-
-### License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
