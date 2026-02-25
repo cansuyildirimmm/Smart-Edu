@@ -21,7 +21,7 @@
 
 ### Proje Hakkında
 
-Smart-Edu, görme engeli, işitsel engel, fiziksel engel, ADHD ve öğrenme güçlüğü gibi çeşitli engel durumları nedeniyle eğitimine verim alarak devam edemeyen öğrencilere yönelik geliştirilmiş, kişiselleştirilmiş bir mobil eğitim platformudur. Proje, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı tarafından kabul edilmiştir.
+Smart-Edu; görme engeli, işitsel engel, fiziksel engel, ADHD ve öğrenme güçlüğü gibi çeşitli engel durumları nedeniyle eğitimine verim alarak devam edemeyen öğrencilere yönelik geliştirilmiş, kişiselleştirilmiş bir mobil eğitim platformudur. Proje, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı tarafından kabul edilmiştir.
 
 Sistemin temel yaklaşımı, her öğrencinin öğrenme biçimini ve engel durumunu tespit eden özgün bir analiz algoritması aracılığıyla içerikleri (video, PDF, podcast) ve soru bankası parametrelerini otomatik olarak uyarlamaktır. Bu sayede standart bir müfredat yerine, bireyin ihtiyacına özgü bir öğrenme deneyimi sunulmaktadır.
 
