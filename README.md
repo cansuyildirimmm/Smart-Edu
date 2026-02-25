@@ -53,7 +53,6 @@ Platform, öğrenci ve öğretmen olmak üzere iki ayrı kullanıcı rolüne sah
 
 ### Ekran Görüntüleri
 
-Aşağıdaki placeholder'ları kendi ekran görüntülerinizin URL veya dosya yoluyla değiştirin.
 
 **Kullanıcı Giriş Akışı**
 
@@ -224,7 +223,6 @@ The platform supports two distinct user roles — Student and Teacher — and is
 
 ### Screenshots
 
-Replace the placeholders below with your own screenshot URLs or file paths.
 
 **User Onboarding Flow**
 
